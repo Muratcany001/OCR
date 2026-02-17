@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "/p+zNW8CztY=",
+  "success": true,
+  "projectFilePath": "/Users/murat/RiderProjects/OCR/OCR/OCR.csproj",
+  "expectedPackageFiles": [
+    "/Users/murat/.nuget/packages/opencvsharp4/4.13.0.20260214/opencvsharp4.4.13.0.20260214.nupkg.sha512",
+    "/Users/murat/.nuget/packages/opencvsharp4.runtime.win/4.13.0.20260214/opencvsharp4.runtime.win.4.13.0.20260214.nupkg.sha512",
+    "/Users/murat/.nuget/packages/system.memory/4.6.3/system.memory.4.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}
