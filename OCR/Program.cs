@@ -4,10 +4,10 @@ namespace OCR;
 using OpenCvSharp;
 class Program
 {
-    static OCRTesseract  _ocrTesseract;
     static void Main(string[] args)
     {
-       
+        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181140099966.bmp";
+        ImageProcessing.ProcessFile(filePath);
         
     }
 }

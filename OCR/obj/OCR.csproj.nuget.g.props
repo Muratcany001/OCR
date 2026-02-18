@@ -12,7 +12,4 @@
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="/Users/murat/.nuget/packages/" />
   </ItemGroup>
-  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)opencvsharp4.runtime.win/4.13.0.20260214/build/net8.0/OpenCvSharp4.runtime.win.props" Condition="Exists('$(NuGetPackageRoot)opencvsharp4.runtime.win/4.13.0.20260214/build/net8.0/OpenCvSharp4.runtime.win.props')" />
-  </ImportGroup>
 </Project>

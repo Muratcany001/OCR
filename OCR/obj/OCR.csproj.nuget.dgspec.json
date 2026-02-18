@@ -47,9 +47,13 @@
               "target": "Package",
               "version": "[4.13.0.20260214, )"
             },
-            "OpenCvSharp4.runtime.win": {
+            "OpenCvSharp4.Extensions": {
               "target": "Package",
               "version": "[4.13.0.20260214, )"
+            },
+            "OpenCvSharp4.runtime.osx_arm64": {
+              "target": "Package",
+              "version": "[4.8.1-rc, )"
             }
           },
           "imports": [
