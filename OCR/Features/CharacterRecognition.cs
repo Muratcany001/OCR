@@ -18,12 +18,7 @@ public sealed class CharacterRecognition
     // bosluklarin arasini da almak icin psm degerini 6 yapildi
     public string Read(Mat image, string psm = "6") 
     {
-        //islenecek dosya 
-        string tmpIn = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.bmp");
-        //tesseract output prefix
-        string tmpOutBase = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
-        //olusacak txt file
-        string resultFile = tmpOutBase + ".txt";
+        string tmpIn = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.png");
         
         try
         {
@@ -34,31 +29,38 @@ public sealed class CharacterRecognition
             
             //process parametreleri
             // lstm only ve whitelist tanimlandi
+            // bloklar teker teker islendigi icin psm 6
+            // 
             var psi = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = _tesseractPath, 
-                Arguments = $"{tmpIn} {tmpOutBase} -l {_lang} --oem 1 --psm {psm} -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ:/",
+                Arguments = $"{tmpIn} stdout -l {_lang} --oem 1 --psm {psm} -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ:/",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                StandardOutputEncoding = System.Text.Encoding.UTF8,
+                StandardErrorEncoding = System.Text.Encoding.UTF8,
             };
             //kurulan processi baslatma
             using var process = System.Diagnostics.Process.Start(psi)!;
+            
+            string result = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+            
             process.WaitForExit();
 
             //process kontrolu
             if (process.ExitCode != 0)
             {
-                string error = process.StandardError.ReadToEnd();
                 Console.WriteLine($"Tesseract Hatası: {error}");
             }
             //cikti okuma
-            return File.Exists(resultFile) ? File.ReadAllText(resultFile).Trim() : string.Empty;
+            return result.Trim();
         }
         finally
         {
-            // input silinmesi
+            // olusturulan dosyalarin silinmesi
             if (File.Exists(tmpIn))
                 File.Delete(tmpIn);
         }
