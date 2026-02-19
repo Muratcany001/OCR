@@ -13,7 +13,7 @@ public sealed class CharacterRecognition
         _lang = lang;
         _tesseractPath = GetTesseractPath();
     }
-    //Tesseract ocr kutuphanesi
+    //Cross platform tesseract kurulumu
     private string GetTesseractPath()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -25,44 +25,46 @@ public sealed class CharacterRecognition
         return "/usr/bin/tesseract"; 
     }
 
-    // bosluklarin arasini da almak icin psm degerini 6 yaptik
+    // bosluklarin arasini da almak icin psm degerini 6 yapildi
     public string Read(Mat image, string psm = "6") 
     {
         
         string tmpIn = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.bmp");
         string tmpOutBase = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
         string resultFile = tmpOutBase + ".txt";
-
+        
         try
         {
-            Cv2.ImWrite(tmpIn, image);
-
+            //gorseli diske yazdirma
+            Cv2.ImWrite(tmpIn, image,
+                new ImageEncodingParam(ImwriteFlags.PngCompression, 1));
+            //process parametreleri
             var psi = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = _tesseractPath, 
-                Arguments = $"{tmpIn} {tmpOutBase} -l {_lang} --psm {psm}",
+                Arguments = $"{tmpIn} {tmpOutBase} -l {_lang} --oem 1 --psm {psm} -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ:/",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
-
+            //kurulan processi baslatma
             using var process = System.Diagnostics.Process.Start(psi)!;
             process.WaitForExit();
 
-            // Sadece başarısız olursa error logunu oku (Performans için)
+            //process kontrolu
             if (process.ExitCode != 0)
             {
                 string error = process.StandardError.ReadToEnd();
                 Console.WriteLine($"Tesseract Hatası: {error}");
             }
-
+            //cikti okuma
             return File.Exists(resultFile) ? File.ReadAllText(resultFile).Trim() : string.Empty;
         }
         finally
         {
-            if (File.Exists(tmpIn)) File.Delete(tmpIn);
-            if (File.Exists(resultFile)) File.Delete(resultFile);
+            if (File.Exists(tmpIn))
+                File.Delete(tmpIn);
         }
     }
 }
