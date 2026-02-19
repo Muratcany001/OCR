@@ -54,6 +54,18 @@
             "OpenCvSharp4.runtime.osx_arm64": {
               "target": "Package",
               "version": "[4.8.1-rc, )"
+            },
+            "Tesseract": {
+              "target": "Package",
+              "version": "[4.1.1, )"
+            },
+            "ZXing.Net": {
+              "target": "Package",
+              "version": "[0.16.11, )"
+            },
+            "ZXing.Net.Bindings.OpenCV": {
+              "target": "Package",
+              "version": "[0.16.10, )"
             }
           },
           "imports": [
@@ -72,7 +84,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.417/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/Users/murat/.dotnet/sdk/8.0.418/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

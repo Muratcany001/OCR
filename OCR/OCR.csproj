@@ -11,6 +11,10 @@
       <PackageReference Include="OpenCvSharp4" Version="4.13.0.20260214" />
       <PackageReference Include="OpenCvSharp4.Extensions" Version="4.13.0.20260214" />
       <PackageReference Include="OpenCvSharp4.runtime.osx_arm64" Version="4.8.1-rc" />
+      <PackageReference Include="ZXing.Net" Version="0.16.11" />
+      <PackageReference Include="ZXing.Net.Bindings.OpenCV" Version="0.16.10" />
+      <PackageReference Include="Tesseract" Version="4.1.1" />
+      
     </ItemGroup>
-
+    
 </Project>
