@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using OCR.Packages;
 using OpenCvSharp;
 
 namespace OCR;
@@ -11,18 +12,7 @@ public sealed class CharacterRecognition
     public CharacterRecognition(string lang = "eng")
     {
         _lang = lang;
-        _tesseractPath = GetTesseractPath();
-    }
-    //Cross platform tesseract kurulumu
-    private string GetTesseractPath()
-    {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            return @"C:\Program Files\Tesseract-OCR\tesseract.exe"; 
-            
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            return "/opt/homebrew/bin/tesseract"; 
-            
-        return "/usr/bin/tesseract"; 
+        _tesseractPath = TesseractHelper.GetTesseractPath();
     }
 
     // bosluklarin arasini da almak icin psm degerini 6 yapildi

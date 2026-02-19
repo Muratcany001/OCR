@@ -9,9 +9,9 @@ class Program
     {
         
         string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181150384510.bmp";
-        Stopwatch sw = Stopwatch.StartNew();
-        Mat processedImage = ImageProcessing.ProcessFile(filePath);
         
+        Mat processedImage = ImageProcessing.ProcessFile(filePath);
+        Stopwatch sw = Stopwatch.StartNew();
         var ocr = new CharacterRecognition();
         string text = ocr.Read(processedImage);
         sw.Stop();

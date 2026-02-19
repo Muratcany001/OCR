@@ -14,6 +14,7 @@
       <PackageReference Include="ZXing.Net" Version="0.16.11" />
       <PackageReference Include="ZXing.Net.Bindings.OpenCV" Version="0.16.10" />
       <PackageReference Include="Tesseract" Version="4.1.1" />
+      
     </ItemGroup>
     
 </Project>

@@ -30,10 +30,10 @@ public class ImageProcessing
         var qr = contours
             .Select(c => Cv2.BoundingRect(c))
             .Where(r => r.Width > 50 && r.Height > 50)
-            .OrderBy(r => Math.Abs(r.Width - r.Height))
+            .OrderBy(r => Math.Abs(r.Width - r.Height)) // 
             .FirstOrDefault();
 
-        // Data Matrix'in sağını ROI olarak al
+        // Data Matrix'in sagini ROI olarak al
         int roiX = qr.X + qr.Width + 20;
         int roiY = Math.Max(0, qr.Y - 40);
         int roiW = Math.Min(src.Width - roiX - 10, 630);
@@ -61,6 +61,7 @@ public class ImageProcessing
         Cv2.ImShow("Binary image", binary);
         Cv2.WaitKey();
         Cv2.DestroyAllWindows();
+        src.Dispose();
         return binary;
     }
 }
