@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "Microsoft.NETCore.Platforms/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.0/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/_._": {}
+        }
+      },
       "Microsoft.Win32.SystemEvents/10.0.3": {
         "type": "package",
         "compile": {
@@ -21,6 +30,70 @@
           "runtimes/win/lib/net8.0/Microsoft.Win32.SystemEvents.dll": {
             "assetType": "runtime",
             "rid": "win"
+          }
+        }
+      },
+      "NETStandard.Library/2.0.3": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "1.1.0"
+        },
+        "compile": {
+          "lib/netstandard1.0/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/_._": {}
+        },
+        "build": {
+          "build/netstandard2.0/_._": {}
+        }
+      },
+      "OpenCvSharp3-AnyCPU/3.4.4.20181118": {
+        "type": "package",
+        "dependencies": {
+          "System.Drawing.Common": "4.5.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/OpenCvSharp.Blob.dll": {
+            "related": ".pdb;.xml"
+          },
+          "lib/netstandard2.0/OpenCvSharp.Extensions.dll": {
+            "related": ".pdb;.xml"
+          },
+          "lib/netstandard2.0/OpenCvSharp.dll": {
+            "related": ".Blob.pdb;.Blob.xml;.Extensions.pdb;.Extensions.xml;.pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/OpenCvSharp.Blob.dll": {
+            "related": ".pdb;.xml"
+          },
+          "lib/netstandard2.0/OpenCvSharp.Extensions.dll": {
+            "related": ".pdb;.xml"
+          },
+          "lib/netstandard2.0/OpenCvSharp.dll": {
+            "related": ".Blob.pdb;.Blob.xml;.Extensions.pdb;.Extensions.xml;.pdb;.xml"
+          }
+        },
+        "build": {
+          "build/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win10-x64/native/OpenCvSharpExtern.dll": {
+            "assetType": "native",
+            "rid": "win10-x64"
+          },
+          "runtimes/win10-x64/native/opencv_ffmpeg344_64.dll": {
+            "assetType": "native",
+            "rid": "win10-x64"
+          },
+          "runtimes/win10-x86/native/OpenCvSharpExtern.dll": {
+            "assetType": "native",
+            "rid": "win10-x86"
+          },
+          "runtimes/win10-x86/native/opencv_ffmpeg344.dll": {
+            "assetType": "native",
+            "rid": "win10-x86"
           }
         }
       },
@@ -149,10 +222,84 @@
         "runtime": {
           "lib/netcoreapp2.1/_._": {}
         }
+      },
+      "System.Reflection.Emit/4.7.0": {
+        "type": "package",
+        "compile": {
+          "ref/netcoreapp2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.0/_._": {}
+        }
+      },
+      "Tesseract/4.1.1": {
+        "type": "package",
+        "dependencies": {
+          "System.Reflection.Emit": "4.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Tesseract.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Tesseract.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/Tesseract.targets": {}
+        }
+      },
+      "ZXing.Net/0.16.11": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/zxing.dll": {
+            "related": ".XML"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/zxing.dll": {
+            "related": ".XML"
+          }
+        }
+      },
+      "ZXing.Net.Bindings.OpenCV/0.16.10": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "2.0.3",
+          "OpenCvSharp3-AnyCPU": "3.4.4.20181118",
+          "ZXing.Net": "0.16.11"
+        },
+        "compile": {
+          "lib/netstandard2.0/ZXing.OpenCv.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/ZXing.OpenCv.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
       }
     }
   },
   "libraries": {
+    "Microsoft.NETCore.Platforms/1.1.0": {
+      "sha512": "kz0PEW2lhqygehI/d6XsPCQzD7ff7gUJaVGPVETX611eadGsA3A877GdSlU0LRVMCTH/+P3o2iDTak+S08V2+A==",
+      "type": "package",
+      "path": "microsoft.netcore.platforms/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ThirdPartyNotices.txt",
+        "dotnet_library_license.txt",
+        "lib/netstandard1.0/_._",
+        "microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+        "microsoft.netcore.platforms.nuspec",
+        "runtime.json"
+      ]
+    },
     "Microsoft.Win32.SystemEvents/10.0.3": {
       "sha512": "gYpwz5Gl0rs9pEFHBKctLbSi7SUGR4L1uRjXkU488nizWd2hvo2JP2+ATUsv0th7v6LDiXfdlUsnTbvC2MauFA==",
       "type": "package",
@@ -186,6 +333,190 @@
         "runtimes/win/lib/net9.0/Microsoft.Win32.SystemEvents.dll",
         "runtimes/win/lib/net9.0/Microsoft.Win32.SystemEvents.xml",
         "useSharedDesignerContext.txt"
+      ]
+    },
+    "NETStandard.Library/2.0.3": {
+      "sha512": "st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
+      "type": "package",
+      "path": "netstandard.library/2.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "build/netstandard2.0/NETStandard.Library.targets",
+        "build/netstandard2.0/ref/Microsoft.Win32.Primitives.dll",
+        "build/netstandard2.0/ref/System.AppContext.dll",
+        "build/netstandard2.0/ref/System.Collections.Concurrent.dll",
+        "build/netstandard2.0/ref/System.Collections.NonGeneric.dll",
+        "build/netstandard2.0/ref/System.Collections.Specialized.dll",
+        "build/netstandard2.0/ref/System.Collections.dll",
+        "build/netstandard2.0/ref/System.ComponentModel.Composition.dll",
+        "build/netstandard2.0/ref/System.ComponentModel.EventBasedAsync.dll",
+        "build/netstandard2.0/ref/System.ComponentModel.Primitives.dll",
+        "build/netstandard2.0/ref/System.ComponentModel.TypeConverter.dll",
+        "build/netstandard2.0/ref/System.ComponentModel.dll",
+        "build/netstandard2.0/ref/System.Console.dll",
+        "build/netstandard2.0/ref/System.Core.dll",
+        "build/netstandard2.0/ref/System.Data.Common.dll",
+        "build/netstandard2.0/ref/System.Data.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.Contracts.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.Debug.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.FileVersionInfo.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.Process.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.StackTrace.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.TextWriterTraceListener.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.Tools.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.TraceSource.dll",
+        "build/netstandard2.0/ref/System.Diagnostics.Tracing.dll",
+        "build/netstandard2.0/ref/System.Drawing.Primitives.dll",
+        "build/netstandard2.0/ref/System.Drawing.dll",
+        "build/netstandard2.0/ref/System.Dynamic.Runtime.dll",
+        "build/netstandard2.0/ref/System.Globalization.Calendars.dll",
+        "build/netstandard2.0/ref/System.Globalization.Extensions.dll",
+        "build/netstandard2.0/ref/System.Globalization.dll",
+        "build/netstandard2.0/ref/System.IO.Compression.FileSystem.dll",
+        "build/netstandard2.0/ref/System.IO.Compression.ZipFile.dll",
+        "build/netstandard2.0/ref/System.IO.Compression.dll",
+        "build/netstandard2.0/ref/System.IO.FileSystem.DriveInfo.dll",
+        "build/netstandard2.0/ref/System.IO.FileSystem.Primitives.dll",
+        "build/netstandard2.0/ref/System.IO.FileSystem.Watcher.dll",
+        "build/netstandard2.0/ref/System.IO.FileSystem.dll",
+        "build/netstandard2.0/ref/System.IO.IsolatedStorage.dll",
+        "build/netstandard2.0/ref/System.IO.MemoryMappedFiles.dll",
+        "build/netstandard2.0/ref/System.IO.Pipes.dll",
+        "build/netstandard2.0/ref/System.IO.UnmanagedMemoryStream.dll",
+        "build/netstandard2.0/ref/System.IO.dll",
+        "build/netstandard2.0/ref/System.Linq.Expressions.dll",
+        "build/netstandard2.0/ref/System.Linq.Parallel.dll",
+        "build/netstandard2.0/ref/System.Linq.Queryable.dll",
+        "build/netstandard2.0/ref/System.Linq.dll",
+        "build/netstandard2.0/ref/System.Net.Http.dll",
+        "build/netstandard2.0/ref/System.Net.NameResolution.dll",
+        "build/netstandard2.0/ref/System.Net.NetworkInformation.dll",
+        "build/netstandard2.0/ref/System.Net.Ping.dll",
+        "build/netstandard2.0/ref/System.Net.Primitives.dll",
+        "build/netstandard2.0/ref/System.Net.Requests.dll",
+        "build/netstandard2.0/ref/System.Net.Security.dll",
+        "build/netstandard2.0/ref/System.Net.Sockets.dll",
+        "build/netstandard2.0/ref/System.Net.WebHeaderCollection.dll",
+        "build/netstandard2.0/ref/System.Net.WebSockets.Client.dll",
+        "build/netstandard2.0/ref/System.Net.WebSockets.dll",
+        "build/netstandard2.0/ref/System.Net.dll",
+        "build/netstandard2.0/ref/System.Numerics.dll",
+        "build/netstandard2.0/ref/System.ObjectModel.dll",
+        "build/netstandard2.0/ref/System.Reflection.Extensions.dll",
+        "build/netstandard2.0/ref/System.Reflection.Primitives.dll",
+        "build/netstandard2.0/ref/System.Reflection.dll",
+        "build/netstandard2.0/ref/System.Resources.Reader.dll",
+        "build/netstandard2.0/ref/System.Resources.ResourceManager.dll",
+        "build/netstandard2.0/ref/System.Resources.Writer.dll",
+        "build/netstandard2.0/ref/System.Runtime.CompilerServices.VisualC.dll",
+        "build/netstandard2.0/ref/System.Runtime.Extensions.dll",
+        "build/netstandard2.0/ref/System.Runtime.Handles.dll",
+        "build/netstandard2.0/ref/System.Runtime.InteropServices.RuntimeInformation.dll",
+        "build/netstandard2.0/ref/System.Runtime.InteropServices.dll",
+        "build/netstandard2.0/ref/System.Runtime.Numerics.dll",
+        "build/netstandard2.0/ref/System.Runtime.Serialization.Formatters.dll",
+        "build/netstandard2.0/ref/System.Runtime.Serialization.Json.dll",
+        "build/netstandard2.0/ref/System.Runtime.Serialization.Primitives.dll",
+        "build/netstandard2.0/ref/System.Runtime.Serialization.Xml.dll",
+        "build/netstandard2.0/ref/System.Runtime.Serialization.dll",
+        "build/netstandard2.0/ref/System.Runtime.dll",
+        "build/netstandard2.0/ref/System.Security.Claims.dll",
+        "build/netstandard2.0/ref/System.Security.Cryptography.Algorithms.dll",
+        "build/netstandard2.0/ref/System.Security.Cryptography.Csp.dll",
+        "build/netstandard2.0/ref/System.Security.Cryptography.Encoding.dll",
+        "build/netstandard2.0/ref/System.Security.Cryptography.Primitives.dll",
+        "build/netstandard2.0/ref/System.Security.Cryptography.X509Certificates.dll",
+        "build/netstandard2.0/ref/System.Security.Principal.dll",
+        "build/netstandard2.0/ref/System.Security.SecureString.dll",
+        "build/netstandard2.0/ref/System.ServiceModel.Web.dll",
+        "build/netstandard2.0/ref/System.Text.Encoding.Extensions.dll",
+        "build/netstandard2.0/ref/System.Text.Encoding.dll",
+        "build/netstandard2.0/ref/System.Text.RegularExpressions.dll",
+        "build/netstandard2.0/ref/System.Threading.Overlapped.dll",
+        "build/netstandard2.0/ref/System.Threading.Tasks.Parallel.dll",
+        "build/netstandard2.0/ref/System.Threading.Tasks.dll",
+        "build/netstandard2.0/ref/System.Threading.Thread.dll",
+        "build/netstandard2.0/ref/System.Threading.ThreadPool.dll",
+        "build/netstandard2.0/ref/System.Threading.Timer.dll",
+        "build/netstandard2.0/ref/System.Threading.dll",
+        "build/netstandard2.0/ref/System.Transactions.dll",
+        "build/netstandard2.0/ref/System.ValueTuple.dll",
+        "build/netstandard2.0/ref/System.Web.dll",
+        "build/netstandard2.0/ref/System.Windows.dll",
+        "build/netstandard2.0/ref/System.Xml.Linq.dll",
+        "build/netstandard2.0/ref/System.Xml.ReaderWriter.dll",
+        "build/netstandard2.0/ref/System.Xml.Serialization.dll",
+        "build/netstandard2.0/ref/System.Xml.XDocument.dll",
+        "build/netstandard2.0/ref/System.Xml.XPath.XDocument.dll",
+        "build/netstandard2.0/ref/System.Xml.XPath.dll",
+        "build/netstandard2.0/ref/System.Xml.XmlDocument.dll",
+        "build/netstandard2.0/ref/System.Xml.XmlSerializer.dll",
+        "build/netstandard2.0/ref/System.Xml.dll",
+        "build/netstandard2.0/ref/System.dll",
+        "build/netstandard2.0/ref/mscorlib.dll",
+        "build/netstandard2.0/ref/netstandard.dll",
+        "build/netstandard2.0/ref/netstandard.xml",
+        "lib/netstandard1.0/_._",
+        "netstandard.library.2.0.3.nupkg.sha512",
+        "netstandard.library.nuspec"
+      ]
+    },
+    "OpenCvSharp3-AnyCPU/3.4.4.20181118": {
+      "sha512": "G75Dj/2K79n8G/BJbKLjwb6FPXCEi9N+1irIUaHEKYclgYRv22ziVrsuI9WYtrtCjD4d9M5wtne9F2/9Bt9Kiw==",
+      "type": "package",
+      "path": "opencvsharp3-anycpu/3.4.4.20181118",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/OpenCvSharp3-AnyCPU.props",
+        "lib/net20/OpenCvSharp.Blob.dll",
+        "lib/net20/OpenCvSharp.Blob.pdb",
+        "lib/net20/OpenCvSharp.Blob.xml",
+        "lib/net20/OpenCvSharp.dll",
+        "lib/net20/OpenCvSharp.pdb",
+        "lib/net20/OpenCvSharp.xml",
+        "lib/net40/OpenCvSharp.Blob.dll",
+        "lib/net40/OpenCvSharp.Blob.pdb",
+        "lib/net40/OpenCvSharp.Blob.xml",
+        "lib/net40/OpenCvSharp.Extensions.dll",
+        "lib/net40/OpenCvSharp.Extensions.pdb",
+        "lib/net40/OpenCvSharp.Extensions.xml",
+        "lib/net40/OpenCvSharp.UserInterface.dll",
+        "lib/net40/OpenCvSharp.UserInterface.pdb",
+        "lib/net40/OpenCvSharp.UserInterface.xml",
+        "lib/net40/OpenCvSharp.dll",
+        "lib/net40/OpenCvSharp.pdb",
+        "lib/net40/OpenCvSharp.xml",
+        "lib/net461/OpenCvSharp.Blob.dll",
+        "lib/net461/OpenCvSharp.Blob.pdb",
+        "lib/net461/OpenCvSharp.Blob.xml",
+        "lib/net461/OpenCvSharp.Extensions.dll",
+        "lib/net461/OpenCvSharp.Extensions.pdb",
+        "lib/net461/OpenCvSharp.Extensions.xml",
+        "lib/net461/OpenCvSharp.UserInterface.dll",
+        "lib/net461/OpenCvSharp.UserInterface.pdb",
+        "lib/net461/OpenCvSharp.UserInterface.xml",
+        "lib/net461/OpenCvSharp.dll",
+        "lib/net461/OpenCvSharp.pdb",
+        "lib/net461/OpenCvSharp.xml",
+        "lib/netstandard2.0/OpenCvSharp.Blob.dll",
+        "lib/netstandard2.0/OpenCvSharp.Blob.pdb",
+        "lib/netstandard2.0/OpenCvSharp.Blob.xml",
+        "lib/netstandard2.0/OpenCvSharp.Extensions.dll",
+        "lib/netstandard2.0/OpenCvSharp.Extensions.pdb",
+        "lib/netstandard2.0/OpenCvSharp.Extensions.xml",
+        "lib/netstandard2.0/OpenCvSharp.dll",
+        "lib/netstandard2.0/OpenCvSharp.pdb",
+        "lib/netstandard2.0/OpenCvSharp.xml",
+        "opencvsharp3-anycpu.3.4.4.20181118.nupkg.sha512",
+        "opencvsharp3-anycpu.nuspec",
+        "runtimes/win10-x64/native/OpenCvSharpExtern.dll",
+        "runtimes/win10-x64/native/opencv_ffmpeg344_64.dll",
+        "runtimes/win10-x86/native/OpenCvSharpExtern.dll",
+        "runtimes/win10-x86/native/opencv_ffmpeg344.dll"
       ]
     },
     "OpenCvSharp4/4.13.0.20260214": {
@@ -325,13 +656,203 @@
         "system.memory.4.6.3.nupkg.sha512",
         "system.memory.nuspec"
       ]
+    },
+    "System.Reflection.Emit/4.7.0": {
+      "sha512": "VR4kk8XLKebQ4MZuKuIni/7oh+QGFmZW3qORd1GvBq/8026OpW501SzT/oypwiQl4TvT8ErnReh/NzY9u+C6wQ==",
+      "type": "package",
+      "path": "system.reflection.emit/4.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/_._",
+        "lib/netcore50/System.Reflection.Emit.dll",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.1/System.Reflection.Emit.dll",
+        "lib/netstandard1.1/System.Reflection.Emit.xml",
+        "lib/netstandard1.3/System.Reflection.Emit.dll",
+        "lib/netstandard2.0/System.Reflection.Emit.dll",
+        "lib/netstandard2.0/System.Reflection.Emit.xml",
+        "lib/netstandard2.1/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net45/_._",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard1.1/System.Reflection.Emit.dll",
+        "ref/netstandard1.1/System.Reflection.Emit.xml",
+        "ref/netstandard1.1/de/System.Reflection.Emit.xml",
+        "ref/netstandard1.1/es/System.Reflection.Emit.xml",
+        "ref/netstandard1.1/fr/System.Reflection.Emit.xml",
+        "ref/netstandard1.1/it/System.Reflection.Emit.xml",
+        "ref/netstandard1.1/ja/System.Reflection.Emit.xml",
+        "ref/netstandard1.1/ko/System.Reflection.Emit.xml",
+        "ref/netstandard1.1/ru/System.Reflection.Emit.xml",
+        "ref/netstandard1.1/zh-hans/System.Reflection.Emit.xml",
+        "ref/netstandard1.1/zh-hant/System.Reflection.Emit.xml",
+        "ref/netstandard2.0/System.Reflection.Emit.dll",
+        "ref/netstandard2.0/System.Reflection.Emit.xml",
+        "ref/netstandard2.1/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/aot/lib/netcore50/System.Reflection.Emit.dll",
+        "runtimes/aot/lib/netcore50/System.Reflection.Emit.xml",
+        "system.reflection.emit.4.7.0.nupkg.sha512",
+        "system.reflection.emit.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "Tesseract/4.1.1": {
+      "sha512": "abufaW6N3P7TGJPI3RNTMSzS1ycnE1w6aW/Q+Hco/wCgm+bXUgR87JsGELvTcm2FISXGlQgs+PvYMVo9SlcPfg==",
+      "type": "package",
+      "path": "tesseract/4.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/Tesseract.targets",
+        "lib/net40/Tesseract.dll",
+        "lib/net45/Tesseract.dll",
+        "lib/netstandard2.0/Tesseract.dll",
+        "lib/netstandard2.0/Tesseract.xml",
+        "tesseract.4.1.1.nupkg.sha512",
+        "tesseract.nuspec",
+        "x64/leptonica-1.80.0.dll",
+        "x64/tesseract41.dll",
+        "x86/leptonica-1.80.0.dll",
+        "x86/tesseract41.dll"
+      ]
+    },
+    "ZXing.Net/0.16.11": {
+      "sha512": "OZfAVu88hl87BffQ+rlWCj/vLvAhhCK4QnFaoveeF/MY8SjHNSYBQ3qyUEWlPKNgBQGh1syXhCDg10vUnCsqkg==",
+      "type": "package",
+      "path": "zxing.net/0.16.11",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "docs/README.md",
+        "lib/native/zxing.XML",
+        "lib/native/zxing.pri",
+        "lib/native/zxing.winmd",
+        "lib/net20-cf/zxing.ce2.0.dll",
+        "lib/net20-cf/zxing.ce2.0.xml",
+        "lib/net20/zxing.XML",
+        "lib/net20/zxing.dll",
+        "lib/net35-cf/zxing.ce3.5.dll",
+        "lib/net35-cf/zxing.ce3.5.xml",
+        "lib/net35/zxing.XML",
+        "lib/net35/zxing.dll",
+        "lib/net40/zxing.XML",
+        "lib/net40/zxing.dll",
+        "lib/net40/zxing.presentation.XML",
+        "lib/net40/zxing.presentation.dll",
+        "lib/net45/zxing.XML",
+        "lib/net45/zxing.dll",
+        "lib/net45/zxing.presentation.XML",
+        "lib/net45/zxing.presentation.dll",
+        "lib/net461/zxing.XML",
+        "lib/net461/zxing.dll",
+        "lib/net461/zxing.presentation.XML",
+        "lib/net461/zxing.presentation.dll",
+        "lib/net47/zxing.XML",
+        "lib/net47/zxing.dll",
+        "lib/net47/zxing.presentation.XML",
+        "lib/net47/zxing.presentation.dll",
+        "lib/net48/zxing.XML",
+        "lib/net48/zxing.dll",
+        "lib/net48/zxing.presentation.XML",
+        "lib/net48/zxing.presentation.dll",
+        "lib/net5.0/zxing.XML",
+        "lib/net5.0/zxing.dll",
+        "lib/net6.0/zxing.XML",
+        "lib/net6.0/zxing.dll",
+        "lib/net7.0/zxing.XML",
+        "lib/net7.0/zxing.dll",
+        "lib/net8.0/zxing.XML",
+        "lib/net8.0/zxing.dll",
+        "lib/net9.0/zxing.XML",
+        "lib/net9.0/zxing.dll",
+        "lib/netcoreapp3.0/zxing.dll",
+        "lib/netcoreapp3.0/zxing.xml",
+        "lib/netcoreapp3.1/zxing.dll",
+        "lib/netcoreapp3.1/zxing.xml",
+        "lib/netstandard1.0/zxing.dll",
+        "lib/netstandard1.0/zxing.xml",
+        "lib/netstandard1.1/zxing.dll",
+        "lib/netstandard1.1/zxing.xml",
+        "lib/netstandard1.3/zxing.dll",
+        "lib/netstandard1.3/zxing.xml",
+        "lib/netstandard2.0/zxing.dll",
+        "lib/netstandard2.0/zxing.xml",
+        "lib/netstandard2.1/zxing.dll",
+        "lib/netstandard2.1/zxing.xml",
+        "lib/portable-win+net40+sl4+sl5+wp7+wp71+wp8/zxing.portable.XML",
+        "lib/portable-win+net40+sl4+sl5+wp7+wp71+wp8/zxing.portable.dll",
+        "lib/sl3-wp/zxing.wp7.0.XML",
+        "lib/sl3-wp/zxing.wp7.0.dll",
+        "lib/sl4-wp71/zxing.wp7.1.XML",
+        "lib/sl4-wp71/zxing.wp7.1.dll",
+        "lib/sl4/zxing.sl4.XML",
+        "lib/sl4/zxing.sl4.dll",
+        "lib/sl5/zxing.sl5.XML",
+        "lib/sl5/zxing.sl5.dll",
+        "lib/uap10/zxing.dll",
+        "lib/uap10/zxing.pri",
+        "lib/uap10/zxing.xml",
+        "lib/windows8-managed/zxing.winrt.XML",
+        "lib/windows8-managed/zxing.winrt.dll",
+        "lib/windows8/zxing.XML",
+        "lib/windows8/zxing.pri",
+        "lib/windows8/zxing.winmd",
+        "lib/wp8/zxing.wp8.0.XML",
+        "lib/wp8/zxing.wp8.0.dll",
+        "logo.jpg",
+        "zxing.net.0.16.11.nupkg.sha512",
+        "zxing.net.nuspec"
+      ]
+    },
+    "ZXing.Net.Bindings.OpenCV/0.16.10": {
+      "sha512": "TfFkKCaMDyKPXXfOyEiy+08y+211n2JA3SvMKQqCq97hfckkJzJkG2UDVHKkIdvHeKjtP+dS0icr2SPcdUGzcQ==",
+      "type": "package",
+      "path": "zxing.net.bindings.opencv/0.16.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/ZXing.OpenCv.dll",
+        "lib/net20/ZXing.OpenCv.pdb",
+        "lib/net20/ZXing.OpenCv.xml",
+        "lib/net40/ZXing.OpenCv.dll",
+        "lib/net40/ZXing.OpenCv.pdb",
+        "lib/net40/ZXing.OpenCv.xml",
+        "lib/net46/ZXing.OpenCv.dll",
+        "lib/net46/ZXing.OpenCv.pdb",
+        "lib/net46/ZXing.OpenCv.xml",
+        "lib/netstandard2.0/ZXing.OpenCv.dll",
+        "lib/netstandard2.0/ZXing.OpenCv.pdb",
+        "lib/netstandard2.0/ZXing.OpenCv.xml",
+        "logo.jpg",
+        "readme.md",
+        "zxing.net.bindings.opencv.0.16.10.nupkg.sha512",
+        "zxing.net.bindings.opencv.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
       "OpenCvSharp4 >= 4.13.0.20260214",
       "OpenCvSharp4.Extensions >= 4.13.0.20260214",
-      "OpenCvSharp4.runtime.osx_arm64 >= 4.8.1-rc"
+      "OpenCvSharp4.runtime.osx_arm64 >= 4.8.1-rc",
+      "Tesseract >= 4.1.1",
+      "ZXing.Net >= 0.16.11",
+      "ZXing.Net.Bindings.OpenCV >= 0.16.10"
     ]
   },
   "packageFolders": {
@@ -387,6 +908,18 @@
           "OpenCvSharp4.runtime.osx_arm64": {
             "target": "Package",
             "version": "[4.8.1-rc, )"
+          },
+          "Tesseract": {
+            "target": "Package",
+            "version": "[4.1.1, )"
+          },
+          "ZXing.Net": {
+            "target": "Package",
+            "version": "[0.16.11, )"
+          },
+          "ZXing.Net.Bindings.OpenCV": {
+            "target": "Package",
+            "version": "[0.16.10, )"
           }
         },
         "imports": [
@@ -405,7 +938,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.417/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/Users/murat/.dotnet/sdk/8.0.418/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
