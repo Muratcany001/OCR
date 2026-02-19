@@ -18,17 +18,22 @@ public sealed class CharacterRecognition
     // bosluklarin arasini da almak icin psm degerini 6 yapildi
     public string Read(Mat image, string psm = "6") 
     {
-        
+        //islenecek dosya 
         string tmpIn = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.bmp");
+        //tesseract output prefix
         string tmpOutBase = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        //olusacak txt file
         string resultFile = tmpOutBase + ".txt";
         
         try
         {
-            //gorseli diske yazdirma
+            //gorseli diske yazdir
             Cv2.ImWrite(tmpIn, image,
                 new ImageEncodingParam(ImwriteFlags.PngCompression, 1));
+            
+            
             //process parametreleri
+            // lstm only ve whitelist tanimlandi
             var psi = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = _tesseractPath, 
@@ -53,6 +58,7 @@ public sealed class CharacterRecognition
         }
         finally
         {
+            // input silinmesi
             if (File.Exists(tmpIn))
                 File.Delete(tmpIn);
         }
