@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace OCR.Packages;
 
-public class TesseractHelper
+public class TesseractPathFinder
 {
     public static string GetTesseractPath()
     {
