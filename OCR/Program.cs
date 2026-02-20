@@ -11,9 +11,10 @@ class Program
     {
         string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181140101686.png";
         Stopwatch sw = Stopwatch.StartNew();
+        // process file for before implement ocr
         Mat processedImage = ImageProcessing.ProcessFile(filePath);
         
-        
+        // call ocr class
         string text = Ocr.Read(processedImage);
         sw.Stop();
         Console.WriteLine(text);
