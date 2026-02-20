@@ -37,16 +37,13 @@ public class ImageProcessing
         Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
         
         // Grayscale + Adaptive Threshold
-        Mat gray = new Mat();
+        using Mat gray = new Mat();
         Mat binary = new Mat();
         Cv2.CvtColor(cropped, gray, ColorConversionCodes.BGR2GRAY);
         Cv2.AdaptiveThreshold(gray, binary, 255,
             AdaptiveThresholdTypes.GaussianC,
             ThresholdTypes.Binary, 31, 6);
-
-        Cv2.ImShow("Binary image", binary);
-        Cv2.WaitKey();
-        Cv2.DestroyAllWindows();
+        
         src.Dispose();
         return binary;
     }
