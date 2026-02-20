@@ -12,7 +12,7 @@ public sealed class CharacterRecognition
     public CharacterRecognition(string lang = "eng")
     {
         _lang = lang;
-        _tesseractPath = TesseractHelper.GetTesseractPath();
+        _tesseractPath = TesseractPathFinder.GetTesseractPath();
     }
 
     // bosluklarin arasini da almak icin psm degerini 6 yapildi

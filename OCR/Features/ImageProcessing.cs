@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using OCR.Packages;
 using OpenCvSharp;
 
 namespace OCR;
@@ -15,24 +16,9 @@ public class ImageProcessing
             Console.WriteLine("Image could not be loaded");
             return null;
         }
+        // data matrix rect finder
+        var qr= DatamatrixFinder.FindDataMatrix(src);
         
-        // Orijinal görüntüde Data Matrix ara
-        Mat grayFull = new Mat();
-        Mat threshFull = new Mat();
-        Cv2.CvtColor(src, grayFull, ColorConversionCodes.BGR2GRAY);
-        Cv2.Threshold(grayFull, threshFull, 100, 255, ThresholdTypes.BinaryInv);
-        
-        
-        Cv2.FindContours(threshFull, out var contours, out _,
-            RetrievalModes.External, ContourApproximationModes.ApproxSimple);
-        
-        // Datamatrix icin kare secimi yap
-        var qr = contours
-            .Select(c => Cv2.BoundingRect(c))
-            .Where(r => r.Width > 50 && r.Height > 50)
-            .OrderBy(r => Math.Abs(r.Width - r.Height)) // 
-            .FirstOrDefault();
-
         // Data Matrix'in sagini ROI olarak al
         int roiX = qr.X + qr.Width + 20;
         int roiY = Math.Max(0, qr.Y - 40);
@@ -51,16 +37,13 @@ public class ImageProcessing
         Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
         
         // Grayscale + Adaptive Threshold
-        Mat gray = new Mat();
+        using Mat gray = new Mat();
         Mat binary = new Mat();
         Cv2.CvtColor(cropped, gray, ColorConversionCodes.BGR2GRAY);
         Cv2.AdaptiveThreshold(gray, binary, 255,
             AdaptiveThresholdTypes.GaussianC,
-            ThresholdTypes.Binary, 21, 10);
-
-        Cv2.ImShow("Binary image", binary);
-        Cv2.WaitKey();
-        Cv2.DestroyAllWindows();
+            ThresholdTypes.Binary, 31, 6);
+        
         src.Dispose();
         return binary;
     }
