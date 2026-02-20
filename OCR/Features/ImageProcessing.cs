@@ -42,7 +42,7 @@ public class ImageProcessing
         Cv2.CvtColor(cropped, gray, ColorConversionCodes.BGR2GRAY);
         Cv2.AdaptiveThreshold(gray, binary, 255,
             AdaptiveThresholdTypes.GaussianC,
-            ThresholdTypes.Binary, 31, 6);
+            ThresholdTypes.Binary, 21, 6);
         
         Cv2.ImShow("Image", binary);
         Cv2.WaitKey();
