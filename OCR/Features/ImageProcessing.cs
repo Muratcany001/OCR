@@ -29,10 +29,10 @@ public class ImageProcessing
         if (roiX >= src.Width || roiW <= 0 || roiH <= 0)
         {
             Console.WriteLine("ROI geçersiz, sabit ROI kullanılıyor");
-            roiX = 190;
-            roiY = 355;
-            roiW = 590;
-            roiH = 350;
+            roiX = 160;
+            roiY = 360;
+            roiW = 630;
+            roiH = 375;
         }
         Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
         
@@ -44,6 +44,8 @@ public class ImageProcessing
             AdaptiveThresholdTypes.GaussianC,
             ThresholdTypes.Binary, 31, 6);
         
+        Cv2.ImShow("Image", binary);
+        Cv2.WaitKey();
         src.Dispose();
         return binary;
     }

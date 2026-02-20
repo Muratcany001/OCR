@@ -9,14 +9,13 @@ class Program
     
     static void Main(string[] args)
     {
-        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm1.bmp";
+        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181140101686.png";
         Stopwatch sw = Stopwatch.StartNew();
         Mat processedImage = ImageProcessing.ProcessFile(filePath);
         
         
         string text = Ocr.Read(processedImage);
         sw.Stop();
-        
         Console.WriteLine(text);
         Console.WriteLine($"Took {sw.ElapsedMilliseconds} ms");
     }
