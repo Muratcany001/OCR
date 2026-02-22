@@ -44,8 +44,8 @@ public class ImageProcessing
             AdaptiveThresholdTypes.GaussianC,
             ThresholdTypes.Binary, 21, 6);
         
-        Cv2.ImShow("Image", binary);
-        Cv2.WaitKey();
+        // Cv2.ImShow("Image", binary);
+        // Cv2.WaitKey();
         src.Dispose();
         return binary;
     }
