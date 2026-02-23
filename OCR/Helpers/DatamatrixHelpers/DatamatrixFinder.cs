@@ -34,10 +34,12 @@ public class DatamatrixFinder
                     
                     minDiff = diff;
                     qr = r;
+                    qr = new Rect(r.X-10, r.Y-10, r.Width +25, r.Height+25);
                 }
             }
         }
-        return qr;
+        
+        return qr ;
     }
     
 }

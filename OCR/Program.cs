@@ -21,6 +21,6 @@ class Program
         sw.Stop();
         Console.WriteLine(text);
         Console.WriteLine(dmResult);
-        Console.WriteLine($"Took {sw.ElapsedMilliseconds} ms");
+        // Console.WriteLine($"Took {sw.ElapsedMilliseconds} ms");
     }
 }

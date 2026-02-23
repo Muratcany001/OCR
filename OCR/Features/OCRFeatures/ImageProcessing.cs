@@ -20,7 +20,7 @@ public class ImageProcessing
         var qr= DatamatrixFinder.FindDataMatrix(src);
         
         // Data Matrix'in sagini ROI olarak al
-        int roiX = qr.X + qr.Width + 20;
+        int roiX = qr.X + qr.Width + 10;
         int roiY = Math.Max(0, qr.Y - 40);
         int roiW = Math.Min(src.Width - roiX - 10, 630);
         int roiH = Math.Min(qr.Height + 200, src.Height - roiY);
@@ -41,9 +41,10 @@ public class ImageProcessing
         Mat binary = new Mat();
         Cv2.CvtColor(cropped, gray, ColorConversionCodes.BGR2GRAY);
         Cv2.AdaptiveThreshold(gray, binary, 255,
-            AdaptiveThresholdTypes.GaussianC,
-            ThresholdTypes.Binary, 21, 6);
-        
+            AdaptiveThresholdTypes.MeanC,
+            ThresholdTypes.Binary, 21, 7);
+        Cv2.ImShow("31",binary);
+        Cv2.WaitKey();
         // Cv2.ImShow("Image", binary);
         // Cv2.WaitKey();
         src.Dispose();

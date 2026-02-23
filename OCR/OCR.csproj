@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
       <PackageReference Include="OpenCvSharp4" Version="4.13.0.20260214" />
       <PackageReference Include="OpenCvSharp4.Extensions" Version="4.13.0.20260214" />
       <PackageReference Include="OpenCvSharp4.runtime.osx_arm64" Version="4.8.1-rc" />
