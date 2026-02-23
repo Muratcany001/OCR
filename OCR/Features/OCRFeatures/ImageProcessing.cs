@@ -47,9 +47,7 @@ public class ImageProcessing
         Cv2.AdaptiveThreshold(gray, binary, 255,
             AdaptiveThresholdTypes.MeanC,
             ThresholdTypes.Binary, 21, 7);
-     
-        Cv2.ImShow("Image", binary);
-        Cv2.WaitKey();
+        
         src.Dispose();
        
         return binary;

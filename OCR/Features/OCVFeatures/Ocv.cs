@@ -1,5 +1,9 @@
 using System.Text.RegularExpressions;
+using OCR.Entities;
+using OCR.Packages;
 using OpenCvSharp;
+using SimpleSoft.Gs1Parser;
+using Gs1Parser = SimpleSoft.Gs1Parser.Gs1Parser;
 
 namespace OCR.Features.OCVFeatures;
 
@@ -16,5 +20,18 @@ public class Ocv
         string dmResult = DatamatrixReader.ReadDataMatrix(filePath);
         
         Console.WriteLine(dmResult);
+        
+        //
+
+        var items =DatamatrixHelper.Parse(dmResult);
+        var dict = items.ToDictionary(x => x.AI, x => x.Value);
+        var entity = new DatamatrixEntity
+        {
+            Gtin = dict.GetValueOrDefault("01"),
+            Sn   = dict.GetValueOrDefault("21"),
+            Lot  = dict.GetValueOrDefault("10"),
+            Man  = dict.GetValueOrDefault("17")
+        };
+        Console.WriteLine(entity.Gtin);
     }
 }

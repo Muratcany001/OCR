@@ -25,8 +25,6 @@ public class DatamatrixReader
         int h = Math.Min(rawSrc.Height - y, r.Height + padding * 2);
         
         using Mat dm = rawSrc[new Rect(x,y,w,h)];
-        Cv2.ImShow("Datamatrix", dm);
-        Cv2.WaitKey();
         using Mat gray = new Mat();
         Cv2.CvtColor(dm, gray, ColorConversionCodes.BGR2GRAY);
         
