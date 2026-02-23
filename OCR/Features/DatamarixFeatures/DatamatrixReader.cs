@@ -20,17 +20,13 @@ public class DatamatrixReader
         using Mat dm = rawSrc[dmCordinates];
         
         using Mat gray = new Mat();
-        using Mat binary = new Mat();
         Cv2.CvtColor(dm, gray, ColorConversionCodes.BGR2GRAY);
-        Cv2.AdaptiveThreshold(gray, binary, 255,
-            AdaptiveThresholdTypes.GaussianC,
-            ThresholdTypes.Binary, 21, 6);
-
-        int width = binary.Width;
-        int height = binary.Height;
+        
+        int width = gray.Width;
+        int height = gray.Height;
 
         byte[] pixels = new byte[width * height];
-        binary.GetArray(out pixels);
+        gray.GetArray(out pixels);
 
         var luminanceSource = new RGBLuminanceSource(
             pixels,
