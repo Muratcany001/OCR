@@ -20,7 +20,7 @@ public class ImageProcessing
         var qr= DatamatrixFinder.FindDataMatrix(src);
         
         // Data Matrix'in sagini ROI olarak al
-        int roiX = qr.X + qr.Width + 10;
+        int roiX = qr.X + qr.Width ;
         int roiY = Math.Max(0, qr.Y - 40);
         int roiW = Math.Min(src.Width - roiX - 10, 630);
         int roiH = Math.Min(qr.Height + 200, src.Height - roiY);
@@ -34,6 +34,10 @@ public class ImageProcessing
             roiW = 630;
             roiH = 375;
         }
+        roiX = Math.Clamp(roiX, 0, src.Width - 1);
+        roiY = Math.Clamp(roiY, 0, src.Height - 1);
+        roiW = Math.Clamp(roiW, 1, src.Width - roiX);
+        roiH = Math.Clamp(roiH, 1, src.Height - roiY);
         Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
         
         // Grayscale + Adaptive Threshold
@@ -43,11 +47,11 @@ public class ImageProcessing
         Cv2.AdaptiveThreshold(gray, binary, 255,
             AdaptiveThresholdTypes.MeanC,
             ThresholdTypes.Binary, 21, 7);
-        Cv2.ImShow("31",binary);
+     
+        Cv2.ImShow("Image", binary);
         Cv2.WaitKey();
-        // Cv2.ImShow("Image", binary);
-        // Cv2.WaitKey();
         src.Dispose();
+       
         return binary;
     }
 }
