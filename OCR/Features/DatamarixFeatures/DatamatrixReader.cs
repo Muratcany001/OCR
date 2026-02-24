@@ -1,13 +1,10 @@
-using System.Drawing;
 using OCR.Packages;
 using OpenCvSharp;
-using OpenCvSharp.Extensions;
 using ZXing;
 using ZXing.Common;
 using ZXing.Datamatrix;
-using ZXing.Windows.Compatibility;
 
-namespace OCR;
+namespace OCR.Features.DatamarixFeatures;
 
 public class DatamatrixReader
 {
@@ -37,7 +34,7 @@ public class DatamatrixReader
 
         byte[] pixels = new byte[width * height];
         gray.GetArray(out pixels);
-        // wrap dm with luminance source for use zxing library
+        // wrap dm object   with luminance source for use zxing library
         var luminanceSource = new RGBLuminanceSource(
             pixels,
             width,
@@ -49,7 +46,11 @@ public class DatamatrixReader
         var binaryBitmap = new BinaryBitmap(binarizer);
         var reader = new DataMatrixReader();
         var result = reader.decode(binaryBitmap);
-        
-        return result?.Text;
+        if (result == null)
+        {
+            Console.WriteLine("Datamatrix reader failed");
+            return string.Empty;
+        }
+        return result.Text ??  string.Empty;
     }
 }
