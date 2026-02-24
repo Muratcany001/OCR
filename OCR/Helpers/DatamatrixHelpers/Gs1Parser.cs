@@ -1,6 +1,6 @@
 namespace OCR.Packages;
 
-public class DatamatrixHelper
+public class Gs1Parser
 {
     private static readonly Dictionary<string, (string Name, int FixedLength)> KnownAIs = new()
     {
@@ -76,10 +76,10 @@ public class DatamatrixHelper
                 value = end == -1 ? data.Substring(i) : data.Substring(i, end - i);
                 i += value.Length;
             }
-
+            value = value.Replace("/", "");
             result.Add((ai, aiName, value));
         }
-
+        
         return result;
     }
 }

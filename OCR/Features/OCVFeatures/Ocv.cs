@@ -20,7 +20,7 @@ public class Ocv
         string dmResult = DatamatrixReader.ReadDataMatrix(filePath);
         
         // parse gs1 output
-        var items = DatamatrixHelper.Parse(dmResult);
+        var items = Gs1Parser.Parse(dmResult);
         var dict = items.ToDictionary(x => x.AI, x => x.Value);
         var DatamatrixDto = new DatamatrixEntity
         {
@@ -31,6 +31,7 @@ public class Ocv
         };
         Console.WriteLine("Datamatrix ciktilari");
         Console.WriteLine(DatamatrixDto.Gtin);
+        Console.WriteLine(DatamatrixDto.Man);
         
         // call ocr class
         string text = Ocr.Read(processedImage);
@@ -44,10 +45,10 @@ public class Ocv
                 Sn = Regex.Match(text, @"SN:\s*([A-Za-z0-9]+)").Groups[1].Value.ToUpper(),
                 Lot = Regex.Match(text, @"LOT:\s*([A-Za-z0-9]+)").Groups[1].Value.ToUpper(),
                 Man = Regex.Match(text, @"MAN:\s*(\d{2}/\d{4})").Groups[1].Value.ToUpper(),
-                ExpDate = Regex.Match(text, @"EXP:\s*(\d{2}/\d{4})").Groups[1].Value.ToUpper()
+                ExpDate = Regex.Match(text, @"EXP:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value.ToUpper()
             };
             Console.WriteLine("Ocr ciktilari");
-            Console.WriteLine(dmOcrEntity.Gtin);
+            Console.WriteLine(dmOcrEntity.ExpDate);
         }
         else
         {
@@ -55,11 +56,12 @@ public class Ocv
             {
                 BatchNo = Regex.Match(text, @"BatchNo.:\s*([A-Za-z0-9]+)").Groups[1].Value.ToUpper(),
                 MfgDate = Regex.Match(text, @"Mfg.Date:\s*(\d{2}/\d{4})").Groups[1].Value.ToUpper(),
-                ExpDate = Regex.Match(text, @"EXP.Date:\s*(\d{2}/\d{4})").Groups[1].Value.ToUpper(),
+                ExpDate = Regex.Match(text, @"EXP\.Date:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value.ToUpper(),
                 Price = Regex.Match(text, @"Price:\s*([0-9])").Groups[1].Value.ToUpper(),
             };
             Console.WriteLine("Else works");
             Console.Write(ocrEntity.BatchNo);
+            Console.Write(ocrEntity.ExpDate);
         }
     }
 }
