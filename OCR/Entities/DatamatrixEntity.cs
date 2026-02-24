@@ -6,4 +6,5 @@ public class DatamatrixEntity
     public string? Man { get; set; }
     public string? Gtin { get; set; }
     public string? Sn { get; set; }
+    public string? ExpDate { get; set; }
 }
