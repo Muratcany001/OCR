@@ -12,6 +12,7 @@
       <PackageReference Include="OpenCvSharp4" Version="4.13.0.20260214" />
       <PackageReference Include="OpenCvSharp4.Extensions" Version="4.13.0.20260214" />
       <PackageReference Include="OpenCvSharp4.runtime.osx_arm64" Version="4.8.1-rc" />
+      <PackageReference Include="SimpleSoft.Gs1Parser" Version="1.0.0" />
       <PackageReference Include="Tesseract" Version="4.1.1" />
       <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.14" />
       
