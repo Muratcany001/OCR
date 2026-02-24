@@ -9,5 +9,6 @@ class Program
     {
         string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm4.bmp";
         Ocv.OcvComprasion(filePath);
+        
     }
 }

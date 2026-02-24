@@ -38,14 +38,13 @@ public class Ocv
         
         if (dmResult != string.Empty)
         {
-            Console.WriteLine("if works");
             var dmOcrEntity = new DatamatrixEntity
             {
-                Gtin = Regex.Match(text, @"GTIN:\s*(\d{14})").Groups[1].Value.ToUpper(),
-                Sn = Regex.Match(text, @"SN:\s*([A-Za-z0-9]+)").Groups[1].Value.ToUpper(),
-                Lot = Regex.Match(text, @"LOT:\s*([A-Za-z0-9]+)").Groups[1].Value.ToUpper(),
-                Man = Regex.Match(text, @"MAN:\s*(\d{2}/\d{4})").Groups[1].Value.ToUpper(),
-                ExpDate = Regex.Match(text, @"EXP:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value.ToUpper()
+                Gtin = Regex.Match(text, @"GTIN:\s*(\d{14})").Groups[1].Value,
+                Sn = Regex.Match(text, @"SN:\s*([A-Za-z0-9]+)").Groups[1].Value,
+                Lot = Regex.Match(text, @"LOT:\s*([A-Za-z0-9]+)").Groups[1].Value,
+                Man = Regex.Match(text, @"MAN:\s*(\d{2}/\d{4})").Groups[1].Value,
+                ExpDate = Regex.Match(text, @"EXP:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value
             };
             Console.WriteLine("Ocr ciktilari");
             Console.WriteLine(dmOcrEntity.ExpDate);
@@ -54,12 +53,12 @@ public class Ocv
         {
             var ocrEntity = new BoxEntity
             {
-                BatchNo = Regex.Match(text, @"BatchNo.:\s*([A-Za-z0-9]+)").Groups[1].Value.ToUpper(),
-                MfgDate = Regex.Match(text, @"Mfg.Date:\s*(\d{2}/\d{4})").Groups[1].Value.ToUpper(),
-                ExpDate = Regex.Match(text, @"EXP\.Date:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value.ToUpper(),
-                Price = Regex.Match(text, @"Price:\s*([0-9])").Groups[1].Value.ToUpper(),
+                BatchNo = Regex.Match(text, @"BatchNo.:\s*([A-Za-z0-9]+)").Groups[1].Value,
+                MfgDate = Regex.Match(text, @"Mfg.Date:\s*(\d{2}/\d{4})").Groups[1].Value,
+                ExpDate = Regex.Match(text, @"EXP\.Date:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value,
+                Price = Regex.Match(text, @"Price:\s*([0-9])").Groups[1].Value,
             };
-            Console.WriteLine("Else works");
+            
             Console.Write(ocrEntity.BatchNo);
             Console.Write(ocrEntity.ExpDate);
         }

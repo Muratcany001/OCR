@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OCR")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62f009cc185569e2a20f81ccb4cb44e1555ddaad")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eea5952352662a823383e7f1b029975417a7ec8e")]
 [assembly: System.Reflection.AssemblyProductAttribute("OCR")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OCR")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
