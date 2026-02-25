@@ -12,26 +12,27 @@ public class Ocv
 {
     private static readonly CharacterRecognition Ocr = new();
 
-    public static void OcvComprasion(string filePath)
+    public static DatamatrixEntity OcvComprasion(string filePath)
     {
         // process file for before implement ocr
         Mat processedImage = ImageProcessing.ProcessFile(filePath);
         // call datamatrix reader 
         string dmResult = DatamatrixReader.ReadDataMatrix(filePath);
+        string dmOutput;
+        string ocrOutput;
         
         // parse gs1 output
         var items = Gs1Parser.Parse(dmResult);
         var dict = items.ToDictionary(x => x.AI, x => x.Value);
-        var DatamatrixDto = new DatamatrixEntity
+        var datamatrixDto = new DatamatrixEntity
         {
             Gtin = dict.GetValueOrDefault("01"),
             Sn = dict.GetValueOrDefault("21"),
             Lot = dict.GetValueOrDefault("10"),
-            Man = dict.GetValueOrDefault("17")
+            Man = dict.GetValueOrDefault("17"),
+            ExpDate = dict.GetValueOrDefault("17")
         };
-        Console.WriteLine("Datamatrix ciktilari");
-        Console.WriteLine(DatamatrixDto.Gtin);
-        Console.WriteLine(DatamatrixDto.Man);
+        dmOutput = $"{datamatrixDto.Gtin}{datamatrixDto.Sn}{datamatrixDto.Lot}{datamatrixDto.Man}";
         
         // call ocr class
         string text = Ocr.Read(processedImage);
@@ -46,8 +47,7 @@ public class Ocv
                 Man = Regex.Match(text, @"MAN:\s*(\d{2}/\d{4})").Groups[1].Value,
                 ExpDate = Regex.Match(text, @"EXP:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value
             };
-            Console.WriteLine("Ocr ciktilari");
-            Console.WriteLine(dmOcrEntity.ExpDate);
+            ocrOutput = $"{dmOcrEntity.Gtin}{dmOcrEntity.Sn}{dmOcrEntity.Lot}{dmOcrEntity.Man}{dmOcrEntity.ExpDate}";
         }
         else
         {
@@ -58,9 +58,9 @@ public class Ocv
                 ExpDate = Regex.Match(text, @"EXP\.Date:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value,
                 Price = Regex.Match(text, @"Price:\s*([0-9])").Groups[1].Value,
             };
-            
-            Console.Write(ocrEntity.BatchNo);
-            Console.Write(ocrEntity.ExpDate);
+            ocrOutput = $"{ocrEntity.BatchNo}{ocrEntity.MfgDate}{ocrEntity.ExpDate}{ocrEntity.Price}";
         }
+
+        return datamatrixDto;
     }
 }
