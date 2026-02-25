@@ -11,16 +11,15 @@ class Program
         string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/test.png";
         var message = Ocv.OcvComprasion(filePath);
         Console.WriteLine(message);
-        if (message.Length < 19)
+        if (message.Length == 17)
         {
             var parsedMessage =OutputParser.OCRParse(message);    
-            Console.WriteLine(parsedMessage.BatchNo);
+            Console.WriteLine(parsedMessage.MfgDate);
         }
         else
         {
             var parsedMessage = OutputParser.DatamatrixParse(message);
             Console.WriteLine(parsedMessage.Gtin);
         }
-        
     }
 }

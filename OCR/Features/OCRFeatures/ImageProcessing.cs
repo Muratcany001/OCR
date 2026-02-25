@@ -36,8 +36,6 @@
             roiH = Math.Clamp(roiH, 1, src.Height - roiY);
             Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
             
-            Cv2.ImShow("123", cropped);
-            Cv2.WaitKey();
             // Grayscale + Adaptive Threshold
             using Mat gray = new Mat();
             Mat binary = new Mat();

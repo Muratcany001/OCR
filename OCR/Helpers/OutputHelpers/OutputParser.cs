@@ -21,9 +21,9 @@ public class OutputParser
         var parsed = new BoxEntity()
         {
             BatchNo = text.Substring(0, 5),
-            MfgDate   = text.Substring(6, 6),
-            ExpDate  = text.Substring(7, 6),
-            // Price  = text.Substring(14, 5)
+            MfgDate   = text.Substring(5, 6),
+            ExpDate  = text.Substring(11, 6),
+            // Price  = text.Substring(17, 5)
         };
         return parsed;
     }
