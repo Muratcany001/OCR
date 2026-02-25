@@ -56,7 +56,7 @@ public class DatamatrixReader
         var result = reader.decode(binaryBitmap);
         if (result == null)
         {
-            Console.WriteLine("Datamatrix reader failed");
+            Console.WriteLine("Datamatrix not found...");
             return string.Empty;
         }
         return result.Text ??  string.Empty;

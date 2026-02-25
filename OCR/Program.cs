@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using OCR.Features.OCVFeatures;
-using OCR.Helpers.OutputHelpers;
 
 namespace OCR;
 
@@ -8,18 +7,20 @@ class Program
 {
     static void Main(string[] args)
     {
-        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/test.png";
-        var message = Ocv.OcvComprasion(filePath);
-        Console.WriteLine(message);
-        if (message.Length == 17)
+        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm4.bmp";
+        var result = Ocv.OcvComprasion(filePath);
+        
+        if (result.HasDataMatrix)
         {
-            var parsedMessage =OutputParser.OCRParse(message);    
-            Console.WriteLine(parsedMessage.MfgDate);
+            var output = $"{result.DataMatrix?.Gtin}{result.DataMatrix?.Sn}" +
+                         $"{result.DataMatrix?.Lot}{result.DataMatrix?.Man}{result.DataMatrix?.ExpDate}";
+            Console.WriteLine(output);
+            Console.WriteLine(result.DataMatrix?.Man);
         }
         else
         {
-            var parsedMessage = OutputParser.DatamatrixParse(message);
-            Console.WriteLine(parsedMessage.Gtin);
+            var output = $"{result.Box?.BatchNo}{result.Box?.MfgDate}{result.Box?.ExpDate}";
+            Console.WriteLine(output);
         }
     }
 }
