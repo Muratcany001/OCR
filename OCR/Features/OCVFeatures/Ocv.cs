@@ -8,10 +8,21 @@ using OCR.Packages;
 using OpenCvSharp;
 namespace OCR.Features.OCVFeatures;
 
+/// <summary>
+/// OCR ve DataMatrix okuma işlemlerini yöneten ana sınıf.
+/// Görsel işleme, DataMatrix okuma ve Regex tabanlı metin ayrıştırma süreçlerini koordine eder.
+/// </summary>
 public class Ocv
 {
     private static readonly CharacterRecognition Ocr = new();
 
+    /// <summary>
+    /// Verilen görselden OCR ve DataMatrix çıktılarını karşılaştırarak birleştirilmiş metin döndürür.
+    /// DataMatrix varsa GTIN/SN/LOT/MAN/EXP regex ile parse edilir;
+    /// yoksa BatchNo/MfgDate/ExpDate/Price regex ile parse edilir.
+    /// </summary>
+    /// <param name="filePath">Okunacak görselin dosya yolu.</param>
+    /// <returns>Parse edilmiş alanların birleştirilmiş string çıktısı.</returns>
     public static string OcvComprasion(string filePath)
     {
         // process file for before implement ocr

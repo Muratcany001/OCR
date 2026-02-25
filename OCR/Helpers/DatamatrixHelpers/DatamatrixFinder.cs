@@ -2,8 +2,18 @@ using OpenCvSharp;
 
 namespace OCR.Packages;
 
+/// <summary>
+/// Görsel içinde DataMatrix barkodunun konumunu tespit eden sınıf.
+/// Contour analizi ile kareye en yakın şekli DataMatrix olarak tanımlar.
+/// </summary>
 public class DatamatrixFinder
 {
+    /// <summary>
+    /// Görselde contour analizi yaparak DataMatrix barkodunun bounding rectangle'ını bulur.
+    /// Yükseklik ve genişlik farkı en az olan dikdörtgen DataMatrix olarak kabul edilir.
+    /// </summary>
+    /// <param name="rawSrc">Orijinal BGR formatında kaynak görsel.</param>
+    /// <returns>DataMatrix'in bounding rectangle'ı. Bulunamazsa default (0,0,0,0) döner.</returns>
     public static Rect FindDataMatrix(Mat rawSrc)
     {
         // recolor and use threshold for contour finding

@@ -6,9 +6,17 @@ using ZXing.Datamatrix;
 
 namespace OCR.Features.DatamarixFeatures;
 
+/// <summary>
+/// ZXing kütüphanesi kullanarak DataMatrix barkodunun içeriğini okuyan sınıf.
+/// DatamatrixFinder ile bulunan bölgeyi crop ederek decode işlemi yapar.
+/// </summary>
 public class DatamatrixReader
 {
-    
+    /// <summary>
+    /// Görseldeki DataMatrix barkodunu bulur ve GS1 formatındaki içeriğini okur.
+    /// </summary>
+    /// <param name="filePath">Okunacak görselin dosya yolu.</param>
+    /// <returns>DataMatrix içeriği. Okunamazsa string.Empty döner.</returns>
     public static string ReadDataMatrix(string filePath)
     {
         //input src and find datamatrix

@@ -1,5 +1,9 @@
 namespace OCR.Entities;
 
+/// <summary>
+/// DataMatrix barkodundan okunan ürün bilgilerini tutan entity.
+/// GS1 standartlarına uygun alanlar içerir.
+/// </summary>
 public class DatamatrixEntity
 {
     private string _lot;

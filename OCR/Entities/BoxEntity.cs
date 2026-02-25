@@ -1,5 +1,9 @@
 namespace OCR.Entities;
 
+/// <summary>
+/// Kutu etiketi (DataMatrix olmayan) görselden OCR ile okunan ürün bilgilerini tutan entity.
+/// Tarih alanlarındaki '/' karakterleri setter'da otomatik olarak temizlenir.
+/// </summary>
 public class BoxEntity
 {
     public string? BatchNo { get; set; }

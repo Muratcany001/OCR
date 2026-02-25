@@ -4,6 +4,10 @@ using OpenCvSharp;
 
 namespace OCR;
 
+/// <summary>
+/// Tesseract OCR motoru ile görselden metin okuma işlemini yöneten sınıf.
+/// Görseli geçici dosyaya yazarak Tesseract CLI üzerinden işlem yapar.
+/// </summary>
 public sealed class CharacterRecognition
 {
     private readonly string _lang;
@@ -15,7 +19,13 @@ public sealed class CharacterRecognition
         _tesseractPath = TesseractPathFinder.GetTesseractPath();
     }
 
-    // bosluklarin arasini da almak icin psm degerini 6 yapildi
+    /// <summary>
+    /// Verilen Mat görselini Tesseract ile okuyarak metin döndürür.
+    /// Görseli geçici PNG dosyasına yazar, Tesseract CLI'yı çalıştırır ve sonucu okur.
+    /// </summary>
+    /// <param name="image">OCR uygulanacak işlenmiş görsel (Mat).</param>
+    /// <param name="psm">Tesseract Page Segmentation Mode. Varsayılan: 6 (tek uniform blok).</param>
+    /// <returns>OCR sonucu olarak okunan metin. Başarısızsa boş string.</returns>
     public string Read(Mat image, string psm = "6") 
     {
         string tmpIn = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.png");
