@@ -7,7 +7,9 @@ class Program
 {
     static void Main(string[] args)
     {
-        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181150384510.bmp";
+        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181140101686.png";
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        stopwatch.Start();
         var result = Ocv.OcvComprasion(filePath);
         
         if (!result.IsReadable)
@@ -27,5 +29,7 @@ class Program
             var output = $"{result.Box?.BatchNo}{result.Box?.MfgDate}{result.Box?.ExpDate}";
             Console.WriteLine(output);
         }
+        stopwatch.Stop();
+        Console.WriteLine("Stopwatch time"+stopwatch.ElapsedMilliseconds);
     }
 }

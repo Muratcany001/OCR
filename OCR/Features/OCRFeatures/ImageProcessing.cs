@@ -44,13 +44,11 @@
             
             Cv2.AdaptiveThreshold(gray, binary, 255,
                 AdaptiveThresholdTypes.GaussianC,
-                ThresholdTypes.Binary, 31, 11);
+                ThresholdTypes.Binary, 31, 7);
             
              var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
              Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);
              Cv2.Resize(gray, gray, new Size(), 4, 4, InterpolationFlags.Cubic);
-             Cv2.ImShow("123",binary);
-             Cv2.WaitKey();
             src.Dispose();
            
             return binary;

@@ -6,11 +6,13 @@ namespace OCR.Entities;
 /// </summary>
 public class BoxEntity
 {
-    public string BatchNo { get; set; }
+    private string _batchNo;
+    public string BatchNo { get => _batchNo; set => _batchNo = value?.ToUpper(); }
     private string _mfgDate;
-    public string MfgDate { get => _mfgDate ; set => _mfgDate = value?.Replace("/",""); }
+    public string MfgDate { get => _mfgDate ; set => _mfgDate = value?.Replace("/","").ToUpper(); }
     private string _expDate;
-    public string ExpDate { get => _expDate; set  => _expDate = value?.Replace("/",""); }
-    public string? Price { get; set; }
+    public string ExpDate { get => _expDate; set  => _expDate = value?.Replace("/","").ToUpper(); }
+    private string _price;
+    public string? Price { get => _price; set => _price = value?.ToUpper(); }
     
 }
