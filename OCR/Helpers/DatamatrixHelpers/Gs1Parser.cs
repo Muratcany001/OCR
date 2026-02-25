@@ -1,5 +1,9 @@
 namespace OCR.Packages;
 
+/// <summary>
+/// GS1 barkod verisini Application Identifier (AI) bazında parse eden sınıf.
+/// Sabit ve değişken uzunluklu AI'ları destekler (GTIN, Lot, Serial No, Expiry Date vb.).
+/// </summary>
 public class Gs1Parser
 {
     private static readonly Dictionary<string, (string Name, int FixedLength)> KnownAIs = new()
@@ -20,6 +24,12 @@ public class Gs1Parser
 
     private const char FNC1 = '\x1D'; // Group Separator
 
+    /// <summary>
+    /// GS1 formatındaki barkod verisini AI-değer çiftlerine ayrıştırır.
+    /// FNC1 (Group Separator) karakterini ayırıcı olarak kullanır.
+    /// </summary>
+    /// <param name="data">GS1 formatında ham barkod verisi.</param>
+    /// <returns>AI kodu, AI adı ve değerden oluşan tuple listesi.</returns>
     public static List<(string AI, string Name, string Value)> Parse(string data)
     {
         var result = new List<(string AI, string Name, string Value)>();

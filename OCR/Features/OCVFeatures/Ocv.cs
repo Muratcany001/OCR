@@ -4,63 +4,107 @@ using Features.OCRFeatures;
 using Features.OCRFeatures.ImageProcessing;
 using OCR.Entities;
 using OCR.Features.DatamarixFeatures;
+using OCR.Helpers.OutputHelpers;
 using OCR.Packages;
 using OpenCvSharp;
 namespace OCR.Features.OCVFeatures;
 
+/// <summary>
+/// OCR ve DataMatrix okuma işlemlerini yöneten ana sınıf.
+/// Görsel tek seferde okunur, DatamatrixFinder tek seferde çalışır.
+/// </summary>
 public class Ocv
 {
     private static readonly CharacterRecognition Ocr = new();
 
-    public static DatamatrixEntity OcvComprasion(string filePath)
+    /// <summary>
+    /// Görselden OCR ve DataMatrix okuma sonuçlarını döndürür.
+    /// </summary>
+    public static OcvResult OcvComprasion(string filePath)
     {
-        // process file for before implement ocr
-        Mat processedImage = ImageProcessing.ProcessFile(filePath);
-        // call datamatrix reader 
-        string dmResult = DatamatrixReader.ReadDataMatrix(filePath);
-        string dmOutput;
-        string ocrOutput;
-        
-        // parse gs1 output
-        var items = Gs1Parser.Parse(dmResult);
-        var dict = items.ToDictionary(x => x.AI, x => x.Value);
-        var datamatrixDto = new DatamatrixEntity
+        // 1. Görsel TEK SEFER okunur
+        using Mat src = Cv2.ImRead(filePath);
+        if (src.Empty())
         {
-            Gtin = dict.GetValueOrDefault("01"),
-            Sn = dict.GetValueOrDefault("21"),
-            Lot = dict.GetValueOrDefault("10"),
-            Man = dict.GetValueOrDefault("17"),
-            ExpDate = dict.GetValueOrDefault("17")
-        };
-        dmOutput = $"{datamatrixDto.Gtin}{datamatrixDto.Sn}{datamatrixDto.Lot}{datamatrixDto.Man}";
+            Console.WriteLine("Image could not be loaded");
+            return new OcvResult { IsReadable = false };
+        }
         
-        // call ocr class
+        // 2. DatamatrixFinder TEK SEFER çalışır
+        var dmRect = DatamatrixFinder.FindDataMatrix(src);
+        
+        // 3. DataMatrix okuma (paylaşılan src + dmRect ile)
+        string dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
+        bool hasDataMatrix = dmResult != string.Empty;
+        
+        // 4. Görsel işleme (paylaşılan src + dmRect ile — tekrar diskten okuma yok)
+        Mat processedImage = ImageProcessing.ProcessFile(src, dmRect);
+        
+        // 5. OCR okuma
         string text = Ocr.Read(processedImage);
+        processedImage.Dispose();
         
-        if (dmResult != string.Empty)
+        if (hasDataMatrix)
         {
-            var dmOcrEntity = new DatamatrixEntity
+            // GS1 parse
+            var items = Gs1Parser.Parse(dmResult);
+            var dict = items.ToDictionary(x => x.AI, x => x.Value);
+            
+            // OCR regex parse
+            var entity = new DatamatrixEntity
             {
-                Gtin = Regex.Match(text, @"GTIN:\s*(\d{14})").Groups[1].Value,
-                Sn = Regex.Match(text, @"SN:\s*([A-Za-z0-9]+)").Groups[1].Value,
-                Lot = Regex.Match(text, @"LOT:\s*([A-Za-z0-9]+)").Groups[1].Value,
-                Man = Regex.Match(text, @"MAN:\s*(\d{2}/\d{4})").Groups[1].Value,
-                ExpDate = Regex.Match(text, @"EXP:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value
+                Gtin = RegexHelper.Gtin.Match(text).Groups[1].Value,
+                Sn = RegexHelper.Sn.Match(text).Groups[1].Value,
+                Lot = RegexHelper.Lot.Match(text).Groups[1].Value,
+                Man = RegexHelper.Man.Match(text).Groups[1].Value,
+                ExpDate = RegexHelper.Exp.Match(text).Groups[1].Value
             };
-            ocrOutput = $"{dmOcrEntity.Gtin}{dmOcrEntity.Sn}{dmOcrEntity.Lot}{dmOcrEntity.Man}{dmOcrEntity.ExpDate}";
+            
+            // OCR'dan bulunamayan alanları GS1 verisinden doldur
+            if (string.IsNullOrEmpty(entity.Gtin)) entity.Gtin = dict.GetValueOrDefault("01");
+            if (string.IsNullOrEmpty(entity.Sn)) entity.Sn = dict.GetValueOrDefault("21");
+            if (string.IsNullOrEmpty(entity.Lot)) entity.Lot = dict.GetValueOrDefault("10");
+            if (string.IsNullOrEmpty(entity.Man)) entity.Man = dict.GetValueOrDefault("17");
+            if (string.IsNullOrEmpty(entity.ExpDate)) entity.ExpDate = dict.GetValueOrDefault("17");
+            
+            return new OcvResult
+            {
+                HasDataMatrix = true,
+                IsReadable = !string.IsNullOrEmpty(entity.Gtin) && !string.IsNullOrEmpty(entity.Sn),
+                DataMatrix = entity,
+                RawOcrText = text
+            };
         }
         else
         {
-            var ocrEntity = new BoxEntity
+            var entity = new BoxEntity
             {
-                BatchNo = Regex.Match(text, @"BatchNo.:\s*([A-Za-z0-9]+)").Groups[1].Value,
-                MfgDate = Regex.Match(text, @"Mfg.Date:\s*(\d{2}/\d{4})").Groups[1].Value,
-                ExpDate = Regex.Match(text, @"EXP\.Date:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value,
-                Price = Regex.Match(text, @"Price:\s*([0-9])").Groups[1].Value,
+                BatchNo = RegexHelper.BatchNo.Match(text).Groups[1].Value,
+                MfgDate = RegexHelper.MfgDate.Match(text).Groups[1].Value,
+                ExpDate = RegexHelper.ExpDate.Match(text).Groups[1].Value,
+                // Price = Regex.Match(text, @"Price\s*([0-9]+)").Groups[1].Value,
             };
-            ocrOutput = $"{ocrEntity.BatchNo}{ocrEntity.MfgDate}{ocrEntity.ExpDate}{ocrEntity.Price}";
+            
+            return new OcvResult
+            {
+                HasDataMatrix = false,
+                IsReadable = !string.IsNullOrEmpty(entity.BatchNo),
+                Box = entity,
+                RawOcrText = text
+            };
         }
-
-        return datamatrixDto;
     }
+}
+
+/// <summary>
+/// OcvComprasion metodunun sonuç sınıfı.
+/// </summary>
+public class OcvResult
+{
+    /// <summary>Zorunlu alanlar okunabildi mi?</summary>
+    public bool IsReadable { get; set; }
+    public bool HasDataMatrix { get; set; }
+    public DatamatrixEntity? DataMatrix { get; set; }
+    public BoxEntity? Box { get; set; }
+    public string RawOcrText { get; set; } = "";
 }

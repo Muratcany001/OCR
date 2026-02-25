@@ -3,25 +3,27 @@
 
     namespace Features.OCRFeatures.ImageProcessing;
 
+    /// <summary>
+    /// Görseli OCR için hazırlayan sınıf.
+    /// Paylaşılan Mat ve DataMatrix koordinatlarına göre ROI belirler.
+    /// </summary>
     public class ImageProcessing
     {
-        public static Mat ProcessFile(string filePath)
+        /// <summary>
+        /// Paylaşılan görseli OCR için hazırlar. Tekrar diskten okuma yapmaz.
+        /// </summary>
+        /// <param name="src">Ocv'den paylaşılan orijinal görsel.</param>
+        /// <param name="dmRect">DatamatrixFinder sonucu. default ise sabit ROI kullanılır.</param>
+        /// <returns>Preprocessing uygulanmış binary görsel.</returns>
+        public static Mat ProcessFile(Mat src, Rect dmRect)
         {
-            Mat src = Cv2.ImRead(filePath);
-            if (src.Empty())
-            {
-                Console.WriteLine("Image could not be loaded");
-                return null;
-            }
-            // data matrix rect finder
-            var qr= DatamatrixFinder.FindDataMatrix(src);
             // Data Matrix'in sagini ROI olarak al
-            int roiX = qr.X + qr.Width ;
-            int roiY = Math.Max(0, qr.Y - 40);
+            int roiX = dmRect.X + dmRect.Width;
+            int roiY = Math.Max(0, dmRect.Y - 40);
             int roiW = Math.Min(src.Width - roiX - 10, 630);
-            int roiH = Math.Min(qr.Height + 200, src.Height - roiY);
+            int roiH = Math.Min(dmRect.Height + 200, src.Height - roiY);
         
-            // datamatrix bulunmazsa sabit roi kullan
+            // DataMatrix bulunmazsa sabit ROI kullan
             if (roiX >= src.Width || roiW <= 0 || roiH <= 0)
             {
                 Console.WriteLine("ROI geçersiz, sabit ROI kullanılıyor");
@@ -36,7 +38,6 @@
             roiH = Math.Clamp(roiH, 1, src.Height - roiY);
             Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
             
-            
             // Grayscale + Adaptive Threshold
             using Mat gray = new Mat();
             Mat binary = new Mat();
@@ -47,11 +48,10 @@
                 AdaptiveThresholdTypes.GaussianC,
                 ThresholdTypes.Binary, 31, 7);
             
-             var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
-             Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);
-             
-            src.Dispose();
-           
+            var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
+            Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);
+            
+            cropped.Dispose();
             return binary;
         }
     }

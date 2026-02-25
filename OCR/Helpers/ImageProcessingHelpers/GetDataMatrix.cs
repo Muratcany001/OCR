@@ -2,8 +2,16 @@ using OpenCvSharp;
 
 namespace OCR.Packages;
 
+/// <summary>
+/// Kaynak görselden DataMatrix bölgesini kırparak döndüren yardımcı sınıf.
+/// </summary>
 public class GetDataMatrix
 {
+    /// <summary>
+    /// Görselde DataMatrix'i tespit eder ve çevresine margin ekleyerek kırpılmış Mat döndürür.
+    /// </summary>
+    /// <param name="src">Orijinal kaynak görsel.</param>
+    /// <returns>DataMatrix bölgesinin kırpılmış görüntüsü.</returns>
     public static Mat DatamatrixImage(Mat src)
     {
         var rects = DatamatrixFinder.FindDataMatrix(src);
