@@ -12,7 +12,7 @@ public class Ocv
 {
     private static readonly CharacterRecognition Ocr = new();
 
-    public static DatamatrixEntity OcvComprasion(string filePath)
+    public static string OcvComprasion(string filePath)
     {
         // process file for before implement ocr
         Mat processedImage = ImageProcessing.ProcessFile(filePath);
@@ -32,7 +32,7 @@ public class Ocv
             Man = dict.GetValueOrDefault("17"),
             ExpDate = dict.GetValueOrDefault("17")
         };
-        dmOutput = $"{datamatrixDto.Gtin}{datamatrixDto.Sn}{datamatrixDto.Lot}{datamatrixDto.Man}";
+        dmOutput = $"{datamatrixDto.Gtin}{datamatrixDto.Sn}{datamatrixDto.Lot}{datamatrixDto.Man}{datamatrixDto.ExpDate}";
         
         // call ocr class
         string text = Ocr.Read(processedImage);
@@ -56,11 +56,10 @@ public class Ocv
                 BatchNo = Regex.Match(text, @"BatchNo.:\s*([A-Za-z0-9]+)").Groups[1].Value,
                 MfgDate = Regex.Match(text, @"Mfg.Date:\s*(\d{2}/\d{4})").Groups[1].Value,
                 ExpDate = Regex.Match(text, @"EXP\.Date:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value,
-                Price = Regex.Match(text, @"Price:\s*([0-9])").Groups[1].Value,
+                Price = Regex.Match(text, @"Price\s*([0-9])").Groups[1].Value,
             };
             ocrOutput = $"{ocrEntity.BatchNo}{ocrEntity.MfgDate}{ocrEntity.ExpDate}{ocrEntity.Price}";
         }
-
-        return datamatrixDto;
+        return ocrOutput;
     }
 }

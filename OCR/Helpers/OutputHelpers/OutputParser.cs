@@ -5,7 +5,7 @@ namespace OCR.Helpers.OutputHelpers;
 
 public class OutputParser
 {
-    public static DatamatrixEntity Parse(string text)
+    public static DatamatrixEntity DatamatrixParse(string text)
     {
         var parsed = new DatamatrixEntity
         {
@@ -13,6 +13,17 @@ public class OutputParser
             Sn   = text.Substring(14, 10),
             Lot  = text.Substring(24, 8),
             Man  = text.Substring(32, 6)
+        };
+        return parsed;
+    }
+    public static BoxEntity OCRParse(string text)
+    {
+        var parsed = new BoxEntity()
+        {
+            BatchNo = text.Substring(0, 5),
+            MfgDate   = text.Substring(6, 6),
+            ExpDate  = text.Substring(7, 6),
+            // Price  = text.Substring(14, 5)
         };
         return parsed;
     }
