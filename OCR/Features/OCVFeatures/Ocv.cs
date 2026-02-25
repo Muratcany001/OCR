@@ -65,6 +65,7 @@ public class Ocv
             return new OcvResult
             {
                 HasDataMatrix = true,
+                IsReadable = !string.IsNullOrEmpty(entity.Gtin) && !string.IsNullOrEmpty(entity.Sn),
                 DataMatrix = entity,
                 RawOcrText = text
             };
@@ -82,6 +83,7 @@ public class Ocv
             return new OcvResult
             {
                 HasDataMatrix = false,
+                IsReadable = !string.IsNullOrEmpty(entity.BatchNo),
                 Box = entity,
                 RawOcrText = text
             };
@@ -95,6 +97,8 @@ public class Ocv
 /// </summary>
 public class OcvResult
 {
+    /// <summary>Zorunlu alanlar okunabildi mi? false ise "kod okunamadı" anlamına gelir.</summary>
+    public bool IsReadable { get; set; }
     public bool HasDataMatrix { get; set; }
     public DatamatrixEntity? DataMatrix { get; set; }
     public BoxEntity? Box { get; set; }

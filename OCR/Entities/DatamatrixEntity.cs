@@ -7,11 +7,11 @@ namespace OCR.Entities;
 public class DatamatrixEntity
 {
     private string _lot;
-    public string? Lot { get => _lot; set => _lot = value?.ToUpper(); }
+    public string Lot { get => _lot; set => _lot = value?.ToUpper(); }
     private string _man;
-    public string? Man { get => _man; set => _man = value?.Replace("/", ""); }
-    public string? Gtin { get; set; }
-    public string? Sn { get; set; }
+    public string Man { get => _man; set => _man = value?.Replace("/", ""); }
+    public string Gtin { get; set; }
+    public string Sn { get; set; }
     
     private string _expdate;
     public string ExpDate { get => _expdate ; set => _expdate = value?.Replace("/",""); }

@@ -7,15 +7,20 @@ class Program
 {
     static void Main(string[] args)
     {
-        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm4.bmp";
+        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181150384510.bmp";
         var result = Ocv.OcvComprasion(filePath);
+        
+        if (!result.IsReadable)
+        {
+            Console.WriteLine("Kod okunamadı");
+            return;
+        }
         
         if (result.HasDataMatrix)
         {
             var output = $"{result.DataMatrix?.Gtin}{result.DataMatrix?.Sn}" +
                          $"{result.DataMatrix?.Lot}{result.DataMatrix?.Man}{result.DataMatrix?.ExpDate}";
             Console.WriteLine(output);
-            Console.WriteLine(result.DataMatrix?.Man);
         }
         else
         {
