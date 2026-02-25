@@ -8,33 +8,34 @@ namespace OCR.Features.DatamarixFeatures;
 
 /// <summary>
 /// ZXing kütüphanesi kullanarak DataMatrix barkodunun içeriğini okuyan sınıf.
-/// DatamatrixFinder ile bulunan bölgeyi crop ederek decode işlemi yapar.
+/// Dışarıdan verilen Mat ve DataMatrix koordinatları ile çalışır (tekrar okuma yapmaz).
 /// </summary>
 public class DatamatrixReader
 {
     /// <summary>
-    /// Görseldeki DataMatrix barkodunu bulur ve GS1 formatındaki içeriğini okur.
+    /// Verilen görsel ve DataMatrix koordinatları ile barkodu decode eder.
     /// </summary>
-    /// <param name="filePath">Okunacak görselin dosya yolu.</param>
+    /// <param name="rawSrc">Orijinal kaynak görsel (Ocv'den paylaşılan).</param>
+    /// <param name="dmRect">DatamatrixFinder'dan dönen bounding rectangle.</param>
     /// <returns>DataMatrix içeriği. Okunamazsa string.Empty döner.</returns>
-    public static string ReadDataMatrix(string filePath)
+    public static string ReadDataMatrix(Mat rawSrc, Rect dmRect)
     {
-        //input src and find datamatrix
-        using var rawSrc = Cv2.ImRead(filePath);
-        var dmCordinates = DatamatrixFinder.FindDataMatrix(rawSrc);
-        var r = dmCordinates;
+        if (dmRect.Width <= 0 || dmRect.Height <= 0)
+        {
+            Console.WriteLine("Datamatrix not found...");
+            return string.Empty;
+        }
         
-        // find borders of dm coordinates
+        // DataMatrix çevresine padding ekle
         int padding = 20;
-        int x = Math.Max(0, r.X - padding);
-        int y = Math.Max(0, r.Y - padding);
-        int w = Math.Min(rawSrc.Width - x, r.Width + padding * 2);
-        int h = Math.Min(rawSrc.Height - y, r.Height + padding * 2);
+        int x = Math.Max(0, dmRect.X - padding);
+        int y = Math.Max(0, dmRect.Y - padding);
+        int w = Math.Min(rawSrc.Width - x, dmRect.Width + padding * 2);
+        int h = Math.Min(rawSrc.Height - y, dmRect.Height + padding * 2);
         
-        // crop datamatrix from src
-        using Mat dm = rawSrc[new Rect(x,y,w,h)];
+        // DataMatrix bölgesini kırp
+        using Mat dm = rawSrc[new Rect(x, y, w, h)];
         using Mat gray = new Mat();
-        // recolor for reader
         Cv2.CvtColor(dm, gray, ColorConversionCodes.BGR2GRAY);
         
         int width = gray.Width;
@@ -42,23 +43,22 @@ public class DatamatrixReader
 
         byte[] pixels = new byte[width * height];
         gray.GetArray(out pixels);
-        // wrap dm object   with luminance source for use zxing library
+        
         var luminanceSource = new RGBLuminanceSource(
-            pixels,
-            width,
-            height,
+            pixels, width, height,
             RGBLuminanceSource.BitmapFormat.Gray8
         );
-        // do black-white filter with globalhistogrambinarizer  
+        
         var binarizer = new GlobalHistogramBinarizer(luminanceSource);
         var binaryBitmap = new BinaryBitmap(binarizer);
         var reader = new DataMatrixReader();
         var result = reader.decode(binaryBitmap);
+        
         if (result == null)
         {
             Console.WriteLine("Datamatrix not found...");
             return string.Empty;
         }
-        return result.Text ??  string.Empty;
+        return result.Text ?? string.Empty;
     }
 }

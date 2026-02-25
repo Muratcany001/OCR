@@ -28,13 +28,12 @@ public sealed class CharacterRecognition
     /// <returns>OCR sonucu olarak okunan metin. Başarısızsa boş string.</returns>
     public string Read(Mat image, string psm = "6") 
     {
-        string tmpIn = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.png");
+        string tmpIn = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.bmp");
         
         try
         {
-            //gorseli diske yazdir
-            Cv2.ImWrite(tmpIn, image,
-                new ImageEncodingParam(ImwriteFlags.PngCompression, 1));
+            // BMP = sıfır compression overhead, PNG'den çok daha hızlı yazılır
+            Cv2.ImWrite(tmpIn, image);
             
             
             //process parametreleri
@@ -55,10 +54,13 @@ public sealed class CharacterRecognition
             //kurulan processi baslatma
             using var process = System.Diagnostics.Process.Start(psi)!;
             
-            string result = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-            
+            // stdout ve stderr paralel oku — deadlock önlenir
+            var resultTask = process.StandardOutput.ReadToEndAsync();
+            var errorTask = process.StandardError.ReadToEndAsync();
             process.WaitForExit();
+            
+            string result = resultTask.Result;
+            string error = errorTask.Result;
 
             //process kontrolu
             if (process.ExitCode != 0)

@@ -4,13 +4,14 @@ using Features.OCRFeatures;
 using Features.OCRFeatures.ImageProcessing;
 using OCR.Entities;
 using OCR.Features.DatamarixFeatures;
+using OCR.Helpers.OutputHelpers;
 using OCR.Packages;
 using OpenCvSharp;
 namespace OCR.Features.OCVFeatures;
 
 /// <summary>
 /// OCR ve DataMatrix okuma işlemlerini yöneten ana sınıf.
-/// Görsel işleme, DataMatrix okuma ve Regex tabanlı metin ayrıştırma süreçlerini koordine eder.
+/// Görsel tek seferde okunur, DatamatrixFinder tek seferde çalışır.
 /// </summary>
 public class Ocv
 {
@@ -18,26 +19,30 @@ public class Ocv
 
     /// <summary>
     /// Görselden OCR ve DataMatrix okuma sonuçlarını döndürür.
-    /// DataMatrix varsa DatamatrixEntity, yoksa BoxEntity döner.
     /// </summary>
-    /// <param name="filePath">Okunacak görselin dosya yolu.</param>
-    /// <returns>
-    /// HasDataMatrix: DataMatrix bulundu mu,
-    /// DataMatrix: DataMatrix entity (null olabilir),
-    /// Box: Box entity (null olabilir),
-    /// RawOcrText: Ham OCR çıktısı (debug için)
-    /// </returns>
     public static OcvResult OcvComprasion(string filePath)
     {
-        // Görsel işleme
-        Mat processedImage = ImageProcessing.ProcessFile(filePath);
+        // 1. Görsel TEK SEFER okunur
+        using Mat src = Cv2.ImRead(filePath);
+        if (src.Empty())
+        {
+            Console.WriteLine("Image could not be loaded");
+            return new OcvResult { IsReadable = false };
+        }
         
-        // DataMatrix okuma
-        string dmResult = DatamatrixReader.ReadDataMatrix(filePath);
+        // 2. DatamatrixFinder TEK SEFER çalışır
+        var dmRect = DatamatrixFinder.FindDataMatrix(src);
+        
+        // 3. DataMatrix okuma (paylaşılan src + dmRect ile)
+        string dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
         bool hasDataMatrix = dmResult != string.Empty;
         
-        // OCR okuma
+        // 4. Görsel işleme (paylaşılan src + dmRect ile — tekrar diskten okuma yok)
+        Mat processedImage = ImageProcessing.ProcessFile(src, dmRect);
+        
+        // 5. OCR okuma
         string text = Ocr.Read(processedImage);
+        processedImage.Dispose();
         
         if (hasDataMatrix)
         {
@@ -48,11 +53,11 @@ public class Ocv
             // OCR regex parse
             var entity = new DatamatrixEntity
             {
-                Gtin = Regex.Match(text, @"GTIN:\s*(\d{14})").Groups[1].Value,
-                Sn = Regex.Match(text, @"SN:\s*([A-Za-z0-9]+)").Groups[1].Value,
-                Lot = Regex.Match(text, @"LOT:\s*([A-Za-z0-9]+)").Groups[1].Value,
-                Man = Regex.Match(text, @"MAN:\s*(\d{2}/\d{4})").Groups[1].Value,
-                ExpDate = Regex.Match(text, @"EXP:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value
+                Gtin = RegexHelper.Gtin.Match(text).Groups[1].Value,
+                Sn = RegexHelper.Sn.Match(text).Groups[1].Value,
+                Lot = RegexHelper.Lot.Match(text).Groups[1].Value,
+                Man = RegexHelper.Man.Match(text).Groups[1].Value,
+                ExpDate = RegexHelper.Exp.Match(text).Groups[1].Value
             };
             
             // OCR'dan bulunamayan alanları GS1 verisinden doldur
@@ -74,9 +79,9 @@ public class Ocv
         {
             var entity = new BoxEntity
             {
-                BatchNo = Regex.Match(text, @"BatchNo.:\s*([A-Za-z0-9]+)").Groups[1].Value,
-                MfgDate = Regex.Match(text, @"Mfg.Date:\s*(\d{2}/\d{4})").Groups[1].Value,
-                ExpDate = Regex.Match(text, @"EXP\.Date:\s*\(?(\d{2}/\d{4})\)?").Groups[1].Value,
+                BatchNo = RegexHelper.BatchNo.Match(text).Groups[1].Value,
+                MfgDate = RegexHelper.MfgDate.Match(text).Groups[1].Value,
+                ExpDate = RegexHelper.ExpDate.Match(text).Groups[1].Value,
                 // Price = Regex.Match(text, @"Price\s*([0-9]+)").Groups[1].Value,
             };
             
@@ -93,11 +98,10 @@ public class Ocv
 
 /// <summary>
 /// OcvComprasion metodunun sonuç sınıfı.
-/// DataMatrix veya Box entity'sini ve metadata bilgilerini taşır.
 /// </summary>
 public class OcvResult
 {
-    /// <summary>Zorunlu alanlar okunabildi mi? false ise "kod okunamadı" anlamına gelir.</summary>
+    /// <summary>Zorunlu alanlar okunabildi mi?</summary>
     public bool IsReadable { get; set; }
     public bool HasDataMatrix { get; set; }
     public DatamatrixEntity? DataMatrix { get; set; }
