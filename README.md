@@ -108,7 +108,7 @@ Görsel Girdi (İlaç Kutusu Fotoğrafı)
 
 > [!IMPORTANT]
 > **`11` branch'i Windows OS** için yapılandırılmıştır. Windows üzerinde çalışıyorsanız bu branch'i kullanın.
-> Ana branch (main/master) macOS için yapılandırılmıştır.
+> Ana branch (dev,main/master) macOS için yapılandırılmıştır.
 
 ## 📦 NuGet Paketleri
 
