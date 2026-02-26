@@ -14,16 +14,12 @@ public sealed class CharacterRecognition : IDisposable
         string tessDataPath = @"C:\Program Files\tessdata";  // ← KLASÖR YOLU
 
 
-        // Debug için yazdır
-        Console.WriteLine($"Loading tessdata from: {tessDataPath}");
-        Console.WriteLine($"Directory exists: {Directory.Exists(tessDataPath)}");
-
         if (!Directory.Exists(tessDataPath))
         {
             throw new DirectoryNotFoundException($"tessdata folder not found at: {tessDataPath}");
         }
 
-        _engine = new TesseractEngine(tessDataPath, lang, EngineMode.Default);
+        _engine = new TesseractEngine(tessDataPath, lang, EngineMode);
     }
 
     public string Read(Mat image)
@@ -43,7 +39,7 @@ public sealed class CharacterRecognition : IDisposable
             using var pix = Pix.LoadFromMemory(memoryStream.ToArray());
 
             // OCR yap - PARAMETRESİZ Process
-            using var page = _engine.Process(pix);
+            using var page = _engine.Process(pix,pageSegMode: PageSegMode.SingleBlock, ocrEngineMode: OcrEngineMode.Default);
 
             return page.GetText()?.Trim() ?? string.Empty;
         }

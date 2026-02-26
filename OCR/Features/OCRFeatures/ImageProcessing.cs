@@ -50,7 +50,7 @@
             
             var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
             Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);
-            
+ Cv2.Resize(binary, binary, new Size(), 2.0 ,2.0, InterpolationFlags.Area );
             cropped.Dispose();
             return binary;
         }
