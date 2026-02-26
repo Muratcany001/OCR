@@ -46,26 +46,18 @@ public class Ocv
         
         if (hasDataMatrix)
         {
-            // GS1 parse
+            // GS1 parse — DataMatrix decode edilmişse regex'e gerek yok, doğrudan GS1 kullan
             var items = Gs1Parser.Parse(dmResult);
             var dict = items.ToDictionary(x => x.AI, x => x.Value);
             
-            // OCR regex parse
             var entity = new DatamatrixEntity
             {
-                Gtin = RegexHelper.Gtin.Match(text).Groups[1].Value,
-                Sn = RegexHelper.Sn.Match(text).Groups[1].Value,
-                Lot = RegexHelper.Lot.Match(text).Groups[1].Value,
-                Man = RegexHelper.Man.Match(text).Groups[1].Value,
-                ExpDate = RegexHelper.Exp.Match(text).Groups[1].Value
+                Gtin    = dict.GetValueOrDefault("01") ?? string.Empty,
+                Sn      = dict.GetValueOrDefault("21") ?? string.Empty,
+                Lot     = dict.GetValueOrDefault("10") ?? string.Empty,
+                Man     = dict.GetValueOrDefault("11") ?? string.Empty,
+                ExpDate = dict.GetValueOrDefault("17") ?? string.Empty,
             };
-            
-            // OCR'dan bulunamayan alanları GS1 verisinden doldur
-            if (string.IsNullOrEmpty(entity.Gtin)) entity.Gtin = dict.GetValueOrDefault("01");
-            if (string.IsNullOrEmpty(entity.Sn)) entity.Sn = dict.GetValueOrDefault("21");
-            if (string.IsNullOrEmpty(entity.Lot)) entity.Lot = dict.GetValueOrDefault("10");
-            if (string.IsNullOrEmpty(entity.Man)) entity.Man = dict.GetValueOrDefault("17");
-            if (string.IsNullOrEmpty(entity.ExpDate)) entity.ExpDate = dict.GetValueOrDefault("17");
             
             return new OcvResultEntity.OcvResult
             {
@@ -77,21 +69,47 @@ public class Ocv
         }
         else
         {
-            var entity = new BoxEntity
+            // DataMatrix decode olmasa da OCR metnine bakarak label formatını tespit et
+            bool isDatamatrixLabel = text.Contains("LOT:") || text.Contains("GTIN:");
+
+            if (isDatamatrixLabel)
             {
-                BatchNo = RegexHelper.BatchNo.Match(text).Groups[1].Value,
-                MfgDate = RegexHelper.MfgDate.Match(text).Groups[1].Value,
-                ExpDate = RegexHelper.ExpDate.Match(text).Groups[1].Value,
-                // Price = Regex.Match(text, @"Price\s*([0-9]+)").Groups[1].Value,
-            };
-            
-            return new OcvResultEntity.OcvResult
+                // DataMatrix etiket formatı — barcod okunamadı ama yazı okunabildi
+                var entity = new DatamatrixEntity
+                {
+                    Gtin    = RegexHelper.Gtin.Match(text).Groups[1].Value,
+                    Sn      = RegexHelper.Sn.Match(text).Groups[1].Value,
+                    Lot     = RegexHelper.Lot.Match(text).Groups[1].Value,
+                    Man     = RegexHelper.Man.Match(text).Groups[1].Value,
+                    ExpDate = RegexHelper.Exp.Match(text).Groups[1].Value,
+                };
+
+                return new OcvResultEntity.OcvResult
+                {
+                    HasDataMatrix = false,
+                    IsReadable = !string.IsNullOrEmpty(entity.Gtin) && !string.IsNullOrEmpty(entity.Sn),
+                    DataMatrix = entity,
+                    RawOcrText = text
+                };
+            }
+            else
             {
-                HasDataMatrix = false,
-                IsReadable = !string.IsNullOrEmpty(entity.BatchNo),
-                Box = entity,
-                RawOcrText = text
-            };
+                // Box etiket formatı (Batch No / Mfg.Date / EXP.Date)
+                var entity = new BoxEntity
+                {
+                    BatchNo = RegexHelper.BatchNo.Match(text).Groups[1].Value,
+                    MfgDate = RegexHelper.MfgDate.Match(text).Groups[1].Value,
+                    ExpDate = RegexHelper.ExpDate.Match(text).Groups[1].Value,
+                };
+
+                return new OcvResultEntity.OcvResult
+                {
+                    HasDataMatrix = false,
+                    IsReadable = !string.IsNullOrEmpty(entity.BatchNo),
+                    Box = entity,
+                    RawOcrText = text
+                };
+            }
         }
     }
 }
