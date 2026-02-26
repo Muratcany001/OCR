@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Features.OCRFeatures.ImageProcessing;
 using OCR.Entities;
 using OCR.Features.DatamarixFeatures;

@@ -1,4 +1,3 @@
-using OCR.Packages;
 using OpenCvSharp;
 using ZXing;
 using ZXing.Common;
