@@ -67,6 +67,7 @@ public sealed class CharacterRecognition
             {
                 Console.WriteLine($"Tesseract Hatası: {error}");
             }
+            Console.WriteLine(result);
             //cikti okuma
             return result.Trim();
         }

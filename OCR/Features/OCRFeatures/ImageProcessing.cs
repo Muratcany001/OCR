@@ -52,6 +52,9 @@
             Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);
             
             cropped.Dispose();
+            Cv2.Resize(binary, binary, new Size(), 2.0 ,2.0, InterpolationFlags.Area );
+            // Cv2.ImShow("123",binary);
+            // Cv2.WaitKey();
             return binary;
         }
     }

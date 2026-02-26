@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using OCR.Features.OCVFeatures;
 
 namespace OCR;
@@ -12,6 +13,7 @@ class Program
         stopwatch.Start();
         var result = Ocv.OcvComprasion(filePath);
         stopwatch.Stop();
+        
         Console.WriteLine("Stopwatch time"+stopwatch.ElapsedMilliseconds);
         if (!result.IsReadable)
         {
