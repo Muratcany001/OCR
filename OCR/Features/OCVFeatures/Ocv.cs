@@ -20,14 +20,14 @@ public class Ocv
     /// <summary>
     /// Görselden OCR ve DataMatrix okuma sonuçlarını döndürür.
     /// </summary>
-    public static OcvResult OcvComprasion(string filePath)
+    public static OcvResultEntity.OcvResult OcvComprasion(string filePath)
     {
         // 1. Görsel TEK SEFER okunur
         using Mat src = Cv2.ImRead(filePath);
         if (src.Empty())
         {
             Console.WriteLine("Image could not be loaded");
-            return new OcvResult { IsReadable = false };
+            return new OcvResultEntity.OcvResult { IsReadable = false };
         }
         
         // 2. DatamatrixFinder TEK SEFER çalışır
@@ -67,7 +67,7 @@ public class Ocv
             if (string.IsNullOrEmpty(entity.Man)) entity.Man = dict.GetValueOrDefault("17");
             if (string.IsNullOrEmpty(entity.ExpDate)) entity.ExpDate = dict.GetValueOrDefault("17");
             
-            return new OcvResult
+            return new OcvResultEntity.OcvResult
             {
                 HasDataMatrix = true,
                 IsReadable = !string.IsNullOrEmpty(entity.Gtin) && !string.IsNullOrEmpty(entity.Sn),
@@ -85,7 +85,7 @@ public class Ocv
                 // Price = Regex.Match(text, @"Price\s*([0-9]+)").Groups[1].Value,
             };
             
-            return new OcvResult
+            return new OcvResultEntity.OcvResult
             {
                 HasDataMatrix = false,
                 IsReadable = !string.IsNullOrEmpty(entity.BatchNo),
@@ -94,17 +94,4 @@ public class Ocv
             };
         }
     }
-}
-
-/// <summary>
-/// OcvComprasion metodunun sonuç sınıfı.
-/// </summary>
-public class OcvResult
-{
-    /// <summary>Zorunlu alanlar okunabildi mi?</summary>
-    public bool IsReadable { get; set; }
-    public bool HasDataMatrix { get; set; }
-    public DatamatrixEntity? DataMatrix { get; set; }
-    public BoxEntity? Box { get; set; }
-    public string RawOcrText { get; set; } = "";
 }

@@ -1,0 +1,24 @@
+<changelist name="Uncommitted_changes_before_Update_at_26_02_2026,_11_36 AM_[Changes]" date="1772095009760" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/.idea.OCR/.idea/shelf/Uncommitted_changes_before_Update_at_26_02_2026,_11_36 AM_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 26.02.2026, 11:36 AM [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="OCR/obj/Debug/net8.0/OCR.assets.cache" />
+    <option name="AFTER_PATH" value="OCR/obj/Debug/net8.0/OCR.assets.cache" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/.idea.OCR/.idea/shelf/Uncommitted_changes_before_Update_at_26_02_2026,_11_36 AM_[Changes]/OCR.assets.cache" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="OCR/obj/Debug/net8.0/OCR.AssemblyInfoInputs.cache" />
+    <option name="AFTER_PATH" value="OCR/obj/Debug/net8.0/OCR.AssemblyInfoInputs.cache" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/.idea.OCR/.idea/shelf/Uncommitted_changes_before_Update_at_26_02_2026,_11_36 AM_[Changes]/OCR.AssemblyInfoInputs.cache" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="OCR/obj/Debug/net8.0/OCR.csproj.AssemblyReference.cache" />
+    <option name="AFTER_PATH" value="OCR/obj/Debug/net8.0/OCR.csproj.AssemblyReference.cache" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/.idea.OCR/.idea/shelf/Uncommitted_changes_before_Update_at_26_02_2026,_11_36 AM_[Changes]/OCR.csproj.AssemblyReference.cache" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="OCR/obj/project.nuget.cache" />
+    <option name="AFTER_PATH" value="OCR/obj/project.nuget.cache" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/.idea.OCR/.idea/shelf/Uncommitted_changes_before_Update_at_26_02_2026,_11_36 AM_[Changes]/project.nuget.cache" />
+  </binary>
+</changelist>

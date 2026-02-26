@@ -11,7 +11,8 @@ class Program
         Stopwatch stopwatch = Stopwatch.StartNew();
         stopwatch.Start();
         var result = Ocv.OcvComprasion(filePath);
-        
+        stopwatch.Stop();
+        Console.WriteLine("Stopwatch time"+stopwatch.ElapsedMilliseconds);
         if (!result.IsReadable)
         {
             Console.WriteLine("Kod okunamadı");
@@ -29,7 +30,5 @@ class Program
             var output = $"{result.Box?.BatchNo}{result.Box?.MfgDate}{result.Box?.ExpDate}";
             Console.WriteLine(output);
         }
-        stopwatch.Stop();
-        Console.WriteLine("Stopwatch time"+stopwatch.ElapsedMilliseconds);
     }
 }

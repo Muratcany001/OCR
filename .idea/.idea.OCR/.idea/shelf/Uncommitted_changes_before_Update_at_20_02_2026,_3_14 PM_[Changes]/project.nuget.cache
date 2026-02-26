@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "dgSpecHash": "Pu5gh+aEuaM=",
+  "success": true,
+  "projectFilePath": "/Users/murat/RiderProjects/OCR/OCR/OCR.csproj",
+  "expectedPackageFiles": [
+    "/Users/murat/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/Users/murat/.nuget/packages/microsoft.win32.systemevents/10.0.3/microsoft.win32.systemevents.10.0.3.nupkg.sha512",
+    "/Users/murat/.nuget/packages/netstandard.library/2.0.3/netstandard.library.2.0.3.nupkg.sha512",
+    "/Users/murat/.nuget/packages/opencvsharp3-anycpu/3.4.4.20181118/opencvsharp3-anycpu.3.4.4.20181118.nupkg.sha512",
+    "/Users/murat/.nuget/packages/opencvsharp4/4.13.0.20260214/opencvsharp4.4.13.0.20260214.nupkg.sha512",
+    "/Users/murat/.nuget/packages/opencvsharp4.extensions/4.13.0.20260214/opencvsharp4.extensions.4.13.0.20260214.nupkg.sha512",
+    "/Users/murat/.nuget/packages/opencvsharp4.runtime.osx_arm64/4.8.1-rc/opencvsharp4.runtime.osx_arm64.4.8.1-rc.nupkg.sha512",
+    "/Users/murat/.nuget/packages/system.drawing.common/10.0.3/system.drawing.common.10.0.3.nupkg.sha512",
+    "/Users/murat/.nuget/packages/system.memory/4.6.3/system.memory.4.6.3.nupkg.sha512",
+    "/Users/murat/.nuget/packages/system.reflection.emit/4.7.0/system.reflection.emit.4.7.0.nupkg.sha512",
+    "/Users/murat/.nuget/packages/tesseract/4.1.1/tesseract.4.1.1.nupkg.sha512",
+    "/Users/murat/.nuget/packages/zxing.net/0.16.11/zxing.net.0.16.11.nupkg.sha512",
+    "/Users/murat/.nuget/packages/zxing.net.bindings.opencv/0.16.10/zxing.net.bindings.opencv.0.16.10.nupkg.sha512"
+  ],
+  "logs": []
+}

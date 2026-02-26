@@ -1,0 +1,48 @@
+Index: OCR/Program.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>using System.Diagnostics;\nusing OCR.Features.OCVFeatures;\n\nnamespace OCR;\n\nclass Program\n{\n    static void Main(string[] args)\n    {\n        string filePath = \"/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm4.bmp\";\n        Ocv.OcvComprasion(filePath);\n        \n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/OCR/Program.cs b/OCR/Program.cs
+--- a/OCR/Program.cs	(revision 4f5b5ecd3851b5c10994d9712ceae98d12a49502)
++++ b/OCR/Program.cs	(date 1772005120757)
+@@ -9,6 +9,5 @@
+     {
+         string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm4.bmp";
+         Ocv.OcvComprasion(filePath);
+-        
+     }
+ }
+\ No newline at end of file
+Index: OCR/obj/rider.project.restore.info
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>17718536834202010
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/OCR/obj/rider.project.restore.info b/OCR/obj/rider.project.restore.info
+--- a/OCR/obj/rider.project.restore.info	(revision 4f5b5ecd3851b5c10994d9712ceae98d12a49502)
++++ b/OCR/obj/rider.project.restore.info	(date 1772001739342)
+@@ -1,1 +1,1 @@
+-17718536834202010
+\ No newline at end of file
++17719427643505435
+\ No newline at end of file
+Index: OCR/obj/rider.project.model.nuget.info
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>17718536834202010
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/OCR/obj/rider.project.model.nuget.info b/OCR/obj/rider.project.model.nuget.info
+--- a/OCR/obj/rider.project.model.nuget.info	(revision 4f5b5ecd3851b5c10994d9712ceae98d12a49502)
++++ b/OCR/obj/rider.project.model.nuget.info	(date 1772001739305)
+@@ -1,1 +1,1 @@
+-17718536834202010
+\ No newline at end of file
++17719427643505435
+\ No newline at end of file

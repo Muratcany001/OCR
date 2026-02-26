@@ -1,0 +1,15 @@
+Index: OCR/obj/rider.project.model.nuget.info
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>17713423618206792
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/OCR/obj/rider.project.model.nuget.info b/OCR/obj/rider.project.model.nuget.info
+--- a/OCR/obj/rider.project.model.nuget.info	(revision 4a4f78e50addbd1633cbeec6d02f8ed4009ec89b)
++++ b/OCR/obj/rider.project.model.nuget.info	(date 1771391059238)
+@@ -1,1 +1,1 @@
+-17713423618206792
+\ No newline at end of file
++17713910591320794
+\ No newline at end of file
