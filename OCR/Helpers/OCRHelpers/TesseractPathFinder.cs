@@ -24,11 +24,23 @@ public class TesseractPathFinder
         if (fromPath != null) return fromPath;
 
         string[] candidates = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-            ? [@"C:\Program Files\Tesseract-OCR\tesseract.exe",
-                @"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"]
-            : RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
-                ? ["/opt/homebrew/bin/tesseract", "/usr/local/bin/tesseract"]
-                : ["/usr/bin/tesseract", "/usr/local/bin/tesseract"];
+    ? new string[]
+      {
+          @"C:\Users\murat\AppData\Local\Programs\Tesseract-OCR\tesseract.exe",
+          @"C:\Program Files\Tesseract-OCR\tesseract.exe",
+          @"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"
+      }
+    : RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+        ? new string[]
+          {
+              "/opt/homebrew/bin/tesseract",
+              "/usr/local/bin/tesseract"
+          }
+        : new string[]
+          {
+              "/usr/bin/tesseract",
+              "/usr/local/bin/tesseract"
+          };
 
         return candidates.FirstOrDefault(File.Exists)
                ?? throw new Exception("Tesseract bulunamadı.\n" +

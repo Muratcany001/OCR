@@ -7,7 +7,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181140101686.png";
+        string filePath = "C:\\Users\\murat\\source\\repos\\OCR\\OCR\\test.bmp";
         Stopwatch stopwatch = Stopwatch.StartNew();
         stopwatch.Start();
         var result = Ocv.OcvComprasion(filePath);
