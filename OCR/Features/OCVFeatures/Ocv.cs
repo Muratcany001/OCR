@@ -12,16 +12,23 @@ namespace OCR.Features.OCVFeatures;
 /// </summary>
 public class Ocv
 {
-    private static readonly CharacterRecognition Ocr = new();
+    private static CharacterRecognition Ocr;
 
+    static Ocv()
+    {
+        Ocr = new CharacterRecognition("eng");
+        using var dummyImage = new Mat(100, 100, MatType.CV_8UC1, Scalar.White);
+        Ocr.Read(dummyImage);
+        Console.WriteLine("Engine warmed up!");
+    }
     /// <summary>
     /// Görselden OCR ve DataMatrix okuma sonuçlarını döndürür.
     /// </summary>
     public static OcvResultEntity.OcvResult OcvComprasion(string filePath)
     {
+        // wormup before works
         try
         {
-
         
         // 1. Görsel TEK SEFER okunur
         using Mat src = Cv2.ImRead(filePath);

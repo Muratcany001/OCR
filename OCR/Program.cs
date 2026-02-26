@@ -7,11 +7,9 @@ namespace OCR;
 
 class Program
 {
-    private static readonly CharacterRecognition _globalOcr = new CharacterRecognition("eng");
 
     static void Main(string[] args)
     {
-        WarmUpEngine();
         string filePath = @"C:\Users\murat\source\repos\OCR\OCR\test.bmp";
 
         Stopwatch stopwatch = Stopwatch.StartNew();
@@ -43,11 +41,5 @@ class Program
         }
 
         Console.WriteLine($"Raw OCR text: {result.RawOcrText}");
-    }
-    static void WarmUpEngine()
-    {
-        using var dummyImage = new Mat(100, 100, MatType.CV_8UC1, Scalar.White);
-        _globalOcr.Read(dummyImage);
-        Console.WriteLine("Engine warmed up!");
     }
 }
