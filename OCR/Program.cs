@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using OCR.Features.OCVFeatures;
+using OCR.Helpers.OutputHelpers;
 
 namespace OCR;
 
@@ -7,7 +8,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181140101686.png";
+        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181150384510.bmp";
         Stopwatch stopwatch = Stopwatch.StartNew();
         stopwatch.Start();
         var result = Ocv.OcvComprasion(filePath);
@@ -19,11 +20,10 @@ class Program
             return;
         }
         
-        if (result.HasDataMatrix)
+        if (result.DataMatrix != null)
         {
-            var output = $"{result.DataMatrix?.Gtin}{result.DataMatrix?.Sn}" +
-                         $"{result.DataMatrix?.Lot}{result.DataMatrix?.Man}{result.DataMatrix?.ExpDate}";
-            Console.WriteLine(output);
+            Console.WriteLine(OutputParser.ToStringOutput(result.DataMatrix));
+            Console.WriteLine(result.DataMatrix.Lot);
         }
         else
         {
