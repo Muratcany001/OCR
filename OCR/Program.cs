@@ -1,35 +1,53 @@
-﻿using System.Diagnostics;
-using OCR.Features.OCVFeatures;
+﻿using OCR.Features.OCVFeatures;
+using OCR.Helpers.OutputHelpers;
+using OpenCvSharp;
+using System.Diagnostics;
 
 namespace OCR;
 
 class Program
 {
+    private static readonly CharacterRecognition _globalOcr = new CharacterRecognition("eng");
+
     static void Main(string[] args)
     {
-        string filePath = "C:\\Users\\murat\\source\\repos\\OCR\\OCR\\test.bmp";
+        WarmUpEngine();
+        string filePath = @"C:\Users\murat\source\repos\OCR\OCR\test.bmp";
+
         Stopwatch stopwatch = Stopwatch.StartNew();
-        stopwatch.Start();
         var result = Ocv.OcvComprasion(filePath);
-        
+        stopwatch.Stop();
+
+        Console.WriteLine($"Total OCV time: {stopwatch.ElapsedMilliseconds}ms");
+
         if (!result.IsReadable)
         {
             Console.WriteLine("Kod okunamadı");
             return;
         }
-        
+
         if (result.HasDataMatrix)
         {
             var output = $"{result.DataMatrix?.Gtin}{result.DataMatrix?.Sn}" +
                          $"{result.DataMatrix?.Lot}{result.DataMatrix?.Man}{result.DataMatrix?.ExpDate}";
-            Console.WriteLine(output);
+
+            var parsedOutput = OutputParser.DatamatrixParse(output);
+            Console.WriteLine($"GTIN: {parsedOutput?.Gtin}");
         }
         else
         {
             var output = $"{result.Box?.BatchNo}{result.Box?.MfgDate}{result.Box?.ExpDate}";
-            Console.WriteLine(output);
+            var parsedOutput = OutputParser.OCRParse(output);
+            Console.WriteLine($"Batch No: {parsedOutput?.BatchNo}");
+            Console.WriteLine($"Raw output: {output}");
         }
-        stopwatch.Stop();
-        Console.WriteLine("Stopwatch time"+stopwatch.ElapsedMilliseconds);
+
+        Console.WriteLine($"Raw OCR text: {result.RawOcrText}");
+    }
+    static void WarmUpEngine()
+    {
+        using var dummyImage = new Mat(100, 100, MatType.CV_8UC1, Scalar.White);
+        _globalOcr.Read(dummyImage);
+        Console.WriteLine("Engine warmed up!");
     }
 }
