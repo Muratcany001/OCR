@@ -26,20 +26,18 @@ class Program
 
         if (result.HasDataMatrix)
         {
-            var output = $"{result.DataMatrix?.Gtin}{result.DataMatrix?.Sn}" +
-                         $"{result.DataMatrix?.Lot}{result.DataMatrix?.Man}{result.DataMatrix?.ExpDate}";
-
-            var parsedOutput = OutputParser.DatamatrixParse(output);
-            Console.WriteLine($"GTIN: {parsedOutput?.Gtin}");
+            Console.WriteLine($"GTIN: {result.DataMatrix?.Gtin}");
+            Console.WriteLine($"SN: {result.DataMatrix?.Sn}");
+            Console.WriteLine($"LOT: {result.DataMatrix?.Lot}");
+            Console.WriteLine($"MAN: {result.DataMatrix?.Man}");
+            Console.WriteLine($"EXP: {result.DataMatrix?.ExpDate}");
+            Console.WriteLine(result.DataMatrix?.Gtin);
         }
         else
         {
-            var output = $"{result.Box?.BatchNo}{result.Box?.MfgDate}{result.Box?.ExpDate}";
-            var parsedOutput = OutputParser.OCRParse(output);
-            Console.WriteLine($"Batch No: {parsedOutput?.BatchNo}");
-            Console.WriteLine($"Raw output: {output}");
+            Console.WriteLine($"Batch No: {result.Box?.BatchNo}");
+            Console.WriteLine($"Mfg Date: {result.Box?.MfgDate}");
+            Console.WriteLine($"Exp Date: {result.Box?.ExpDate}");
         }
-
-        Console.WriteLine($"Raw OCR text: {result.RawOcrText}");
     }
 }

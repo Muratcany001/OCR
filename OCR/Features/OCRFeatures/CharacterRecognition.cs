@@ -19,7 +19,7 @@ public sealed class CharacterRecognition : IDisposable
             throw new DirectoryNotFoundException($"tessdata folder not found at: {tessDataPath}");
         }
 
-        _engine = new TesseractEngine(tessDataPath, lang, EngineMode.LstmOnly);
+        _engine = new TesseractEngine(tessDataPath, lang, EngineMode.Default);
     }
 
     public string Read(Mat image)
@@ -32,11 +32,8 @@ public sealed class CharacterRecognition : IDisposable
             // Mat -> MemoryStream
             using var memoryStream = new MemoryStream();
             Cv2.ImEncode(".bmp", image, out var imageData);
-            memoryStream.Write(imageData, 0, imageData.Length);
-            memoryStream.Position = 0;
+            using var pix = Pix.LoadFromMemory(imageData);
 
-            // MemoryStream -> Pix
-            using var pix = Pix.LoadFromMemory(memoryStream.ToArray());
             _engine.SetVariable("tessedit_char_whitelist", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz./:-");
             // OCR yap - PARAMETRESİZ Process
             using var page = _engine.Process(pix,pageSegMode: PageSegMode.SingleBlock);
