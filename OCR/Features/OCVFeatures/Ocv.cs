@@ -1,8 +1,8 @@
 using Features.OCRFeatures.ImageProcessing;
 using OCR.Entities;
-using OCR.Features.DatamarixFeatures;
+using OCR.Features.DatamatrixFeatures;
 using OCR.Helpers.OutputHelpers;
-using OCR.Packages;
+using OCR.Helpers.DatamatrixHelpers;
 using OpenCvSharp;
 namespace OCR.Features.OCVFeatures;
 
@@ -24,7 +24,7 @@ public class Ocv
     /// <summary>
     /// Görselden OCR ve DataMatrix okuma sonuçlarını döndürür.
     /// </summary>
-    public static OcvResultEntity.OcvResult OcvComprasion(string filePath)
+    public static OcvResultEntity.OcvResult AnalyzeImage(string filePath)
     {
         // wormup before works
         try
@@ -82,11 +82,16 @@ public class Ocv
         }
         else
         {
+            // Null reference checks for Regexes
+            var batchNoMatch = RegexHelper.BatchNo.Match(text);
+            var mfgDateMatch = RegexHelper.MfgDate.Match(text);
+            var expDateMatch = RegexHelper.ExpDate.Match(text);
+
             var entity = new BoxEntity
             {
-                BatchNo = CharacterOptimizer.ToNumeric(RegexHelper.BatchNo.Match(text).Groups[1].Value),
-                MfgDate = CharacterOptimizer.ToNumeric(RegexHelper.MfgDate.Match(text).Groups[1].Value),
-                ExpDate = CharacterOptimizer.ToNumeric(RegexHelper.ExpDate.Match(text).Groups[1].Value),
+                BatchNo = batchNoMatch.Success ? CharacterOptimizer.ToNumeric(batchNoMatch.Groups[1].Value) : string.Empty,
+                MfgDate = mfgDateMatch.Success ? CharacterOptimizer.ToNumeric(mfgDateMatch.Groups[1].Value) : string.Empty,
+                ExpDate = expDateMatch.Success ? CharacterOptimizer.ToNumeric(expDateMatch.Groups[1].Value) : string.Empty,
                 // Price = Regex.Match(text, @"Price\s*([0-9]+)").Groups[1].Value,
             };
             
@@ -100,7 +105,7 @@ public class Ocv
         }}
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine($"[OCV Error]: An error occurred while analyzing the image: {e.Message}");
             return new OcvResultEntity.OcvResult { IsReadable = false };
         }
     }

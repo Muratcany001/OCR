@@ -13,7 +13,7 @@ class Program
         string filePath = @"C:\Users\murat\source\repos\OCR\OCR\test.bmp";
 
         Stopwatch stopwatch = Stopwatch.StartNew();
-        var result = Ocv.OcvComprasion(filePath);
+        var result = Ocv.AnalyzeImage(filePath);
         stopwatch.Stop();
 
         Console.WriteLine($"Total OCV time: {stopwatch.ElapsedMilliseconds}ms");

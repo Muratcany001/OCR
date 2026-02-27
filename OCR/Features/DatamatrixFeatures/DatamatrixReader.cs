@@ -3,7 +3,7 @@ using ZXing;
 using ZXing.Common;
 using ZXing.Datamatrix;
 
-namespace OCR.Features.DatamarixFeatures;
+namespace OCR.Features.DatamatrixFeatures;
 
 /// <summary>
 /// ZXing kütüphanesi kullanarak DataMatrix barkodunun içeriğini okuyan sınıf.
