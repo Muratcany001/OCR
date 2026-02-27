@@ -1,6 +1,6 @@
 using OpenCvSharp;
 
-namespace OCR.Packages;
+namespace OCR.Helpers.DatamatrixHelpers;
 
 /// <summary>
 /// Görsel içinde DataMatrix barkodunun konumunu tespit eden sınıf.

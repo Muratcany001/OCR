@@ -43,7 +43,7 @@ public sealed class CharacterRecognition
             var psi = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = _tesseractPath, 
-                Arguments = $"{tmpIn} stdout -l {_lang} --oem 1 --psm {psm} -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz./:",
+                Arguments = $"{tmpIn} stdout -l {_lang} --oem 2 --psm {psm} -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz./:",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,

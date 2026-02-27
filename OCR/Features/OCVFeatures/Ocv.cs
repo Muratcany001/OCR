@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 using Features.OCRFeatures;
 using Features.OCRFeatures.ImageProcessing;
 using OCR.Entities;
-using OCR.Features.DatamarixFeatures;
+using OCR.Features.DatamatrixFeatures;
 using OCR.Helpers.OutputHelpers;
-using OCR.Packages;
+using OCR.Helpers.DatamatrixHelpers;
 using OpenCvSharp;
 namespace OCR.Features.OCVFeatures;
 
@@ -20,9 +20,11 @@ public class Ocv
     /// <summary>
     /// Görselden OCR ve DataMatrix okuma sonuçlarını döndürür.
     /// </summary>
-    public static OcvResultEntity.OcvResult OcvComprasion(string filePath)
+    public static OcvResultEntity.OcvResult AnalyzeImage(string filePath)
     {
-        // 1. Görsel TEK SEFER okunur
+        try
+        {
+            // 1. Görsel TEK SEFER okunur
         using Mat src = Cv2.ImRead(filePath);
         if (src.Empty())
         {
@@ -75,13 +77,19 @@ public class Ocv
             if (isDatamatrixLabel)
             {
                 // DataMatrix etiket formatı — barcod okunamadı ama yazı okunabildi
+                var gtinMatch = RegexHelper.Gtin.Match(text);
+                var snMatch = RegexHelper.Sn.Match(text);
+                var lotMatch = RegexHelper.Lot.Match(text);
+                var manMatch = RegexHelper.Man.Match(text);
+                var expMatch = RegexHelper.Exp.Match(text);
+
                 var entity = new DatamatrixEntity
                 {
-                    Gtin    = RegexHelper.Gtin.Match(text).Groups[1].Value,
-                    Sn      = RegexHelper.Sn.Match(text).Groups[1].Value,
-                    Lot     = RegexHelper.Lot.Match(text).Groups[1].Value,
-                    Man     = RegexHelper.Man.Match(text).Groups[1].Value,
-                    ExpDate = RegexHelper.Exp.Match(text).Groups[1].Value,
+                    Gtin    = gtinMatch.Success ? gtinMatch.Groups[1].Value : string.Empty,
+                    Sn      = snMatch.Success ? snMatch.Groups[1].Value : string.Empty,
+                    Lot     = lotMatch.Success ? lotMatch.Groups[1].Value : string.Empty,
+                    Man     = manMatch.Success ? manMatch.Groups[1].Value : string.Empty,
+                    ExpDate = expMatch.Success ? expMatch.Groups[1].Value : string.Empty,
                 };
 
                 return new OcvResultEntity.OcvResult
@@ -95,11 +103,15 @@ public class Ocv
             else
             {
                 // Box etiket formatı (Batch No / Mfg.Date / EXP.Date)
+                var batchNoMatch = RegexHelper.BatchNo.Match(text);
+                var mfgDateMatch = RegexHelper.MfgDate.Match(text);
+                var expDateMatch = RegexHelper.ExpDate.Match(text);
+
                 var entity = new BoxEntity
                 {
-                    BatchNo = RegexHelper.BatchNo.Match(text).Groups[1].Value,
-                    MfgDate = RegexHelper.MfgDate.Match(text).Groups[1].Value,
-                    ExpDate = RegexHelper.ExpDate.Match(text).Groups[1].Value,
+                    BatchNo = batchNoMatch.Success ? batchNoMatch.Groups[1].Value : string.Empty,
+                    MfgDate = mfgDateMatch.Success ? mfgDateMatch.Groups[1].Value : string.Empty,
+                    ExpDate = expDateMatch.Success ? expDateMatch.Groups[1].Value : string.Empty,
                 };
 
                 return new OcvResultEntity.OcvResult
@@ -110,6 +122,11 @@ public class Ocv
                     RawOcrText = text
                 };
             }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"[OCV Error]: An error occurred while analyzing the image: {e.Message}");
+            return new OcvResultEntity.OcvResult { IsReadable = false };
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace OCR.Packages;
+namespace OCR.Helpers.DatamatrixHelpers;
 
 /// <summary>
 /// GS1 barkod verisini Application Identifier (AI) bazında parse eden sınıf.
