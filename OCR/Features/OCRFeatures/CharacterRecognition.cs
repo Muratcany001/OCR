@@ -33,7 +33,8 @@ public sealed class CharacterRecognition : IDisposable
             using var memoryStream = new MemoryStream();
             Cv2.ImEncode(".bmp", image, out var imageData);
             using var pix = Pix.LoadFromMemory(imageData);
-
+            pix.XRes = 300;
+            pix.YRes = 300;
             _engine.SetVariable("tessedit_char_whitelist", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz./:-");
             // OCR yap - PARAMETRESİZ Process
             using var page = _engine.Process(pix,pageSegMode: PageSegMode.SingleBlock);

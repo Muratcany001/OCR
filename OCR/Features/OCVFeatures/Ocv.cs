@@ -52,6 +52,7 @@ public class Ocv
         string text = Ocr.Read(processedImage);
         processedImage.Dispose();
         
+        // Datamatrix varsa datamatrix icerigini oku datamatrix yoksa ocr calistir.
         if (hasDataMatrix)
         {
             // GS1 parse
@@ -59,21 +60,17 @@ public class Ocv
             var dict = items.ToDictionary(x => x.AI, x => x.Value);
             
             // OCR regex parse
+            // Cikis turune gore karakter optimizasyonu
             var entity = new DatamatrixEntity
             {
-                Gtin = RegexHelper.Gtin.Match(text).Groups[1].Value,
-                Sn = RegexHelper.Sn.Match(text).Groups[1].Value,
-                Lot = RegexHelper.Lot.Match(text).Groups[1].Value,
-                Man = RegexHelper.Man.Match(text).Groups[1].Value,
-                ExpDate = RegexHelper.Exp.Match(text).Groups[1].Value
+                Gtin = dict.GetValueOrDefault("01"),
+                // Ornek regex parser
+                //Sn = RegexHelper.Sn.Match(text).Groups[1].Value,
+                Sn = dict.GetValueOrDefault("21"),
+                Lot = dict.GetValueOrDefault("10"),
+                Man = dict.GetValueOrDefault("01"),
+                ExpDate = dict.GetValueOrDefault("17")
             };
-            
-            // OCR'dan bulunamayan alanları GS1 verisinden doldur
-            if (string.IsNullOrEmpty(entity.Gtin)) entity.Gtin = dict.GetValueOrDefault("01");
-            if (string.IsNullOrEmpty(entity.Sn)) entity.Sn = dict.GetValueOrDefault("21");
-            if (string.IsNullOrEmpty(entity.Lot)) entity.Lot = dict.GetValueOrDefault("10");
-            if (string.IsNullOrEmpty(entity.Man)) entity.Man = dict.GetValueOrDefault("17");
-            if (string.IsNullOrEmpty(entity.ExpDate)) entity.ExpDate = dict.GetValueOrDefault("17");
             
             return new OcvResultEntity.OcvResult
             {
@@ -87,9 +84,9 @@ public class Ocv
         {
             var entity = new BoxEntity
             {
-                BatchNo = RegexHelper.BatchNo.Match(text).Groups[1].Value,
-                MfgDate = RegexHelper.MfgDate.Match(text).Groups[1].Value,
-                ExpDate = RegexHelper.ExpDate.Match(text).Groups[1].Value,
+                BatchNo = CharacterOptimizer.ToNumeric(RegexHelper.BatchNo.Match(text).Groups[1].Value),
+                MfgDate = CharacterOptimizer.ToNumeric(RegexHelper.MfgDate.Match(text).Groups[1].Value),
+                ExpDate = CharacterOptimizer.ToNumeric(RegexHelper.ExpDate.Match(text).Groups[1].Value),
                 // Price = Regex.Match(text, @"Price\s*([0-9]+)").Groups[1].Value,
             };
             
