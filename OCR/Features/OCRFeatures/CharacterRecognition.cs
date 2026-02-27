@@ -19,7 +19,7 @@ public sealed class CharacterRecognition : IDisposable
             throw new DirectoryNotFoundException($"tessdata folder not found at: {tessDataPath}");
         }
 
-        _engine = new TesseractEngine(tessDataPath, lang, EngineMode.Default);
+        _engine = new TesseractEngine(tessDataPath, lang, EngineMode.LstmOnly);
     }
 
     public string Read(Mat image)
