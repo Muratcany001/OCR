@@ -11,7 +11,7 @@ class Program
         string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181150384510.bmp";
         Stopwatch stopwatch = Stopwatch.StartNew();
         stopwatch.Start();
-        var result = Ocv.OcvComprasion(filePath);
+        var result = Ocv.AnalyzeImage(filePath);
         stopwatch.Stop();
         Console.WriteLine("Stopwatch time"+stopwatch.ElapsedMilliseconds);
         if (!result.IsReadable)
