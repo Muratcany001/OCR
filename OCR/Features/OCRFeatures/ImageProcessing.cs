@@ -39,8 +39,8 @@ using OpenCvSharp;
             roiW = Math.Clamp(roiW, 1, src.Width - roiX);
             roiH = Math.Clamp(roiH, 1, src.Height - roiY);
             Cv2.Rectangle(debug, new Rect(roiX, roiY, roiW, roiH), Scalar.Red, 3);
-            Cv2.ImShow("ROI Debug", debug);
-            Cv2.WaitKey();
+            // Cv2.ImShow("ROI Debug", debug);
+            // Cv2.WaitKey();
             debug.Dispose();
             Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
             
@@ -48,26 +48,15 @@ using OpenCvSharp;
             using Mat gray = new Mat();
             Mat binary = new Mat();
             Cv2.CvtColor(cropped, gray, ColorConversionCodes.BGR2GRAY);
-            Cv2.GaussianBlur(gray, gray, new Size(3,3), 0);
             
-            
-            // Cv2.AdaptiveThreshold(gray, binary, 255,
-            //     AdaptiveThresholdTypes.GaussianC,
-            //     ThresholdTypes.Binary, 31, 7);
-            Mat clahe = new Mat();
-            var claheFilter = Cv2.CreateCLAHE(clipLimit: 3.0, tileGridSize: new Size(8, 8));
-            claheFilter.Apply(gray, clahe);
+            Cv2.GaussianBlur(gray, gray, new Size(0,0),  sigmaX: 0.5);
 
-            Cv2.AdaptiveThreshold(clahe, binary, 255,
+            Cv2.AdaptiveThreshold(gray, binary, 255,
                 AdaptiveThresholdTypes.GaussianC,
                 ThresholdTypes.Binary, 31, 27);
             
-            var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(1,1));
-            Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);
-            cropped.Dispose();
-            
-            Cv2.ImShow(src.ToString(), binary);
-            Cv2.WaitKey();
+            // Cv2.ImShow(src.ToString(), binary);
+            // Cv2.WaitKey();
             return binary;
         }
     }

@@ -28,14 +28,13 @@ public sealed class CharacterRecognition
     /// <returns>OCR sonucu olarak okunan metin. Başarısızsa boş string.</returns>
     public string Read(Mat image, string psm = "6")
     {
-        Mat scaled = new Mat();
-        Cv2.Resize(image,scaled,new Size(),2.0,2.0, InterpolationFlags.Cubic);
+        
         string tmpIn = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.bmp");
         
         try
         {
             // BMP = sıfır compression overhead, PNG'den çok daha hızlı yazılır
-            Cv2.ImWrite(tmpIn, scaled);
+            Cv2.ImWrite(tmpIn, image);
             
             //process parametreleri
             // lstm only ve whitelist tanimlandi
@@ -53,6 +52,7 @@ public sealed class CharacterRecognition
                 StandardErrorEncoding = System.Text.Encoding.UTF8,
             };
             //kurulan processi baslatma
+            
             using var process = System.Diagnostics.Process.Start(psi)!;
             
             // stdout ve stderr paralel oku — deadlock önlenir
