@@ -20,7 +20,7 @@ using OpenCvSharp;
             int roiX = dmRect.X + dmRect.Width;
             int roiY = Math.Max(0, dmRect.Y - 40);
             int roiW = Math.Min(src.Width - roiX - 10, 630);
-            int roiH = Math.Min(dmRect.Height + 200, src.Height - roiY);
+            int roiH = Math.Min(dmRect.Height + 250, src.Height - roiY);
             
             Mat debug = src.Clone();
            
@@ -49,14 +49,16 @@ using OpenCvSharp;
             Mat binary = new Mat();
             Cv2.CvtColor(cropped, gray, ColorConversionCodes.BGR2GRAY);
             
-            Cv2.GaussianBlur(gray, gray, new Size(0,0),  sigmaX: 0.5);
+            Cv2.GaussianBlur(gray, gray, new Size(0,0),  sigmaX: 2);
 
             Cv2.AdaptiveThreshold(gray, binary, 255,
                 AdaptiveThresholdTypes.GaussianC,
-                ThresholdTypes.Binary, 31, 27);
-            
-            // Cv2.ImShow(src.ToString(), binary);
-            // Cv2.WaitKey();
+                ThresholdTypes.Binary, 31, 5);
+            var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2.5,2.5));
+            Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);
+            Cv2.Dilate(binary, binary, kernel);
+            Cv2.ImShow("image", binary);
+            Cv2.WaitKey();
             return binary;
         }
     }

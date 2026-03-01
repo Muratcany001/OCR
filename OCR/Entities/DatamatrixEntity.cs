@@ -7,7 +7,7 @@ namespace OCR.Entities;
 public class DatamatrixEntity
 {
     private string _lot;
-    public string Lot { get => _lot; set => _lot = value?.ToUpper(); }
+    public string Lot { get => _lot; set => _lot = value?.Replace("O","0").ToUpper(); }
     private string _man;
     public string Man { get => _man; set => _man = value?.Replace("/", ""); }
     public string Gtin { get; set; }

@@ -30,14 +30,15 @@ public class DatamatrixReader
         int padding = 20;
         int x = Math.Max(0, dmRect.X - padding);
         int y = Math.Max(0, dmRect.Y - padding);
-        int w = Math.Min(rawSrc.Width - x, dmRect.Width + padding * 2);
-        int h = Math.Min(rawSrc.Height - y, dmRect.Height + padding * 2);
+        int w = Math.Min(rawSrc.Width - x, dmRect.Width + padding * 3);
+        int h = Math.Min(rawSrc.Height - y, dmRect.Height + padding * 3);
         
         // DataMatrix bölgesini kırp
         using Mat dm = rawSrc[new Rect(x, y, w, h)];
         using Mat gray = new Mat();
         Cv2.CvtColor(dm, gray, ColorConversionCodes.BGR2GRAY);
-        
+        Cv2.ImShow("31",gray);
+        Cv2.WaitKey();
         int width = gray.Width;
         int height = gray.Height;
 

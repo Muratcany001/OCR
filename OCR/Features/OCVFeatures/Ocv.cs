@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using OpenCvSharp;
@@ -27,31 +28,25 @@ namespace OCR.Features.OCVFeatures
         {
             try
             {
-                // -----------------------------------------------------------------
-                // 1️⃣ Resmi bir kez belleğe al (auto‑dispose ile kaynak temizlenir)
-                // -----------------------------------------------------------------
                 using var src = Cv2.ImRead(filePath, ImreadModes.Color);
                 if (src.Empty())
                 {
                     Console.WriteLine($"[OCV] Image could not be loaded: {filePath}");
                     return new OcvResultEntity.OcvResult { IsReadable = false };
                 }
-
-                // -----------------------------------------------------------------
-                // 2️⃣ DataMatrix konumunu bul (varsa)
-                // -----------------------------------------------------------------
+                
                 var dmRect = DatamatrixFinder.FindDataMatrix(src);
                 bool dmRectIsValid = dmRect != default && dmRect.Width > 0 && dmRect.Height > 0;
-
-                // -----------------------------------------------------------------
-                // 3️⃣ DataMatrix var ise GS1‑library ile çöz
-                // -----------------------------------------------------------------
+                
                 DatamatrixEntity? dmEntity = null;
                 bool hasDataMatrix = false;
 
                 if (dmRectIsValid)
                 {
+                    Stopwatch sw = Stopwatch.StartNew();
                     var dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
+                    sw.Stop();
+                    Console.WriteLine("Datamatrix reader: "+sw.ElapsedMilliseconds);
                     hasDataMatrix = !string.IsNullOrWhiteSpace(dmResult);
 
                     if (hasDataMatrix)
@@ -69,36 +64,19 @@ namespace OCR.Features.OCVFeatures
                         };
                     }
                 }
-
-                // -----------------------------------------------------------------
-                // 4️⃣ OCR için görüntüyü işleme (kırpma, gürültü azaltma vb.)
-                // -----------------------------------------------------------------
+                
                 using var ocrMat = ImageProcessing.ProcessFile(src, dmRect);
-
-                // -----------------------------------------------------------------
-                // 5️⃣ OCR (Tesseract vb.) – düz metin elde edilir
-                // -----------------------------------------------------------------
+                
                 string rawOcrText = Ocr.Read(ocrMat);
-                Console.WriteLine(rawOcrText);                 // DEBUG amacıyla, istenirse silinebilir
-
-                // -----------------------------------------------------------------
-                // 6️⃣ OCR’dan “DataMatrix‑formatı” (GTIN, SN …) bilgileri çekilir
-                // -----------------------------------------------------------------
+                
                 var ocrData = BuildOcrDataFromText(rawOcrText);
 
-                // -----------------------------------------------------------------
-                // 7️⃣ DataMatrix yoksa ve OCR’da GTIN/SN bulunamadıysa
-                //    “Box” (BatchNo / MfgDate / ExpDate / Price) bilgilerini dene
-                // -----------------------------------------------------------------
                 BoxEntity? box = null;
                 if (!hasDataMatrix && (string.IsNullOrWhiteSpace(ocrData.Gtin) || string.IsNullOrWhiteSpace(ocrData.Sn)))
                 {
                     box = BuildBoxFromText(rawOcrText);
                 }
-
-                // -----------------------------------------------------------------
-                // 8️⃣ Sonucun okunabilirliği (IsReadable) belirlenir
-                // -----------------------------------------------------------------
+                
                 bool isReadable = false;
 
                 if (hasDataMatrix && dmEntity != null)
@@ -118,10 +96,7 @@ namespace OCR.Features.OCVFeatures
                     // Sadece Box bilgileri bulunduysa da okunabilir kabul edilebilir
                     isReadable = true;
                 }
-
-                // -----------------------------------------------------------------
-                // 9️⃣ Tüm bilgileri birleştirerek dönüş yapılır
-                // -----------------------------------------------------------------
+                
                 return new OcvResultEntity.OcvResult
                 {
                     HasDataMatrix = hasDataMatrix,
@@ -138,10 +113,7 @@ namespace OCR.Features.OCVFeatures
                 return new OcvResultEntity.OcvResult { IsReadable = false };
             }
         }
-
-        // -----------------------------------------------------------------
-        //  Helper: OCR metninden GTIN, SN, LOT, MAN, EXP çekilir
-        // -----------------------------------------------------------------
+        
         private static DatamatrixEntity BuildOcrDataFromText(string text)
         {
             var gtinMatch = RegexHelper.Gtin.Match(text);
@@ -166,10 +138,7 @@ namespace OCR.Features.OCVFeatures
                 ExpDate = expMatch.Success  ? expMatch.Groups[1].Value  : string.Empty
             };
         }
-
-        // -----------------------------------------------------------------
-        //  Helper: DataMatrix bulunmadığında Box bilgilerini çıkar
-        // -----------------------------------------------------------------
+        
         private static BoxEntity? BuildBoxFromText(string text)
         {
             var batchMatch = RegexHelper.BatchNo.Match(text);
