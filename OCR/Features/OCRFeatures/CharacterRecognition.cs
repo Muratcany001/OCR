@@ -26,15 +26,15 @@ public sealed class CharacterRecognition
     /// <param name="image">OCR uygulanacak işlenmiş görsel (Mat).</param>
     /// <param name="psm">Tesseract Page Segmentation Mode. Varsayılan: 6 (tek uniform blok).</param>
     /// <returns>OCR sonucu olarak okunan metin. Başarısızsa boş string.</returns>
-    public string Read(Mat image, string psm = "6") 
+    public string Read(Mat image, string psm = "6")
     {
+        
         string tmpIn = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.bmp");
         
         try
         {
             // BMP = sıfır compression overhead, PNG'den çok daha hızlı yazılır
             Cv2.ImWrite(tmpIn, image);
-            
             
             //process parametreleri
             // lstm only ve whitelist tanimlandi
@@ -43,7 +43,7 @@ public sealed class CharacterRecognition
             var psi = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = _tesseractPath, 
-                Arguments = $"{tmpIn} stdout -l {_lang} --oem 2 --psm {psm} -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz./:",
+                Arguments = $"{tmpIn} stdout -l {_lang} --oem 1 --psm {psm} -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.:/",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
@@ -52,6 +52,7 @@ public sealed class CharacterRecognition
                 StandardErrorEncoding = System.Text.Encoding.UTF8,
             };
             //kurulan processi baslatma
+            
             using var process = System.Diagnostics.Process.Start(psi)!;
             
             // stdout ve stderr paralel oku — deadlock önlenir

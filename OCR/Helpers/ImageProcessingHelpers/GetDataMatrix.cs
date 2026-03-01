@@ -1,3 +1,4 @@
+using OCR.Helpers.DatamatrixHelpers;
 using OpenCvSharp;
 
 namespace OCR.Packages;

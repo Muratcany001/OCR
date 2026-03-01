@@ -7,10 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2be79daa-64da-4246-a507-26ec5bff4376" name="Changes" comment="fea">
+    <list default="true" id="2be79daa-64da-4246-a507-26ec5bff4376" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.OCR/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OCR/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OCR/Features/OCRFeatures/CharacterRecognition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/Features/OCRFeatures/CharacterRecognition.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OCR/Features/OCRFeatures/ImageProcessing.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/Features/OCRFeatures/ImageProcessing.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OCR/obj/Debug/net8.0/OCR.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/obj/Debug/net8.0/OCR.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OCR/obj/Debug/net8.0/OCR.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/obj/Debug/net8.0/OCR.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OCR/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OCR/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="11_ForWindowsOS" />
+        <entry key="$PROJECT_DIR$" value="dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -46,10 +49,12 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9d6d166904954aaaa1197833799dfc9590c00/a9/862c4011/Enumerable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f8350a1ab7394363a06b62d52f873e3cd83a00/0d/bdfc60da/CollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fe6bbe05ea574af2bb29fe4f959ff9d77da00/83/cb77e402/DataMatrixReader.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5e8925b12d69ae23d722fd1282c671a537d098ec74e5d4715ba729cbf9078/Cv2_imgproc.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b9f2ca5198bfa50750406867c8cab159af3c924b1db353632d8ddf95f46c0/Mat.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Entities/BoxEntity.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Entities/DatamatrixEntity.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Entities/OcvResultEntity.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/OCR/Features/DatamatrixFeatures/DatamatrixTrainingData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Features/OCVFeatures/Ocv.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Helpers/ImageProcessingHelpers/GetDataMatrix.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Helpers/OCRHelpers/TesseractPathFinder.cs" root0="FORCE_HIGHLIGHTING" />
@@ -58,6 +63,7 @@
     <setting file="file://$PROJECT_DIR$/OCR/obj/OCR.csproj.nuget.dgspec.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/obj/project.assets.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/obj/project.packagespec.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/local/share/dotnet/sdk/8.0.418/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_8_default.globalconfig" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -69,7 +75,7 @@
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -89,6 +95,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "14__RefactorRoi",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -413,7 +420,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772096215547</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="ref: outputs and image processing classes">
+      <option name="closed" value="true" />
+      <created>1772293036255</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1772293036255</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -434,7 +449,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="ref(CharacterRecofnition.cs): add command lines" />
     <MESSAGE value="ref(): CharacterRecognition.cs refactor" />
     <MESSAGE value="ref(): Program.cs refactor" />
     <MESSAGE value="ref(ImageProcessing): update adaptive threshold parametres&#10;add image processing helper&#10;add DatamatrixFinder.cs for find datamatrix" />
@@ -459,7 +473,8 @@
     <MESSAGE value="feat(): regex helper" />
     <MESSAGE value="feat: add try catch" />
     <MESSAGE value="ref: clean entire smells" />
-    <option name="LAST_COMMIT_MESSAGE" value="ref: clean entire smells" />
+    <MESSAGE value="ref: outputs and image processing classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="ref: outputs and image processing classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

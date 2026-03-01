@@ -47,8 +47,7 @@ public class DatamatrixFinder
                 }
             }
         }
-        
-        return qr ;
+        return qr;
     }
     
 }
