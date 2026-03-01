@@ -8,11 +8,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2be79daa-64da-4246-a507-26ec5bff4376" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/OCR/.idea/.idea.OCR.dir/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OCR/.idea/.idea.OCR.dir/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OCR/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OCR/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OCR/Features/OCRFeatures/CharacterRecognition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/Features/OCRFeatures/CharacterRecognition.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OCR/Features/OCRFeatures/ImageProcessing.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/Features/OCRFeatures/ImageProcessing.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OCR/.idea/.idea.OCR.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/.idea/.idea.OCR.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OCR/OCR.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/OCR.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OCR/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OCR/obj/Debug/net8.0/OCR.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/obj/Debug/net8.0/OCR.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OCR/obj/Debug/net8.0/OCR.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/obj/Debug/net8.0/OCR.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OCR/obj/Debug/net8.0/OCR.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/obj/Debug/net8.0/OCR.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OCR/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OCR/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/OCR/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,7 +59,6 @@
     <setting file="file://$PROJECT_DIR$/OCR/Entities/BoxEntity.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Entities/DatamatrixEntity.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Entities/OcvResultEntity.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/OCR/Features/DatamatrixFeatures/DatamatrixTrainingData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Features/OCVFeatures/Ocv.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Helpers/ImageProcessingHelpers/GetDataMatrix.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/OCR/Helpers/OCRHelpers/TesseractPathFinder.cs" root0="FORCE_HIGHLIGHTING" />
@@ -85,27 +89,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Project.OCR.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CodeLensConfigurable&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Project.OCR.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "16__RefactorImageProcessing",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "CodeLensConfigurable",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="QodanaReportsService">
     <option name="descriptions">
       <ReportDescription localRun="true" path="/private/var/folders/vh/gccb4svn2qz7y85gdxd1_tpr0000gn/T/qodana_output/qodana.sarif.json" reportGuid="b1a25c26-d8e2-4ff0-b1f0-23a5af8bb8d4" reportId="OCR/qodana/2026-02-26" />
@@ -162,6 +167,7 @@
       <workItem from="1772086644676" duration="2480000" />
       <workItem from="1772094994761" duration="2106000" />
       <workItem from="1772097660564" duration="200000" />
+      <workItem from="1772367887268" duration="3100000" />
     </task>
     <task id="LOCAL-00001" summary="feat(ImageProcessing.cs): use opencv for imageprocessing.">
       <option name="closed" value="true" />

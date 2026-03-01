@@ -8,7 +8,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm/dm3.bmp";
+        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181140053626.bmp";
         
         Stopwatch stopwatch = Stopwatch.StartNew();
         stopwatch.Start();
