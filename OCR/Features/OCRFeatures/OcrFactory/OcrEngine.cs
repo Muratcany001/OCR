@@ -52,7 +52,6 @@ public sealed class MacNativeOcrEngine : IOcrEngine
         TessBaseAPISetImage(_handle, image.Data, image.Width, image.Height, image.ElemSize(), (int)image.Step());
         TessBaseAPISetVariable(_handle, "tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-:/");
         TessBaseAPISetPageSegMode(_handle,6);
-        TessBaseAPISetImage(_handle, image.Data, image.Width, image.Height, image.ElemSize(), (int)image.Step());
         
         // Metni oku
         IntPtr textPtr = TessBaseAPIGetUTF8Text(_handle);

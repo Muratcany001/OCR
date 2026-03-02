@@ -12,7 +12,7 @@ class Program
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
         WarmupHelper.Warmup();
-        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm45bmp.bmp";
+        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/DA3155805_202412181146276116.bmp";
         
         var result = Ocv.AnalyzeImage(filePath);
         Ocv.Ocr.Dispose();

@@ -44,26 +44,24 @@ using OpenCvSharp;
             debug.Dispose();
             Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
             
-            Cv2.Resize(cropped,cropped,new Size(),1.75,1.5, InterpolationFlags.Lanczos4);
-            
-            // Grayscale + Adaptive Threshold
+            Cv2.Resize(cropped, cropped, new Size(), 1.5, 1.5, InterpolationFlags.Lanczos4);
+    
             using Mat gray = new Mat();
             Mat binary = new Mat();
             Cv2.CvtColor(cropped, gray, ColorConversionCodes.BGR2GRAY);
             
-            Cv2.GaussianBlur(gray, gray, new Size(3,3),  sigmaX:1);
-
+            Cv2.GaussianBlur(gray, gray, new Size(3,3), 0);
+            
             Cv2.AdaptiveThreshold(gray, binary, 255,
                 AdaptiveThresholdTypes.GaussianC,
-                ThresholdTypes.Binary, 31, 10);
+                ThresholdTypes.Binary, 15, 10);
             
             var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
             Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);
-            // siyah yaziyi kalinlastir
-            Cv2.Erode(binary, binary, kernel);
             
-            Cv2.ImShow("image", binary);
-            Cv2.WaitKey();
+            // Cv2.Erode(binary, binary, kernel); 
+            // Cv2.ImShow("123",binary);
+            // Cv2.WaitKey();
             return binary;
         }
     }

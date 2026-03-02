@@ -7,11 +7,11 @@ namespace OCR.Entities;
 public class BoxEntity
 {
     private string _batchNo;
-    public string BatchNo { get => _batchNo; set => _batchNo = value?.ToUpper(); }
+    public string BatchNo { get => _batchNo; set => _batchNo = value?.Replace("O","0").ToUpper(); }
     private string _mfgDate;
-    public string MfgDate { get => _mfgDate ; set => _mfgDate = value?.Replace("/","").ToUpper(); }
+    public string MfgDate { get => _mfgDate ; set => _mfgDate = value?.ToUpper(); }
     private string _expDate;
-    public string ExpDate { get => _expDate; set  => _expDate = value?.Replace("/","").ToUpper(); }
+    public string ExpDate { get => _expDate; set  => _expDate = value?.ToUpper(); }
     private string _price;
     public string? Price { get => _price; set => _price = value?.ToUpper(); }
     

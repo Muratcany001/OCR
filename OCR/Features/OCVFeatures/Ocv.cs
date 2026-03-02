@@ -43,11 +43,7 @@ namespace OCR.Features.OCVFeatures
 
                 if (dmRectIsValid)
                 {
-                    Stopwatch sw = Stopwatch.StartNew();
                     var dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
-                    sw.Stop();
-                    Console.WriteLine("Datamatrix reader: "+sw.ElapsedMilliseconds);
-                    Console.WriteLine(dmResult);
                     hasDataMatrix = !string.IsNullOrWhiteSpace(dmResult);
 
                     if (hasDataMatrix)
@@ -69,6 +65,7 @@ namespace OCR.Features.OCVFeatures
                 using var ocrMat = ImageProcessing.ProcessFile(src, dmRect);
                 
                 string rawOcrText = Ocr.Read(ocrMat);
+                
                 
                 var ocrData = BuildOcrDataFromText(rawOcrText);
 
@@ -123,14 +120,7 @@ namespace OCR.Features.OCVFeatures
             var lotMatch  = RegexHelper.Lot.Match(text);
             var manMatch  = RegexHelper.Man.Match(text);
             var expMatch  = RegexHelper.Exp.Match(text);
-
-            // OCR bazen SN'yi SH olarak okuyabilir → ek bir arama
-            if (!snMatch.Success)
-            {
-                var shRegex = new Regex(@"SH:?\s*([A-Z0-9]+)", RegexOptions.IgnoreCase);
-                snMatch = shRegex.Match(text);
-            }
-
+            
             return new DatamatrixEntity
             {
                 Gtin    = gtinMatch.Success ? gtinMatch.Groups[1].Value : string.Empty,
@@ -144,19 +134,23 @@ namespace OCR.Features.OCVFeatures
         private static BoxEntity? BuildBoxFromText(string text)
         {
             var batchMatch = RegexHelper.BatchNo.Match(text);
-            var mfgMatch   = RegexHelper.MfgDate.Match(text);
-            var expMatch   = RegexHelper.ExpDate.Match(text);
+            var dateMatch  = RegexHelper.DoubleDate.Match(text);
             var priceMatch = RegexHelper.Price.Match(text);
 
-            // Hiç bir eşleşme yoksa Box nesnesine ihtiyaç yoktur
-            if (!batchMatch.Success && !mfgMatch.Success && !expMatch.Success && !priceMatch.Success)
-                return null;
+            string mfgDate = string.Empty;
+            string expDate = string.Empty;
+
+            if (dateMatch.Success)
+            {
+                mfgDate = dateMatch.Groups[1].Value.Replace('7', '/');
+                expDate = dateMatch.Groups[2].Value.Replace('7', '/');
+            }
 
             return new BoxEntity
             {
                 BatchNo = batchMatch.Success ? batchMatch.Groups[1].Value : string.Empty,
-                MfgDate = mfgMatch.Success   ? mfgMatch.Groups[1].Value   : string.Empty,
-                ExpDate = expMatch.Success   ? expMatch.Groups[1].Value   : string.Empty,
+                MfgDate = mfgDate,
+                ExpDate = expDate,
                 Price   = priceMatch.Success ? priceMatch.Groups[1].Value : string.Empty
             };
         }

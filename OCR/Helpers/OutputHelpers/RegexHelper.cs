@@ -20,9 +20,10 @@ public static class RegexHelper
     public static readonly Regex BatchNo = new(@"^([A-Z]{2,5}\d{1,4})$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
     
     // Tarih formatları: MM/YYYY
-    public static readonly Regex MfgDate = new(@"(\d{2}/\d{4})", RegexOptions.Compiled);
-    public static readonly Regex ExpDate = new(@"(\d{2}/\d{4})", RegexOptions.Compiled);
+    public static readonly Regex DoubleDate =
+        new(@"\b(\d{2}[\/7]?\d{4})\b.*?\b(\d{2}[\/7]?\d{4})\b",
+            RegexOptions.Compiled | RegexOptions.Singleline);    // public static readonly Regex ExpDate = new(@"(\d{2}/\d{4})", RegexOptions.Compiled);
     
     // Price: PRICE kelimesinden sonra gelen sayılar
-    public static readonly Regex Price = new(@"PRICE\s*:?\s*([0-9.,]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    public static readonly Regex Price = new(@"Price\s*:?\s*([0-9.,]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 }
