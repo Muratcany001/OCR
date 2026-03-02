@@ -14,5 +14,9 @@ public class OcvResultEntity
         public BoxEntity? Box { get; set; }
         public string RawOcrText { get; set; } = "";
         public DatamatrixEntity OcrData { get; set; }
+        
+        public string DatamatrixOcrOutput { get; set; } = "";
+        public string DatamatrixOutput { get; set; } = "";
+        public string BoxOcrOutput { get; set; } = "";
     }
 }

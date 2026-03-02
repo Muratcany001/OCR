@@ -61,19 +61,24 @@ namespace OCR.Features.OCVFeatures
                         };
                     }
                 }
+                var dmOutput = dmEntity != null
+                    ? $"{dmEntity.Lot}{dmEntity.Man}{dmEntity.ExpDate}{dmEntity.Sn}"
+                    : string.Empty;
                 
                 using var ocrMat = ImageProcessing.ProcessFile(src, dmRect);
                 
                 string rawOcrText = Ocr.Read(ocrMat);
                 
-                
                 var ocrData = BuildOcrDataFromText(rawOcrText);
-
+                var dmOcrOutput = dmEntity != null ? $"{dmEntity.Lot}{dmEntity.Man}{dmEntity.ExpDate}{dmEntity.Sn}"
+                    : string.Empty;
                 BoxEntity? box = null;
                 if (!hasDataMatrix && (string.IsNullOrWhiteSpace(ocrData.Gtin) || string.IsNullOrWhiteSpace(ocrData.Sn)))
                 {
                     box = BuildBoxFromText(rawOcrText);
                 }
+                var boxOutput = box != null ? $"{box.BatchNo}{box.MfgDate}{box.ExpDate}{box.Price}" 
+                    : string.Empty;
                 
                 bool isReadable = false;
 
@@ -94,6 +99,7 @@ namespace OCR.Features.OCVFeatures
                     // Sadece Box bilgileri bulunduysa da okunabilir kabul edilebilir
                     isReadable = true;
                 }
+                
                 return new OcvResultEntity.OcvResult
                 {
                     HasDataMatrix = hasDataMatrix,
@@ -101,9 +107,12 @@ namespace OCR.Features.OCVFeatures
                     DataMatrix    = dmEntity,
                     Box           = box,
                     RawOcrText    = rawOcrText,
-                    OcrData       = ocrData          // OcrData her zaman doldurulur (null olmaz)
+                    OcrData       = ocrData,
+                    DatamatrixOcrOutput = dmOcrOutput,
+                    DatamatrixOutput =  dmOutput,
+                    BoxOcrOutput = boxOutput
+                    
                 };
-                
             }
             catch (Exception ex)
             {
@@ -136,16 +145,16 @@ namespace OCR.Features.OCVFeatures
             var batchMatch = RegexHelper.BatchNo.Match(text);
             var dateMatch  = RegexHelper.DoubleDate.Match(text);
             var priceMatch = RegexHelper.Price.Match(text);
-
+            
             string mfgDate = string.Empty;
             string expDate = string.Empty;
-
+            
             if (dateMatch.Success)
             {
                 mfgDate = dateMatch.Groups[1].Value.Replace('7', '/');
                 expDate = dateMatch.Groups[2].Value.Replace('7', '/');
             }
-
+            
             return new BoxEntity
             {
                 BatchNo = batchMatch.Success ? batchMatch.Groups[1].Value : string.Empty,

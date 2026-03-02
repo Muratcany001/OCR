@@ -22,8 +22,9 @@ public static class RegexHelper
     // Tarih formatları: MM/YYYY
     public static readonly Regex DoubleDate =
         new(@"\b(\d{2}[\/7]?\d{4})\b.*?\b(\d{2}[\/7]?\d{4})\b",
-            RegexOptions.Compiled | RegexOptions.Singleline);    // public static readonly Regex ExpDate = new(@"(\d{2}/\d{4})", RegexOptions.Compiled);
+            RegexOptions.Compiled | RegexOptions.Singleline);
     
     // Price: PRICE kelimesinden sonra gelen sayılar
-    public static readonly Regex Price = new(@"Price\s*:?\s*([0-9.,]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    // public static readonly Regex Price = new(@"Price\s*:?\s*([0-9.,]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    public static readonly Regex Price = new(@"Price", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 }
