@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using OCR.Features.OCVFeatures;
 using OCR.Helpers.OutputHelpers;
+using OCR.Packages;
 using OpenCvSharp;
 
 namespace OCR;
@@ -9,9 +10,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        
-        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm/dm3.bmp";
         Stopwatch stopwatch = Stopwatch.StartNew();
+        WarmupHelper.Warmup();
+        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm45bmp.bmp";
+        
         var result = Ocv.AnalyzeImage(filePath);
         Ocv.Ocr.Dispose();
         if (!result.IsReadable)

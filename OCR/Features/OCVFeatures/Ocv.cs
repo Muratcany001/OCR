@@ -47,6 +47,7 @@ namespace OCR.Features.OCVFeatures
                     var dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
                     sw.Stop();
                     Console.WriteLine("Datamatrix reader: "+sw.ElapsedMilliseconds);
+                    Console.WriteLine(dmResult);
                     hasDataMatrix = !string.IsNullOrWhiteSpace(dmResult);
 
                     if (hasDataMatrix)
