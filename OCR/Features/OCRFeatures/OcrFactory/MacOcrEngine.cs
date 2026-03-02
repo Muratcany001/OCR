@@ -63,6 +63,5 @@ public sealed class MacOcrEngine : IOcrEngine
 
     public void Dispose()
     {
-        // No unmanaged resources to dispose for Mac CLI
     }
 }

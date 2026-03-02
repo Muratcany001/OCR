@@ -18,7 +18,7 @@ namespace OCR.Features.OCVFeatures
     /// </summary>
     public static class Ocv
     {
-        private static readonly CharacterRecognition Ocr = new();
+        public static readonly CharacterRecognition Ocr = new();
 
         /// <summary>
         /// Görseli analiz eder ve <see cref="OcvResultEntity.OcvResult"/> döndürür.
@@ -96,7 +96,6 @@ namespace OCR.Features.OCVFeatures
                     // Sadece Box bilgileri bulunduysa da okunabilir kabul edilebilir
                     isReadable = true;
                 }
-                
                 return new OcvResultEntity.OcvResult
                 {
                     HasDataMatrix = hasDataMatrix,
@@ -106,12 +105,14 @@ namespace OCR.Features.OCVFeatures
                     RawOcrText    = rawOcrText,
                     OcrData       = ocrData          // OcrData her zaman doldurulur (null olmaz)
                 };
+                
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[OCV] Unexpected error: {ex.Message}");
                 return new OcvResultEntity.OcvResult { IsReadable = false };
             }
+           
         }
         
         private static DatamatrixEntity BuildOcrDataFromText(string text)
