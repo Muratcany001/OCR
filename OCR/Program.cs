@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using OCR.Features.OCVFeatures;
 using OCR.Helpers.OutputHelpers;
+using OpenCvSharp;
 
 namespace OCR;
 
@@ -8,14 +9,11 @@ class Program
 {
     static void Main(string[] args)
     {
+        
         string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm/dm3.bmp";
-        
         Stopwatch stopwatch = Stopwatch.StartNew();
-        stopwatch.Start();
         var result = Ocv.AnalyzeImage(filePath);
-        stopwatch.Stop();
-        Console.WriteLine("Stopwatch time"+stopwatch.ElapsedMilliseconds);
-        
+        Ocv.Ocr.Dispose();
         if (!result.IsReadable)
         {
             Console.WriteLine("Kod okunamadı veya eksik bilgi (IsReadable = false)\n");
@@ -44,5 +42,7 @@ class Program
             Console.WriteLine($"Exp Date: {result.Box?.ExpDate}");
             Console.WriteLine($"Price:    {result.Box?.Price}");
         }
+        stopwatch.Stop();
+        Console.WriteLine(stopwatch.Elapsed + " Toplam calisma suresi");
     }
 }

@@ -30,7 +30,7 @@ public sealed class MacOcrEngine : IOcrEngine
             var psi = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = _tesseractPath, 
-                Arguments = $"{tmpIn} stdout -l {_lang} --oem 1 --psm {psm} -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.:/",
+                Arguments = $"{tmpIn} stdout -l {_lang} --oem 2 --psm {psm} -c tessedit_char_whitelist=0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ.:/",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
@@ -63,6 +63,5 @@ public sealed class MacOcrEngine : IOcrEngine
 
     public void Dispose()
     {
-        // No unmanaged resources to dispose for Mac CLI
     }
 }
