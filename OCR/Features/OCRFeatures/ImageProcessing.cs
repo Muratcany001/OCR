@@ -22,9 +22,6 @@ using OpenCvSharp;
             int roiW = Math.Min(src.Width - roiX - 10, 630);
             int roiH = Math.Min(dmRect.Height + 250, src.Height - roiY);
             
-            Mat debug = src.Clone();
-           
-            
             // DataMatrix bulunmazsa sabit ROI kullan
             if (dmRect.Width <= 0 || dmRect.Height <= 0 || dmRect.Width == src.Width)
             {
@@ -38,13 +35,16 @@ using OpenCvSharp;
             roiY = Math.Clamp(roiY, 0, src.Height - 1);
             roiW = Math.Clamp(roiW, 1, src.Width - roiX);
             roiH = Math.Clamp(roiH, 1, src.Height - roiY);
-            Cv2.Rectangle(debug, new Rect(roiX, roiY, roiW, roiH), Scalar.Red, 3);
+            
+            // Debug display is commented out to save CPU/Memory
+            // using Mat debug = src.Clone();
+            // Cv2.Rectangle(debug, new Rect(roiX, roiY, roiW, roiH), Scalar.Red, 3);
             // Cv2.ImShow("ROI Debug", debug);
             // Cv2.WaitKey();
-            debug.Dispose();
+            
             using Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
             
-            Cv2.Resize(cropped, cropped, new Size(), 1.5, 1.5, InterpolationFlags.Lanczos4);
+            Cv2.Resize(cropped, cropped, new Size(), 1.25, 1.25, InterpolationFlags.Lanczos4);
     
             using Mat gray = new Mat();
             Mat binary = new Mat();
@@ -54,7 +54,7 @@ using OpenCvSharp;
             
             Cv2.AdaptiveThreshold(gray, binary, 255,
                 AdaptiveThresholdTypes.GaussianC,
-                ThresholdTypes.Binary, 15, 10);
+                ThresholdTypes.Binary, 31, 10);
             
             using var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
             Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);

@@ -10,7 +10,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Toplam süreyi en başta başlatıyoruz
         Stopwatch globalWatch = Stopwatch.StartNew();
     
         WarmupHelper.Warmup();
@@ -20,11 +19,6 @@ class Program
         string[] filePaths = Directory.GetFiles(folderPath, "*.bmp");
 
         Console.WriteLine($"{filePaths.Length} adet dosya bulundu. İşlem başlıyor...\n");
-        string examplePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm4.bmp";
-        Console.WriteLine("Foreache girmeden once");
-        var sonuc = Ocv.AnalyzeImage(examplePath);
-        var skor = Validator.ResultValidator(sonuc);
-        Console.WriteLine(sonuc);
         
         foreach (var filePath in filePaths)
         {
@@ -34,17 +28,21 @@ class Program
             Console.WriteLine($"--- İşleniyor: {Path.GetFileName(filePath)} ---");
 
             var result = Ocv.AnalyzeImage(filePath);
-            
             // Skoru hesapla
             var score = Validator.ResultValidator(result);
-        
             // Çıktıları Bas
             if (result.HasDataMatrix)
             {
                 // DataMatrix tarihini senin OCR formatına çeviren o mantığı 
                 // ResultValidator içinde veya burada yapmayı unutma!
                 Console.WriteLine($"Ocr benzerlik skoru: %{score}");
-                Console.WriteLine($"Lot: {result.DataMatrix?.Lot} | Exp: {result.DataMatrix?.ExpDate}");
+                Console.WriteLine($"Ocroutput: {result.DatamatrixOcrOutput} | dmOutput: {result.DatamatrixOutput}");
+            }
+            else
+            {
+                Console.WriteLine("Exp date" + result.Box?.ExpDate);
+                Console.WriteLine($"Mfg date: {result.Box?.MfgDate}");
+                Console.WriteLine("Batch no "+result.Box?.BatchNo);
             }
 
             fileWatch.Stop();

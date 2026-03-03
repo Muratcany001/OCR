@@ -14,12 +14,9 @@ public static class Validator
         {
             return 0;
         }
-
         int ocrScore = 0;
-
         for (int i = 0; i < target.Length; i++)
         {
-
             if (i < ocr.Length)
             {
                 if (ocr[i] == target[i])
@@ -28,9 +25,7 @@ public static class Validator
                 }
             }
         }
-        
         if (target.Length == 0) return 0;
-
         return (ocrScore * 100) / target.Length;
     }
 }

@@ -36,14 +36,16 @@ namespace OCR.Features.OCVFeatures
                 }
                 
                 var dmRect = DatamatrixFinder.FindDataMatrix(src);
-                bool dmRectIsValid = dmRect != default && dmRect.Width > 0 && dmRect.Height > 0;
+                bool dmRectIsValid = dmRect != default;
                 
+                // Mat image = src[dmRect];
+                // Cv2.ImShow("123",image);
+                // Cv2.WaitKey();
                 DatamatrixEntity? dmEntity = null;
                 bool hasDataMatrix = false;
                 if (dmRectIsValid)
                 {
                     var dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
-                    Console.WriteLine($"[Datamatrix] Result: {dmResult}");
                     hasDataMatrix = !string.IsNullOrWhiteSpace(dmResult);
 
                     if (hasDataMatrix)
@@ -62,15 +64,13 @@ namespace OCR.Features.OCVFeatures
                     }
                 }
 
-                string rawDmExp = dmEntity.ExpDate;
+                string rawDmExp = dmEntity?.ExpDate;
                 string formattedExp = null;
                 if (!string.IsNullOrEmpty(rawDmExp) && rawDmExp.Length >= 4)
                 {
                     // İlk 2 hane Yıl (28), sonraki 2 hane Ay (05)
                     // Bunları yer değiştirip birleştiriyoruz
                     formattedExp = rawDmExp.Substring(2, 2) + rawDmExp.Substring(0, 2);
-    
-                    Console.WriteLine("Düzenlenmiş DM Tarihi: " + formattedExp); // Çıktı: 0528
                 }
                 
                 var dmOutput = dmEntity != null

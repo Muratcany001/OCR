@@ -38,6 +38,7 @@ public class DatamatrixReader
         using Mat dm = rawSrc[new Rect(x, y, w, h)];
         using Mat gray = new Mat();
         Cv2.CvtColor(dm, gray, ColorConversionCodes.BGR2GRAY);
+        
         // Cv2.ImShow("31",gray);
         // Cv2.WaitKey();
         int width = gray.Width;
