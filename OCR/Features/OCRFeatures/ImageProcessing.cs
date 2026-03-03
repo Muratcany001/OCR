@@ -42,7 +42,7 @@ using OpenCvSharp;
             // Cv2.ImShow("ROI Debug", debug);
             // Cv2.WaitKey();
             debug.Dispose();
-            Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
+            using Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
             
             Cv2.Resize(cropped, cropped, new Size(), 1.5, 1.5, InterpolationFlags.Lanczos4);
     
@@ -56,7 +56,7 @@ using OpenCvSharp;
                 AdaptiveThresholdTypes.GaussianC,
                 ThresholdTypes.Binary, 15, 10);
             
-            var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
+            using var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
             Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);
             
             // Cv2.Erode(binary, binary, kernel); 

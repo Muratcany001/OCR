@@ -13,7 +13,7 @@ public class OcvResultEntity
         public DatamatrixEntity? DataMatrix { get; set; }
         public BoxEntity? Box { get; set; }
         public string RawOcrText { get; set; } = "";
-        public DatamatrixEntity OcrData { get; set; }
+        public DatamatrixEntity OcrData { get; set; } = new();
         
         public string DatamatrixOcrOutput { get; set; } = "";
         public string DatamatrixOutput { get; set; } = "";

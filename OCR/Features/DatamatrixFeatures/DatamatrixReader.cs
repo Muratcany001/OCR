@@ -26,7 +26,7 @@ public class DatamatrixReader
             Console.WriteLine("Datamatrix not found...");
             return string.Empty;
         }
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.StartNew();
         // DataMatrix çevresine padding ekle
         int padding = 20;
         int x = Math.Max(0, dmRect.X - padding);
@@ -62,7 +62,7 @@ public class DatamatrixReader
             return string.Empty;
         }
         sw.Stop();
-        Console.WriteLine($"{sw.Elapsed} ms Image processing time");
+        Console.WriteLine($"{sw.ElapsedMilliseconds} ms Datamatrix reader time");
         return result.Text ?? string.Empty;
     }
 }

@@ -40,10 +40,10 @@ namespace OCR.Features.OCVFeatures
                 
                 DatamatrixEntity? dmEntity = null;
                 bool hasDataMatrix = false;
-
                 if (dmRectIsValid)
                 {
                     var dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
+                    Console.WriteLine($"[Datamatrix] Result: {dmResult}");
                     hasDataMatrix = !string.IsNullOrWhiteSpace(dmResult);
 
                     if (hasDataMatrix)
@@ -56,13 +56,25 @@ namespace OCR.Features.OCVFeatures
                             Gtin    = dict.GetValueOrDefault("01") ?? string.Empty,
                             Sn      = dict.GetValueOrDefault("21") ?? string.Empty,
                             Lot     = dict.GetValueOrDefault("10") ?? string.Empty,
-                            Man     = dict.GetValueOrDefault("11") ?? string.Empty,
-                            ExpDate = dict.GetValueOrDefault("17") ?? string.Empty
+                            ExpDate = dict.GetValueOrDefault("17")
                         };
+                        
                     }
                 }
+
+                string rawDmExp = dmEntity.ExpDate;
+                string formattedExp = null;
+                if (!string.IsNullOrEmpty(rawDmExp) && rawDmExp.Length >= 4)
+                {
+                    // İlk 2 hane Yıl (28), sonraki 2 hane Ay (05)
+                    // Bunları yer değiştirip birleştiriyoruz
+                    formattedExp = rawDmExp.Substring(2, 2) + rawDmExp.Substring(0, 2);
+    
+                    Console.WriteLine("Düzenlenmiş DM Tarihi: " + formattedExp); // Çıktı: 0528
+                }
+                
                 var dmOutput = dmEntity != null
-                    ? $"{dmEntity.Lot}{dmEntity.Man}{dmEntity.ExpDate}{dmEntity.Sn}"
+                    ? $"{dmEntity.Lot}{formattedExp}{dmEntity.Sn}"
                     : string.Empty;
                 
                 using var ocrMat = ImageProcessing.ProcessFile(src, dmRect);
@@ -70,8 +82,8 @@ namespace OCR.Features.OCVFeatures
                 string rawOcrText = Ocr.Read(ocrMat);
                 
                 var ocrData = BuildOcrDataFromText(rawOcrText);
-                var dmOcrOutput = dmEntity != null ? $"{dmEntity.Lot}{dmEntity.Man}{dmEntity.ExpDate}{dmEntity.Sn}"
-                    : string.Empty;
+                
+                var dmOcrOutput = $"{ocrData.Lot}{ocrData.ExpDate}{ocrData.Sn}";
                 BoxEntity? box = null;
                 if (!hasDataMatrix && (string.IsNullOrWhiteSpace(ocrData.Gtin) || string.IsNullOrWhiteSpace(ocrData.Sn)))
                 {
@@ -111,7 +123,6 @@ namespace OCR.Features.OCVFeatures
                     DatamatrixOcrOutput = dmOcrOutput,
                     DatamatrixOutput =  dmOutput,
                     BoxOcrOutput = boxOutput
-                    
                 };
             }
             catch (Exception ex)
@@ -127,7 +138,6 @@ namespace OCR.Features.OCVFeatures
             var gtinMatch = RegexHelper.Gtin.Match(text);
             var snMatch   = RegexHelper.Sn.Match(text);
             var lotMatch  = RegexHelper.Lot.Match(text);
-            var manMatch  = RegexHelper.Man.Match(text);
             var expMatch  = RegexHelper.Exp.Match(text);
             
             return new DatamatrixEntity
@@ -135,8 +145,7 @@ namespace OCR.Features.OCVFeatures
                 Gtin    = gtinMatch.Success ? gtinMatch.Groups[1].Value : string.Empty,
                 Sn      = snMatch.Success   ? snMatch.Groups[1].Value   : string.Empty,
                 Lot     = lotMatch.Success  ? lotMatch.Groups[1].Value  : string.Empty,
-                Man     = manMatch.Success  ? manMatch.Groups[1].Value  : string.Empty,
-                ExpDate = expMatch.Success  ? expMatch.Groups[1].Value  : string.Empty
+                ExpDate = expMatch.Success  ? expMatch.Result("$1$2")  : string.Empty
             };
         }
         

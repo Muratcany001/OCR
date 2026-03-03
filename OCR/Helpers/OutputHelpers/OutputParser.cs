@@ -15,7 +15,7 @@ public class OutputParser
     /// </summary>
     public static string ToStringOutput(DatamatrixEntity entity)
     {
-        return $"{entity.Lot}{entity.Gtin}{entity.Sn}{entity.Man}{entity.ExpDate}"
+        return $"{entity.Lot}{entity.Gtin}{entity.Sn}{entity.ExpDate}"
             .Replace("/", "");
     }
     
@@ -48,8 +48,7 @@ public class OutputParser
             Lot     = text.Substring(0, 5),
             Gtin    = text.Substring(5, 14),
             Sn      = text.Substring(19, 14),
-            Man     = text.Substring(33, 6),
-            ExpDate = text.Substring(39, 6)
+            ExpDate = text.Substring(33, 6)
         };
     }
     

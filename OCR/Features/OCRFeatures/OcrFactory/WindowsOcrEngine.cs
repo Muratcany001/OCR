@@ -26,7 +26,6 @@ public sealed class WindowsOcrEngine : IOcrEngine
 
         try
         {
-            using var memoryStream = new MemoryStream();
             Cv2.ImEncode(".bmp", image, out var imageData);
             using var pix = Pix.LoadFromMemory(imageData);
             pix.XRes = 300;

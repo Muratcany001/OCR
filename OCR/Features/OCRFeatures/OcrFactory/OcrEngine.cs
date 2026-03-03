@@ -29,7 +29,7 @@ public sealed class MacNativeOcrEngine : IOcrEngine
     [DllImport(TesseractLib, CallingConvention = CallingConvention.Cdecl)]
     private static extern void TessBaseAPISetPageSegMode(IntPtr handle, int mode);
 
-    private readonly IntPtr _handle;
+    private IntPtr _handle;
 
     public MacNativeOcrEngine(string lang)
     {
@@ -46,6 +46,8 @@ public sealed class MacNativeOcrEngine : IOcrEngine
 
     public string Read(Mat image, string psm = "6")
     {
+        if (_handle == IntPtr.Zero)
+            throw new ObjectDisposedException(nameof(MacNativeOcrEngine));
         if (image == null || image.Empty()) return string.Empty;
 
         // Resmi bellekte (RAM) Tesseract'a tanıt
@@ -63,6 +65,9 @@ public sealed class MacNativeOcrEngine : IOcrEngine
     public void Dispose()
     {
         if (_handle != IntPtr.Zero)
+        {
             TessBaseAPIDelete(_handle);
+            _handle = IntPtr.Zero;
+        }
     }
 }
