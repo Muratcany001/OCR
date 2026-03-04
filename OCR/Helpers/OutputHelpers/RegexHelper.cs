@@ -10,19 +10,16 @@ public static class RegexHelper
 {
     // DataMatrix etiket pattern'leri (label ile)
     public static readonly Regex Gtin = new(@"GTIN:?\s*(\d{14})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-    public static readonly Regex Sn = new(@"SN:?\s*([A-Z0-9]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    public static readonly Regex Sn = new(@"[S5][NM]:?\s*([A-Z0-9]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     public static readonly Regex Lot = new(@"LOT:?\s*([A-Z0-9]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-    public static readonly Regex Man = new(@"MAN:?\s*(\d{1,2}/\d{1,2}/?(?:\d{4})?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-    public static readonly Regex Exp = new(@"EXP:?\s*(\d{1,2}/\d{4})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    public static readonly Regex Man = new(@"MAN:?\b(\d{2})[\/7]?20(\d{2})\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    public static readonly Regex Exp = new(@"EXP:?\s*(\d{2}).*?(\d{2})\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    
 
-    // Box etiket pattern'leri (label olmadan - RAW değerler için)
-    // Batch No: Harflerle başlar, sayıyla biter (örn: VTTO1, VIT01, ABC123)
     public static readonly Regex BatchNo = new(@"^([A-Z]{2,5}\d{1,4})$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
     
-    // Tarih formatları: MM/YYYY
-    public static readonly Regex MfgDate = new(@"(\d{2}/\d{4})", RegexOptions.Compiled);
-    public static readonly Regex ExpDate = new(@"(\d{2}/\d{4})", RegexOptions.Compiled);
+    public static readonly Regex DoubleDate = new(@"(\d{2})[/7\s](\d{4})\D+(\d{2})[/7\s]?(\d{4})", 
+        RegexOptions.Compiled);
     
-    // Price: PRICE kelimesinden sonra gelen sayılar
-    public static readonly Regex Price = new(@"PRICE\s*:?\s*([0-9.,]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+    public static readonly Regex Price = new(@"Price\s*:?\s*([0-9.,]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 }

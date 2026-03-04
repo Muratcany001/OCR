@@ -12,7 +12,7 @@ public static class OcrEngineFactory
         }
         else
         {
-            return new MacOcrEngine(lang);
+            return new MacNativeOcrEngine(lang);
         }
     }
 }

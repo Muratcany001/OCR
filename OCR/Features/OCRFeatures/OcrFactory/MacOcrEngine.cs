@@ -18,7 +18,7 @@ public sealed class MacOcrEngine : IOcrEngine
     {
         if (image == null || image.Empty())
             return string.Empty;
-
+    
         string tmpIn = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.bmp");
         
         try

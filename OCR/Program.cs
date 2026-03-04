@@ -1,48 +1,60 @@
 ﻿using System.Diagnostics;
 using OCR.Features.OCVFeatures;
 using OCR.Helpers.OutputHelpers;
+using OCR.Packages;
 using OpenCvSharp;
-
+using OCR.Features.OCVFeatures;
 namespace OCR;
 
 class Program
 {
     static void Main(string[] args)
     {
-        
-        string filePath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos/dm/dm3.bmp";
-        Stopwatch stopwatch = Stopwatch.StartNew();
-        var result = Ocv.AnalyzeImage(filePath);
-        Ocv.Ocr.Dispose();
-        if (!result.IsReadable)
-        {
-            Console.WriteLine("Kod okunamadı veya eksik bilgi (IsReadable = false)\n");
-        }
-        
-        Console.WriteLine("--- Ham OCR Metni ---");
-        Console.WriteLine(result.RawOcrText);
+        Stopwatch globalWatch = Stopwatch.StartNew();
+    
+        WarmupHelper.Warmup();
+    
+        // Klasördeki tüm .bmp dosyalarını al
+        string folderPath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos";
+        string[] filePaths = Directory.GetFiles(folderPath, "*.bmp");
 
-        if (result.HasDataMatrix)
+        Console.WriteLine($"{filePaths.Length} adet dosya bulundu. İşlem başlıyor...\n");
+        
+        foreach (var filePath in filePaths)
         {
-            Console.WriteLine("\n--- DataMatrix Çıktısı ---");
-            Console.WriteLine($"SN:   {result.DataMatrix?.Sn}");
-            Console.WriteLine("Gtin "+ result.DataMatrix?.Gtin);
-            Console.WriteLine("Lot "+ result.DataMatrix?.Lot);
-            
-            Console.WriteLine("\n--- OCR Çıktısı (Aynı Görselden Regex ile) ---");
-            Console.WriteLine($"SN:   {result.OcrData?.Sn}");
-            Console.WriteLine($"Gtin:   {result.OcrData?.Gtin}");
-            Console.WriteLine($"Lot:   {result.OcrData?.Lot}");
+            // Her fotoğraf için ayrı bir süre tutmak istersen (isteğe bağlı)
+            Stopwatch fileWatch = Stopwatch.StartNew();
+        
+            Console.WriteLine($"--- İşleniyor: {Path.GetFileName(filePath)} ---");
+
+            var result = Ocv.AnalyzeImage(filePath);
+            // Skoru hesapla
+            var score = Validator.ResultValidator(result);
+            // Çıktıları Bas
+            if (result.HasDataMatrix)
+            {
+                // DataMatrix tarihini senin OCR formatına çeviren o mantığı 
+                // ResultValidator içinde veya burada yapmayı unutma!
+                Console.WriteLine($"Ocr benzerlik skoru: %{score}");
+                Console.WriteLine($"Ocroutput: {result.DatamatrixOcrOutput} | dmOutput: {result.DatamatrixOutput}");
+            }
+            else
+            {
+                Console.WriteLine("Exp date: " + result.Box?.ExpDate);
+                Console.WriteLine($"Mfg date: {result.Box?.MfgDate}");
+                Console.WriteLine("Batch no "+result.Box?.BatchNo);
+            }
+
+            fileWatch.Stop();
+            Console.WriteLine($"Dosya İşleme Süresi: {fileWatch.ElapsedMilliseconds} ms");
+            Console.WriteLine("---------------------------------------------------\n");
         }
-        else
-        {
-            Console.WriteLine("\n--- Kutu OCR Çıktısı ---");
-            Console.WriteLine($"Batch No: {result.Box?.BatchNo}");
-            Console.WriteLine($"Mfg Date: {result.Box?.MfgDate}");
-            Console.WriteLine($"Exp Date: {result.Box?.ExpDate}");
-            Console.WriteLine($"Price:    {result.Box?.Price}");
-        }
-        stopwatch.Stop();
-        Console.WriteLine(stopwatch.Elapsed + " Toplam calisma suresi");
+
+        // Tesseract engine'i en son kapatıyoruz (her döngüde kapatıp açmak yavaşlatır)
+        Ocv.Ocr.Dispose();
+
+        globalWatch.Stop();
+        Console.WriteLine($"\n>>> TOPLAM ÇALIŞMA SÜRESİ: {globalWatch.Elapsed}");
+        Console.WriteLine($">>> Ortalama Hız: {globalWatch.ElapsedMilliseconds / filePaths.Length} ms/fotoğraf");
     }
 }

@@ -45,7 +45,7 @@ public class Gs1Parser
             }
 
             // AI'yi bul (2, 3 veya 4 haneli olabilir)
-            string ai = null;
+            string? ai = null;
             int fixedLen = 0;
             string aiName = "Unknown";
 
@@ -86,7 +86,6 @@ public class Gs1Parser
                 value = end == -1 ? data.Substring(i) : data.Substring(i, end - i);
                 i += value.Length;
             }
-            value = value.Replace("/", "");
             result.Add((ai, aiName, value));
         }
         

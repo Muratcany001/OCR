@@ -26,7 +26,7 @@ public class DatamatrixReader
             Console.WriteLine("Datamatrix not found...");
             return string.Empty;
         }
-        Stopwatch sw = new Stopwatch();
+        Stopwatch sw = Stopwatch.StartNew();
         // DataMatrix çevresine padding ekle
         int padding = 20;
         int x = Math.Max(0, dmRect.X - padding);
@@ -38,6 +38,7 @@ public class DatamatrixReader
         using Mat dm = rawSrc[new Rect(x, y, w, h)];
         using Mat gray = new Mat();
         Cv2.CvtColor(dm, gray, ColorConversionCodes.BGR2GRAY);
+        
         // Cv2.ImShow("31",gray);
         // Cv2.WaitKey();
         int width = gray.Width;
@@ -62,7 +63,7 @@ public class DatamatrixReader
             return string.Empty;
         }
         sw.Stop();
-        Console.WriteLine($"{sw.Elapsed} ms Image processing time");
+        Console.WriteLine($"{sw.ElapsedMilliseconds} ms Datamatrix reader time");
         return result.Text ?? string.Empty;
     }
 }

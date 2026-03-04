@@ -36,17 +36,16 @@ namespace OCR.Features.OCVFeatures
                 }
                 
                 var dmRect = DatamatrixFinder.FindDataMatrix(src);
-                bool dmRectIsValid = dmRect != default && dmRect.Width > 0 && dmRect.Height > 0;
+                bool dmRectIsValid = dmRect != default;
                 
+                // Mat image = src[dmRect];
+                // Cv2.ImShow("123",image);
+                // Cv2.WaitKey();
                 DatamatrixEntity? dmEntity = null;
                 bool hasDataMatrix = false;
-
                 if (dmRectIsValid)
                 {
-                    Stopwatch sw = Stopwatch.StartNew();
                     var dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
-                    sw.Stop();
-                    Console.WriteLine("Datamatrix reader: "+sw.ElapsedMilliseconds);
                     hasDataMatrix = !string.IsNullOrWhiteSpace(dmResult);
 
                     if (hasDataMatrix)
@@ -59,23 +58,39 @@ namespace OCR.Features.OCVFeatures
                             Gtin    = dict.GetValueOrDefault("01") ?? string.Empty,
                             Sn      = dict.GetValueOrDefault("21") ?? string.Empty,
                             Lot     = dict.GetValueOrDefault("10") ?? string.Empty,
-                            Man     = dict.GetValueOrDefault("11") ?? string.Empty,
-                            ExpDate = dict.GetValueOrDefault("17") ?? string.Empty
+                            ExpDate = dict.GetValueOrDefault("17")
                         };
+                        
                     }
                 }
+
+                string rawDmExp = dmEntity?.ExpDate;
+                string formattedExp = null;
+                if (!string.IsNullOrEmpty(rawDmExp) && rawDmExp.Length >= 4)
+                {
+                    // İlk 2 hane Yıl (28), sonraki 2 hane Ay (05)
+                    // Bunları yer değiştirip birleştiriyoruz
+                    formattedExp = rawDmExp.Substring(2, 2) + rawDmExp.Substring(0, 2);
+                }
+                
+                var dmOutput = dmEntity != null
+                    ? $"{dmEntity.Lot}{formattedExp}{dmEntity.Sn}"
+                    : string.Empty;
                 
                 using var ocrMat = ImageProcessing.ProcessFile(src, dmRect);
                 
                 string rawOcrText = Ocr.Read(ocrMat);
                 
                 var ocrData = BuildOcrDataFromText(rawOcrText);
-
+                
+                var dmOcrOutput = $"{ocrData.Lot}{ocrData.ExpDate}{ocrData.Sn}";
                 BoxEntity? box = null;
                 if (!hasDataMatrix && (string.IsNullOrWhiteSpace(ocrData.Gtin) || string.IsNullOrWhiteSpace(ocrData.Sn)))
                 {
                     box = BuildBoxFromText(rawOcrText);
                 }
+                var boxOutput = box != null ? $"{box.BatchNo}{box.MfgDate}{box.ExpDate}{box.Price}" 
+                    : string.Empty;
                 
                 bool isReadable = false;
 
@@ -96,6 +111,7 @@ namespace OCR.Features.OCVFeatures
                     // Sadece Box bilgileri bulunduysa da okunabilir kabul edilebilir
                     isReadable = true;
                 }
+                
                 return new OcvResultEntity.OcvResult
                 {
                     HasDataMatrix = hasDataMatrix,
@@ -103,9 +119,11 @@ namespace OCR.Features.OCVFeatures
                     DataMatrix    = dmEntity,
                     Box           = box,
                     RawOcrText    = rawOcrText,
-                    OcrData       = ocrData          // OcrData her zaman doldurulur (null olmaz)
+                    OcrData       = ocrData,
+                    DatamatrixOcrOutput = dmOcrOutput,
+                    DatamatrixOutput =  dmOutput,
+                    BoxOcrOutput = boxOutput
                 };
-                
             }
             catch (Exception ex)
             {
@@ -120,42 +138,37 @@ namespace OCR.Features.OCVFeatures
             var gtinMatch = RegexHelper.Gtin.Match(text);
             var snMatch   = RegexHelper.Sn.Match(text);
             var lotMatch  = RegexHelper.Lot.Match(text);
-            var manMatch  = RegexHelper.Man.Match(text);
             var expMatch  = RegexHelper.Exp.Match(text);
-
-            // OCR bazen SN'yi SH olarak okuyabilir → ek bir arama
-            if (!snMatch.Success)
-            {
-                var shRegex = new Regex(@"SH:?\s*([A-Z0-9]+)", RegexOptions.IgnoreCase);
-                snMatch = shRegex.Match(text);
-            }
-
+            
             return new DatamatrixEntity
             {
                 Gtin    = gtinMatch.Success ? gtinMatch.Groups[1].Value : string.Empty,
                 Sn      = snMatch.Success   ? snMatch.Groups[1].Value   : string.Empty,
                 Lot     = lotMatch.Success  ? lotMatch.Groups[1].Value  : string.Empty,
-                Man     = manMatch.Success  ? manMatch.Groups[1].Value  : string.Empty,
-                ExpDate = expMatch.Success  ? expMatch.Groups[1].Value  : string.Empty
+                ExpDate = expMatch.Success  ? expMatch.Result("$1$2")  : string.Empty
             };
         }
         
         private static BoxEntity? BuildBoxFromText(string text)
         {
             var batchMatch = RegexHelper.BatchNo.Match(text);
-            var mfgMatch   = RegexHelper.MfgDate.Match(text);
-            var expMatch   = RegexHelper.ExpDate.Match(text);
+            var dateMatch  = RegexHelper.DoubleDate.Match(text);
             var priceMatch = RegexHelper.Price.Match(text);
-
-            // Hiç bir eşleşme yoksa Box nesnesine ihtiyaç yoktur
-            if (!batchMatch.Success && !mfgMatch.Success && !expMatch.Success && !priceMatch.Success)
-                return null;
-
-            return new BoxEntity
+            
+            string mfgDate = string.Empty;
+            string expDate = string.Empty;
+            
+            if (dateMatch.Success)
+            {
+                mfgDate = $"{dateMatch.Groups[1].Value}/{dateMatch.Groups[2].Value}";
+                expDate = $"{dateMatch.Groups[3].Value}/{dateMatch.Groups[4].Value}";
+            }
+            
+             return new BoxEntity
             {
                 BatchNo = batchMatch.Success ? batchMatch.Groups[1].Value : string.Empty,
-                MfgDate = mfgMatch.Success   ? mfgMatch.Groups[1].Value   : string.Empty,
-                ExpDate = expMatch.Success   ? expMatch.Groups[1].Value   : string.Empty,
+                MfgDate = mfgDate,
+                ExpDate = expDate,
                 Price   = priceMatch.Success ? priceMatch.Groups[1].Value : string.Empty
             };
         }
