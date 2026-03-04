@@ -9,20 +9,11 @@
   <component name="ChangeListManager">
     <list default="true" id="8e498f6c-1baa-4ece-b5a1-77aed45bf776" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.OCR.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.OCR.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entities/BoxEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/BoxEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entities/DatamatrixEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/DatamatrixEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Entities/OcvResultEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Entities/OcvResultEntity.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Features/DatamatrixFeatures/DatamatrixReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Features/DatamatrixFeatures/DatamatrixReader.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Features/OCRFeatures/ImageProcessing.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Features/OCRFeatures/ImageProcessing.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Features/OCRFeatures/OcrFactory/MacOcrEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Features/OCRFeatures/OcrFactory/MacOcrEngine.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Features/OCRFeatures/OcrFactory/OcrEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Features/OCRFeatures/OcrFactory/OcrEngine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Features/OCRFeatures/OcrFactory/WindowsOcrEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Features/OCRFeatures/OcrFactory/WindowsOcrEngine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Features/OCVFeatures/Ocv.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Features/OCVFeatures/Ocv.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Features/OCVFeatures/Validator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Features/OCVFeatures/Validator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Helpers/DatamatrixHelpers/Gs1Parser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Helpers/DatamatrixHelpers/Gs1Parser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Helpers/OutputHelpers/OutputParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Helpers/OutputHelpers/OutputParser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Helpers/OutputHelpers/RegexHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Helpers/OutputHelpers/RegexHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,6 +25,11 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="dev" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -52,6 +48,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/65a031fdea6b4b8fac2114ac1e262b66115600/ef/9a6e7c68/Regex.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9d6d166904954aaaa1197833799dfc9590c00/a9/862c4011/Enumerable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f8350a1ab7394363a06b62d52f873e3cd83a00/0d/bdfc60da/CollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fe6bbe05ea574af2bb29fe4f959ff9d77da00/83/cb77e402/DataMatrixReader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f4cd2a8d7383e3f458328b299a9c3eb8466e61f7fdc5c48c9c81725ad94e/Cv2_highgui.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Features/OCRFeatures/OcrFactory/OcrEngine.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Features/OCVFeatures/Validator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Helpers/OCRHelpers/WarmupHelper.cs" root0="FORCE_HIGHLIGHTING" />
@@ -86,7 +84,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "17__RefactorTesseractEngine",
+    "git-widget-placeholder": "18__Refactorimageprocessing",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",

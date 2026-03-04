@@ -26,20 +26,15 @@ using OpenCvSharp;
             if (dmRect.Width <= 0 || dmRect.Height <= 0 || dmRect.Width == src.Width)
             {
                 Console.WriteLine("ROI geçersiz, sabit ROI kullanılıyor");
-                roiX = 470;
-                roiY = 440;
-                roiW = 700;
-                roiH = 250;
+                roiX = 520;
+                roiY = 400;
+                roiW = 600;
+                roiH = 220;
             }
             roiX = Math.Clamp(roiX, 0, src.Width - 1);
             roiY = Math.Clamp(roiY, 0, src.Height - 1);
             roiW = Math.Clamp(roiW, 1, src.Width - roiX);
             roiH = Math.Clamp(roiH, 1, src.Height - roiY);
-            
-            // Debug display is commented out to save CPU/Memory
-            // using Mat debug = src.Clone();
-            // Cv2.Rectangle(debug, new Rect(roiX, roiY, roiW, roiH), Scalar.Red, 3);
-            
             
             using Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
             
@@ -56,9 +51,8 @@ using OpenCvSharp;
                 ThresholdTypes.Binary, 31, 10);
             
             using var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
-            Cv2.MorphologyEx(binary, binary, MorphTypes.Close, kernel);
+            Cv2.MorphologyEx(binary, binary, MorphTypes.Open, kernel);
             
-            // Cv2.Erode(binary, binary, kernel); 
             // Cv2.ImShow("123",binary);
             // Cv2.WaitKey();
             return binary;
