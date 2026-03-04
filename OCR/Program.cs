@@ -15,7 +15,7 @@ class Program
         WarmupHelper.Warmup();
     
         // Klasördeki tüm .bmp dosyalarını al
-        string folderPath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos";
+        string folderPath = "C:\\Users\\murat\\source\\repos\\OCR\\OCR\\x\\";
         string[] filePaths = Directory.GetFiles(folderPath, "*.bmp");
 
         Console.WriteLine($"{filePaths.Length} adet dosya bulundu. İşlem başlıyor...\n");

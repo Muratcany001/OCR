@@ -53,8 +53,6 @@ using OpenCvSharp;
             using var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
             Cv2.MorphologyEx(binary, binary, MorphTypes.Open, kernel);
             
-            Cv2.ImShow("123",binary);
-            Cv2.WaitKey();
             return binary;
         }
     }
