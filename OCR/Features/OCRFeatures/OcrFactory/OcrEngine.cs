@@ -5,7 +5,6 @@ namespace OCR.Features.OCRFeatures;
 
 public sealed class MacNativeOcrEngine : IOcrEngine
 {
-    // Mac'te Homebrew ile kurulan tesseract'ın ana kütüphane adı
     private const string TesseractLib = "/opt/homebrew/Cellar/tesseract/5.5.2/lib/libtesseract.5.dylib";
 
     [DllImport(TesseractLib, CallingConvention = CallingConvention.Cdecl)]
@@ -34,7 +33,6 @@ public sealed class MacNativeOcrEngine : IOcrEngine
     public MacNativeOcrEngine(string lang)
     {
         // Tesseract verilerinin (tessdata) olduğu klasör yolu
-        // Genellikle "/opt/homebrew/share/tessdata" olur
         string tessDataPath = "/opt/homebrew/share/tessdata/"; 
 
         _handle = TessBaseAPICreate();
@@ -48,14 +46,19 @@ public sealed class MacNativeOcrEngine : IOcrEngine
     {
         if (_handle == IntPtr.Zero)
             throw new ObjectDisposedException(nameof(MacNativeOcrEngine));
-        if (image == null || image.Empty()) return string.Empty;
+        if (image == null || image.Empty()) 
+            return string.Empty;
 
-        // Resmi bellekte (RAM) Tesseract'a tanıt
-        TessBaseAPISetImage(_handle, image.Data, image.Width, image.Height, image.ElemSize(), (int)image.Step());
-        TessBaseAPISetVariable(_handle, "tessedit_char_whitelist", "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-:/");
-        TessBaseAPISetPageSegMode(_handle,6);
-        
-        // Metni oku
+        // 1. Önce ayarlar
+        TessBaseAPISetPageSegMode(_handle, 6);
+        TessBaseAPISetVariable(_handle, "tessedit_char_whitelist", 
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-:/");
+
+        // 2. Sonra görüntü
+        TessBaseAPISetImage(_handle, image.Data, image.Width, image.Height, 
+            image.ElemSize(), (int)image.Step());
+
+        // 3. Oku
         IntPtr textPtr = TessBaseAPIGetUTF8Text(_handle);
         string result = Marshal.PtrToStringAnsi(textPtr) ?? string.Empty;
 

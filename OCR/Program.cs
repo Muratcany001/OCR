@@ -15,7 +15,7 @@ class Program
         WarmupHelper.Warmup();
     
         // Klasördeki tüm .bmp dosyalarını al
-        string folderPath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos";
+        string folderPath = "C:\\Users\\murat\\source\\repos\\OCR\\OCR\\x\\";
         string[] filePaths = Directory.GetFiles(folderPath, "*.bmp");
 
         Console.WriteLine($"{filePaths.Length} adet dosya bulundu. İşlem başlıyor...\n");
@@ -49,8 +49,7 @@ class Program
             Console.WriteLine($"Dosya İşleme Süresi: {fileWatch.ElapsedMilliseconds} ms");
             Console.WriteLine("---------------------------------------------------\n");
         }
-
-        // Tesseract engine'i en son kapatıyoruz (her döngüde kapatıp açmak yavaşlatır)
+        
         Ocv.Ocr.Dispose();
 
         globalWatch.Stop();

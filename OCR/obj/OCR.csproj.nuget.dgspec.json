@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/Users/murat/RiderProjects/OCR/OCR/OCR.csproj": {}
+    "C:\\Users\\murat\\source\\repos\\OCR\\OCR\\OCR.csproj": {}
   },
   "projects": {
-    "/Users/murat/RiderProjects/OCR/OCR/OCR.csproj": {
+    "C:\\Users\\murat\\source\\repos\\OCR\\OCR\\OCR.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/murat/RiderProjects/OCR/OCR/OCR.csproj",
+        "projectUniqueName": "C:\\Users\\murat\\source\\repos\\OCR\\OCR\\OCR.csproj",
         "projectName": "OCR",
-        "projectPath": "/Users/murat/RiderProjects/OCR/OCR/OCR.csproj",
-        "packagesPath": "/Users/murat/.nuget/packages/",
-        "outputPath": "/Users/murat/RiderProjects/OCR/OCR/obj/",
+        "projectPath": "C:\\Users\\murat\\source\\repos\\OCR\\OCR\\OCR.csproj",
+        "packagesPath": "C:\\Users\\murat\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\murat\\source\\repos\\OCR\\OCR\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/murat/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\murat\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -55,9 +61,9 @@
               "target": "Package",
               "version": "[4.13.0.20260214, )"
             },
-            "OpenCvSharp4.runtime.osx_arm64": {
+            "OpenCvSharp4.runtime.win": {
               "target": "Package",
-              "version": "[4.8.1-rc, )"
+              "version": "[4.13.0.20260214, )"
             },
             "SimpleSoft.Gs1Parser": {
               "target": "Package",
@@ -65,7 +71,7 @@
             },
             "Tesseract": {
               "target": "Package",
-              "version": "[4.1.1, )"
+              "version": "[5.2.0, )"
             },
             "ZXing.Net.Bindings.Windows.Compatibility": {
               "target": "Package",
@@ -83,16 +89,22 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.24, 8.0.24]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.418/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.418/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
-        "osx-arm64": {
+        "win-x64": {
           "#import": []
         }
       }

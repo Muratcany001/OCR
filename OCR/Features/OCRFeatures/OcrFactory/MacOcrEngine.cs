@@ -14,7 +14,7 @@ public sealed class MacOcrEngine : IOcrEngine
         _tesseractPath = TesseractPathFinder.GetTesseractPath();
     }
 
-    public string Read(Mat image, string psm = "6")
+    public string Read(Mat image, string psm = "8")
     {
         if (image == null || image.Empty())
             return string.Empty;
