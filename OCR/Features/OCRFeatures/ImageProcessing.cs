@@ -26,10 +26,10 @@ using OpenCvSharp;
             if (dmRect.Width <= 0 || dmRect.Height <= 0 || dmRect.Width == src.Width)
             {
                 Console.WriteLine("ROI geçersiz, sabit ROI kullanılıyor");
-                roiX = 520;
+                roiX = 420;
                 roiY = 400;
                 roiW = 600;
-                roiH = 220;
+                roiH = 250;
             }
             roiX = Math.Clamp(roiX, 0, src.Width - 1);
             roiY = Math.Clamp(roiY, 0, src.Height - 1);
@@ -53,8 +53,8 @@ using OpenCvSharp;
             using var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
             Cv2.MorphologyEx(binary, binary, MorphTypes.Open, kernel);
             
-            // Cv2.ImShow("123",binary);
-            // Cv2.WaitKey();
+            Cv2.ImShow("123",binary);
+            Cv2.WaitKey();
             return binary;
         }
     }

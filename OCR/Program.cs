@@ -49,8 +49,7 @@ class Program
             Console.WriteLine($"Dosya İşleme Süresi: {fileWatch.ElapsedMilliseconds} ms");
             Console.WriteLine("---------------------------------------------------\n");
         }
-
-        // Tesseract engine'i en son kapatıyoruz (her döngüde kapatıp açmak yavaşlatır)
+        
         Ocv.Ocr.Dispose();
 
         globalWatch.Stop();
