@@ -39,8 +39,7 @@ using OpenCvSharp;
             // Debug display is commented out to save CPU/Memory
             // using Mat debug = src.Clone();
             // Cv2.Rectangle(debug, new Rect(roiX, roiY, roiW, roiH), Scalar.Red, 3);
-            // Cv2.ImShow("ROI Debug", debug);
-            // Cv2.WaitKey();
+            
             
             using Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
             

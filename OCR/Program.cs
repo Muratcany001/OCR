@@ -40,7 +40,7 @@ class Program
             }
             else
             {
-                Console.WriteLine("Exp date" + result.Box?.ExpDate);
+                Console.WriteLine("Exp date: " + result.Box?.ExpDate);
                 Console.WriteLine($"Mfg date: {result.Box?.MfgDate}");
                 Console.WriteLine("Batch no "+result.Box?.BatchNo);
             }

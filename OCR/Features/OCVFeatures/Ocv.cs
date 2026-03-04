@@ -160,11 +160,11 @@ namespace OCR.Features.OCVFeatures
             
             if (dateMatch.Success)
             {
-                mfgDate = dateMatch.Groups[1].Value.Replace('7', '/');
-                expDate = dateMatch.Groups[2].Value.Replace('7', '/');
+                mfgDate = $"{dateMatch.Groups[1].Value}/{dateMatch.Groups[2].Value}";
+                expDate = $"{dateMatch.Groups[3].Value}/{dateMatch.Groups[4].Value}";
             }
             
-            return new BoxEntity
+             return new BoxEntity
             {
                 BatchNo = batchMatch.Success ? batchMatch.Groups[1].Value : string.Empty,
                 MfgDate = mfgDate,
