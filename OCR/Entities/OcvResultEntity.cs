@@ -10,6 +10,8 @@ public class OcvResultEntity
         /// <summary>Zorunlu alanlar okunabildi mi?</summary>
         public bool IsReadable { get; set; }
         public bool HasDataMatrix { get; set; }
+        /// <summary>Box görseli OCR'ında BatchNo başarıyla parse edilebildi mi?</summary>
+        public bool HasBatchNo { get; set; }
         public DatamatrixEntity? DataMatrix { get; set; }
         public BoxEntity? Box { get; set; }
         public string RawOcrText { get; set; } = "";

@@ -34,6 +34,7 @@ namespace OCR.Features.OCVFeatures
                     Console.WriteLine($"[OCV] Image could not be loaded: {filePath}");
                     return new OcvResultEntity.OcvResult { IsReadable = false };
                 }
+                Stopwatch sw = Stopwatch.StartNew();
                 
                 var dmRect = DatamatrixFinder.FindDataMatrix(src);
                 bool dmRectIsValid = dmRect != default;
@@ -46,6 +47,8 @@ namespace OCR.Features.OCVFeatures
                 if (dmRectIsValid)
                 {
                     var dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
+                    sw.Stop();
+                    Console.WriteLine($"[OCV] Analyze image time: {sw.ElapsedMilliseconds} ms");
                     hasDataMatrix = !string.IsNullOrWhiteSpace(dmResult);
 
                     if (hasDataMatrix)
@@ -62,6 +65,7 @@ namespace OCR.Features.OCVFeatures
                         };
                         
                     }
+                    
                 }
 
                 string rawDmExp = dmEntity?.ExpDate;
@@ -85,9 +89,11 @@ namespace OCR.Features.OCVFeatures
                 
                 var dmOcrOutput = $"{ocrData.Lot}{ocrData.ExpDate}{ocrData.Sn}";
                 BoxEntity? box = null;
+                bool hasBatchNo = false;
                 if (!hasDataMatrix && (string.IsNullOrWhiteSpace(ocrData.Gtin) || string.IsNullOrWhiteSpace(ocrData.Sn)))
                 {
                     box = BuildBoxFromText(rawOcrText);
+                    hasBatchNo = box != null && !string.IsNullOrWhiteSpace(box.BatchNo);
                 }
                 var boxOutput = box != null ? $"{box.BatchNo}{box.MfgDate}{box.ExpDate}{box.Price}" 
                     : string.Empty;
@@ -102,7 +108,7 @@ namespace OCR.Features.OCVFeatures
                 }
                 else if (!string.IsNullOrWhiteSpace(ocrData.Gtin) && !string.IsNullOrWhiteSpace(ocrData.Sn))
                 {
-                    // DataMatrix yok, ama OCR’dan GTIN+SN var
+                    // DataMatrix yok, ama OCR'dan GTIN+SN var
                     isReadable = true;
                 }
                 else if (box != null && (!string.IsNullOrWhiteSpace(box.BatchNo) ||
@@ -115,6 +121,7 @@ namespace OCR.Features.OCVFeatures
                 return new OcvResultEntity.OcvResult
                 {
                     HasDataMatrix = hasDataMatrix,
+                    HasBatchNo    = hasBatchNo,
                     IsReadable    = isReadable,
                     DataMatrix    = dmEntity,
                     Box           = box,
@@ -154,6 +161,10 @@ namespace OCR.Features.OCVFeatures
             var batchMatch = RegexHelper.BatchNo.Match(text);
             var dateMatch  = RegexHelper.DoubleDate.Match(text);
             var priceMatch = RegexHelper.Price.Match(text);
+            
+            // Hiçbir şey bulunamadıysa null dön — boş entity üretilmesin
+            if (!batchMatch.Success && !dateMatch.Success && !priceMatch.Success)
+                return null;
             
             string mfgDate = string.Empty;
             string expDate = string.Empty;

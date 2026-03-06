@@ -45,8 +45,7 @@ public sealed class WindowsOcrEngine : IOcrEngine
 
     public WindowsOcrEngine(string lang)
     {
-        string tessDataPath = @"C:\Program Files\tessdata";
-
+        string tessDataPath = @"C:\Program Files\tessdata"; 
         if (!Directory.Exists(tessDataPath))
             throw new DirectoryNotFoundException($"tessdata folder not found: {tessDataPath}");
 

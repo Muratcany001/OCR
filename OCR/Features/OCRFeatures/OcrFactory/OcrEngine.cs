@@ -34,7 +34,6 @@ public sealed class MacNativeOcrEngine : IOcrEngine
     {
         // Tesseract verilerinin (tessdata) olduğu klasör yolu
         string tessDataPath = "/opt/homebrew/share/tessdata/"; 
-
         _handle = TessBaseAPICreate();
         if (TessBaseAPIInit3(_handle, tessDataPath, lang) != 0)
         {

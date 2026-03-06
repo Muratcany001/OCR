@@ -28,8 +28,8 @@ using OpenCvSharp;
                 Console.WriteLine("ROI geçersiz, sabit ROI kullanılıyor");
                 roiX = 420;
                 roiY = 400;
-                roiW = 600;
-                roiH = 250;
+                roiW = 650;
+                roiH = 300;
             }
             roiX = Math.Clamp(roiX, 0, src.Width - 1);
             roiY = Math.Clamp(roiY, 0, src.Height - 1);
@@ -38,21 +38,23 @@ using OpenCvSharp;
             
             using Mat cropped = src[new Rect(roiX, roiY, roiW, roiH)];
             
-            Cv2.Resize(cropped, cropped, new Size(), 1.25, 1.25, InterpolationFlags.Lanczos4);
-    
+            Cv2.Resize(cropped, cropped, new Size(), 1.25, 1.25, InterpolationFlags.Linear);
+
             using Mat gray = new Mat();
-            Mat binary = new Mat();
             Cv2.CvtColor(cropped, gray, ColorConversionCodes.BGR2GRAY);
-            
+    
+            // 3. BLUR: Kenarları yumuşat
             Cv2.GaussianBlur(gray, gray, new Size(3,3), 0);
-            
+    
+            Mat binary = new Mat();
+            // 4. ADAPTIVE C=8: Harfleri kaybetmeyelim
             Cv2.AdaptiveThreshold(gray, binary, 255,
-                AdaptiveThresholdTypes.GaussianC,
-                ThresholdTypes.Binary, 31, 10);
-            
+                AdaptiveThresholdTypes.GaussianC, ThresholdTypes.Binary, 31, 10);
+    
+            // 5. MORFOLOJİ: Sadece Open (Gürültü siler, harfleri birleştirmez)
             using var kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2,2));
             Cv2.MorphologyEx(binary, binary, MorphTypes.Open, kernel);
-            
+
             return binary;
         }
     }
