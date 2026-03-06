@@ -15,34 +15,43 @@ class Program
         WarmupHelper.Warmup();
     
         // Klasördeki tüm .bmp dosyalarını al
-        string folderPath = "C:\\Users\\murat\\source\\repos\\OCR\\OCR\\x\\";
+        string folderPath = "/Users/murat/RiderProjects/OCR/OCR/ExamplePhotos";
         string[] filePaths = Directory.GetFiles(folderPath, "*.bmp");
 
         Console.WriteLine($"{filePaths.Length} adet dosya bulundu. İşlem başlıyor...\n");
         
         foreach (var filePath in filePaths)
         {
-            // Her fotoğraf için ayrı bir süre tutmak istersen (isteğe bağlı)
             Stopwatch fileWatch = Stopwatch.StartNew();
         
             Console.WriteLine($"--- İşleniyor: {Path.GetFileName(filePath)} ---");
 
             var result = Ocv.AnalyzeImage(filePath);
-            // Skoru hesapla
             var score = Validator.ResultValidator(result);
-            // Çıktıları Bas
             if (result.HasDataMatrix)
             {
-                // DataMatrix tarihini senin OCR formatına çeviren o mantığı 
-                // ResultValidator içinde veya burada yapmayı unutma!
                 Console.WriteLine($"Ocr benzerlik skoru: %{score}");
                 Console.WriteLine($"Ocroutput: {result.DatamatrixOcrOutput} | dmOutput: {result.DatamatrixOutput}");
             }
+            else if (!string.IsNullOrWhiteSpace(result.OcrData?.Gtin) &&
+                     !string.IsNullOrWhiteSpace(result.OcrData?.Sn))
+            {
+                Console.WriteLine($"Ocr benzerlik skoru: %{score}");
+                Console.WriteLine($"Ocroutput: {result.DatamatrixOcrOutput}");
+            }
+            else if (result.Box != null && (!string.IsNullOrWhiteSpace(result.Box.BatchNo) ||
+                                             !string.IsNullOrWhiteSpace(result.Box.ExpDate)))
+            {
+                // Box verisi 
+                Console.WriteLine("Exp date: "  + result.Box.ExpDate);
+                Console.WriteLine("Mfg date: "  + result.Box.MfgDate);
+                Console.WriteLine("Batch no: "  + result.Box.BatchNo);
+            }
             else
             {
-                Console.WriteLine("Exp date: " + result.Box?.ExpDate);
-                Console.WriteLine($"Mfg date: {result.Box?.MfgDate}");
-                Console.WriteLine("Batch no "+result.Box?.BatchNo);
+                // Null
+                Console.WriteLine("[HATA] Hiçbir veri çıkarılamadı.");
+                Console.WriteLine($"  RawOcrText: {(string.IsNullOrWhiteSpace(result.RawOcrText) ? "<boş>" : result.RawOcrText.Replace("\n", " | "))}");
             }
 
             fileWatch.Stop();

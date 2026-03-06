@@ -4,7 +4,7 @@ namespace OCR.Features.OCRFeatures;
 
 public static class OcrEngineFactory
 {
-    public static IOcrEngine CreateEngine(string lang = "eng")
+    public static IOcrEngine CreateEngine(string lang = "finetuned_2")
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {

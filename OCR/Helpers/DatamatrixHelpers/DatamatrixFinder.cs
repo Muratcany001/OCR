@@ -23,7 +23,7 @@ public class DatamatrixFinder
             rawSrc.CopyTo(grayFull);
         else
             Cv2.CvtColor(rawSrc, grayFull, ColorConversionCodes.BGR2GRAY);
-        Cv2.Threshold(grayFull, threshFull, 100 , 255, ThresholdTypes.BinaryInv);
+        Cv2.Threshold(grayFull, threshFull, 0, 255, ThresholdTypes.BinaryInv | ThresholdTypes.Otsu);
         
         // find contours in image
         Cv2.FindContours(threshFull, out var contours, out _,

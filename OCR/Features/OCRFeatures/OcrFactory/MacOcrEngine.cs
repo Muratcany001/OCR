@@ -7,10 +7,10 @@ public sealed class MacOcrEngine : IOcrEngine
 {
     private readonly string _lang;
     private readonly string _tesseractPath;
-
-    public MacOcrEngine(string lang)
+    
+    public MacOcrEngine(string vttocr)
     {
-        _lang = lang;
+        _lang = vttocr;
         _tesseractPath = TesseractPathFinder.GetTesseractPath();
     }
 

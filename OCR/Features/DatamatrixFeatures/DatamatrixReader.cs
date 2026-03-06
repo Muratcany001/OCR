@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using OCR.Packages;
 using OpenCvSharp;
@@ -13,58 +14,72 @@ namespace OCR.Features.DatamatrixFeatures;
 /// </summary>
 public class DatamatrixReader
 {
-    /// <summary>
-    /// Verilen görsel ve DataMatrix koordinatları ile barkodu decode eder.
-    /// </summary>
-    /// <param name="rawSrc">Orijinal kaynak görsel (Ocv'den paylaşılan).</param>
-    /// <param name="dmRect">DatamatrixFinder'dan dönen bounding rectangle.</param>
-    /// <returns>DataMatrix içeriği. Okunamazsa string.Empty döner.</returns>
     public static string ReadDataMatrix(Mat rawSrc, Rect dmRect)
     {
         if (dmRect.Width <= 0 || dmRect.Height <= 0)
         {
-            Console.WriteLine("Datamatrix not found...");
+            Console.WriteLine("[DM] Rect geçersiz — DatamatrixFinder hiçbir kare bulamadı.");
             return string.Empty;
         }
+        
         Stopwatch sw = Stopwatch.StartNew();
-        // DataMatrix çevresine padding ekle
+        
         int padding = 20;
         int x = Math.Max(0, dmRect.X - padding);
-        int y = Math.Max(0, dmRect.Y - padding);
-        int w = Math.Min(rawSrc.Width - x, dmRect.Width + padding * 2);
+        int y = Math.Max(0, dmRect.Y - padding);    
+        int w = Math.Min(rawSrc.Width  - x, dmRect.Width  + padding * 2);
         int h = Math.Min(rawSrc.Height - y, dmRect.Height + padding * 2);
-        
-        // DataMatrix bölgesini kırp
-        using Mat dm = rawSrc[new Rect(x, y, w, h)];
+
+        using Mat dm   = rawSrc[new Rect(x, y, w, h)];
         
         using Mat gray = new Mat();
         Cv2.CvtColor(dm, gray, ColorConversionCodes.BGR2GRAY);
         
-        // Cv2.ImShow("31",gray);
+        using Mat upscaled = new Mat();
+        Cv2.Resize(gray, upscaled, new Size(), 2, 2, InterpolationFlags.Linear);
+        // Cv2.ImShow("123",upscaled);
         // Cv2.WaitKey();
-        int width = gray.Width;
-        int height = gray.Height;
+        var hints = new Dictionary<DecodeHintType, object>
+        {
+            { DecodeHintType.TRY_HARDER, true },
+            { DecodeHintType.CHARACTER_SET, "UTF-8" },
+            { DecodeHintType.POSSIBLE_FORMATS, new List<BarcodeFormat> { BarcodeFormat.DATA_MATRIX } }
+        };
+        var result = TryDecode(upscaled, hints);
+        
 
-        byte[] pixels = new byte[width * height];
-        gray.GetArray(out pixels);
-        
-        var luminanceSource = new RGBLuminanceSource(
-            pixels, width, height,
-            RGBLuminanceSource.BitmapFormat.Gray8
-        );
-        
-        var binarizer = new GlobalHistogramBinarizer(luminanceSource);
-        var binaryBitmap = new BinaryBitmap(binarizer);
-        var reader = new DataMatrixReader();
-        var result = reader.decode(binaryBitmap);
-        
         if (result == null)
         {
-            Console.WriteLine("Datamatrix not found...");
+            // Decode başarısız — ZXing'e ne gitti görelim
+            Cv2.ImShow("FAILED - ZXing'e giden görüntü", upscaled);
+            Cv2.WaitKey();
+            Console.WriteLine("Decode edilemedi.");
             return string.Empty;
         }
+
         sw.Stop();
-        Console.WriteLine($"{sw.ElapsedMilliseconds} ms Datamatrix reader time");
+        Console.WriteLine($"[DM] {sw.ElapsedMilliseconds} ms — decode başarılı.");
         return result.Text ?? string.Empty;
+    }
+
+    private static Result? TryDecode(Mat gray, Dictionary<DecodeHintType, object> hints)
+    {
+        using Mat processed = gray.Clone();
+        
+        using Mat blur = new Mat();
+        Cv2.GaussianBlur(processed, blur, new Size(0, 0), 3);
+        
+        Cv2.AddWeighted(processed, 1.8, blur, -0.8, 0, processed);
+        
+        using Mat kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(1, 3));
+        Cv2.MorphologyEx(processed, processed, MorphTypes.Open, kernel);
+        
+        processed.GetArray(out byte[] pixels);
+        var luminance = new RGBLuminanceSource(pixels, processed.Width, processed.Height, 
+            RGBLuminanceSource.BitmapFormat.Gray8);
+
+        var reader = new DataMatrixReader();
+        
+        return reader.decode(new BinaryBitmap(new HybridBinarizer(luminance)), hints);
     }
 }
