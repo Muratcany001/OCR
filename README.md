@@ -1,5 +1,6 @@
 #  İlaç Kutusu OCR & DataMatrix Okuyucu
 #  Default branch: dev
+#  Documentation: [OCR_Teknik_Dokumantasyon.docx-2.pdf](https://github.com/user-attachments/files/25793748/OCR_Teknik_Dokumantasyon.docx-2.pdf)
 
 İlaç kutularının üzerindeki yazıları (OCR) ve DataMatrix barkodlarını otomatik olarak okuyan bir görüntü işleme uygulamasıdır. Kutu üzerindeki Lot No, Üretim Tarihi, Son Kullanma Tarihi gibi bilgileri ve DataMatrix içindeki GS1 standartlı verileri (GTIN, SN, LOT, MAN, EXP) çıkarır.
 
