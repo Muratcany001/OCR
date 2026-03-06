@@ -34,6 +34,7 @@ namespace OCR.Features.OCVFeatures
                     Console.WriteLine($"[OCV] Image could not be loaded: {filePath}");
                     return new OcvResultEntity.OcvResult { IsReadable = false };
                 }
+                Stopwatch sw = Stopwatch.StartNew();
                 
                 var dmRect = DatamatrixFinder.FindDataMatrix(src);
                 bool dmRectIsValid = dmRect != default;
@@ -46,6 +47,8 @@ namespace OCR.Features.OCVFeatures
                 if (dmRectIsValid)
                 {
                     var dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
+                    sw.Stop();
+                    Console.WriteLine($"[OCV] Analyze image time: {sw.ElapsedMilliseconds} ms");
                     hasDataMatrix = !string.IsNullOrWhiteSpace(dmResult);
 
                     if (hasDataMatrix)
@@ -62,6 +65,7 @@ namespace OCR.Features.OCVFeatures
                         };
                         
                     }
+                    
                 }
 
                 string rawDmExp = dmEntity?.ExpDate;

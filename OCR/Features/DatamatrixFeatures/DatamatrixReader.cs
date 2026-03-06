@@ -50,9 +50,6 @@ public class DatamatrixReader
 
         if (result == null)
         {
-            // Decode başarısız — ZXing'e ne gitti görelim
-            Cv2.ImShow("FAILED - ZXing'e giden görüntü", upscaled);
-            Cv2.WaitKey();
             Console.WriteLine("Decode edilemedi.");
             return string.Empty;
         }
@@ -64,22 +61,40 @@ public class DatamatrixReader
 
     private static Result? TryDecode(Mat gray, Dictionary<DecodeHintType, object> hints)
     {
-        using Mat processed = gray.Clone();
-        
+        if (gray.Empty()) return null;
+
+        // 1. ADIM: Keskinleştirme (Unsharp Mask)
+        // Bulanık (blur) resimlerde modül kenarlarını belirginleştirir.
+        using Mat sharpened = new Mat();
         using Mat blur = new Mat();
-        Cv2.GaussianBlur(processed, blur, new Size(0, 0), 3);
-        
-        Cv2.AddWeighted(processed, 1.8, blur, -0.8, 0, processed);
-        
-        using Mat kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(1, 3));
-        Cv2.MorphologyEx(processed, processed, MorphTypes.Open, kernel);
-        
-        processed.GetArray(out byte[] pixels);
-        var luminance = new RGBLuminanceSource(pixels, processed.Width, processed.Height, 
+        Cv2.GaussianBlur(gray, blur, new Size(0, 0), 3);
+        Cv2.AddWeighted(gray, 1.5, blur, -0.5, 0, sharpened);
+
+        // 2. ADIM: Binarization (Otsu Threshold)
+        // Gri tonları net siyah ve beyaza çevirir. ZXing buna bayılır.
+        using Mat binary = new Mat();
+        Cv2.Threshold(sharpened, binary, 0, 255, ThresholdTypes.Binary | ThresholdTypes.Otsu);
+
+        // 3. ADIM: İnce Ayar (Morphology)
+        // Eğer modüller birbirine akmışsa (senin paylaştığın resimlerdeki gibi), 
+        // pikselleri çok hafif daraltarak (Erode) modülleri ayırabiliriz.
+        using Mat kernel = Cv2.GetStructuringElement(MorphShapes.Rect, new Size(2, 2));
+        Cv2.MorphologyEx(binary, binary, MorphTypes.Open, kernel);
+
+        // 4. ADIM: Veriyi Hazırla
+        byte[] pixels;
+        binary.GetArray(out pixels);
+    
+        var luminance = new RGBLuminanceSource(
+            pixels, 
+            binary.Width, 
+            binary.Height, 
             RGBLuminanceSource.BitmapFormat.Gray8);
 
         var reader = new DataMatrixReader();
-        
-        return reader.decode(new BinaryBitmap(new HybridBinarizer(luminance)), hints);
+
+        // Önce Hybrid sonra Global binarizer dene (ZXing stratejisi)
+        var result = reader.decode(new BinaryBitmap(new HybridBinarizer(luminance)), hints);
+        return result ?? reader.decode(new BinaryBitmap(new GlobalHistogramBinarizer(luminance)), hints);
     }
 }
