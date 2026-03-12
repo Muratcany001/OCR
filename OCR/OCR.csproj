@@ -11,6 +11,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.15.8" />
+		<PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.24.3" />
+		<PackageReference Include="NumSharp" Version="0.30.0" />
 		<PackageReference Include="OpenCvSharp4" Version="4.13.0.20260214" />
 		<PackageReference Include="OpenCvSharp4.Extensions" Version="4.13.0.20260214" />
 		<PackageReference Include="SimpleSoft.Gs1Parser" Version="1.0.0" />
@@ -24,6 +26,11 @@
 
 	<ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
 		<PackageReference Include="OpenCvSharp4.runtime.osx_arm64" Version="4.8.1-rc" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Outputs\DatamatrixOutputs\" />
+	  <Folder Include="Outputs\OcrOutputs\" />
 	</ItemGroup>
 
 </Project>

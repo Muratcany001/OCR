@@ -8,14 +8,15 @@ namespace OCR.Packages;
 /// </summary>
 public class GetDataMatrix
 {
+    private readonly DatamatrixFinder _finder;
     /// <summary>
     /// Görselde DataMatrix'i tespit eder ve çevresine margin ekleyerek kırpılmış Mat döndürür.
     /// </summary>
     /// <param name="src">Orijinal kaynak görsel.</param>
     /// <returns>DataMatrix bölgesinin kırpılmış görüntüsü.</returns>
-    public static Mat DatamatrixImage(Mat src)
+    public Mat DatamatrixImage(Mat src)
     {
-        var rects = DatamatrixFinder.FindDataMatrix(src);
+        var rects = _finder.FindDataMatrix(src);
         int margin = 10;
         // datamatrix cevresini kes
         Rect expanded = new Rect(
