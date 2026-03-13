@@ -13,6 +13,7 @@ using OCR.Helpers.DatamatrixHelpers;
 
 namespace OCR.Features.OCVFeatures
 {
+    
     /// <summary>
     /// Görüntüden OCR + DataMatrix (GS1) bilgilerini çeken sınıf.
     /// </summary>
@@ -20,8 +21,14 @@ namespace OCR.Features.OCVFeatures
     {
         private readonly DatamatrixReader _reader;
         private readonly DatamatrixFinder _finder;
+        
         public static readonly CharacterRecognition Ocr = new();
-    
+
+        public Ocv(DatamatrixReader reader, DatamatrixFinder finder)
+        {
+            _reader = reader;
+            _finder = finder;
+        }
         /// <summary>
         /// Görseli analiz eder ve <see cref="OcvResultEntity.OcvResult"/> döndürür.
         /// </summary>
