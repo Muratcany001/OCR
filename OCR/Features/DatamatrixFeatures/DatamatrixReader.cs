@@ -14,7 +14,7 @@ namespace OCR.Features.DatamatrixFeatures;
 /// </summary>
 public class DatamatrixReader
 {
-    public static string ReadDataMatrix(Mat rawSrc, Rect dmRect)
+    public string ReadDataMatrix(Mat rawSrc, Rect dmRect)
     {
         if (dmRect.Width <= 0 || dmRect.Height <= 0)
         {

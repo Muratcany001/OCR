@@ -13,18 +13,27 @@ using OCR.Helpers.DatamatrixHelpers;
 
 namespace OCR.Features.OCVFeatures
 {
+    
     /// <summary>
     /// Görüntüden OCR + DataMatrix (GS1) bilgilerini çeken sınıf.
     /// </summary>
-    public static class Ocv
+    public class Ocv
     {
+        private readonly DatamatrixReader _reader;
+        private readonly DatamatrixFinder _finder;
+        
         public static readonly CharacterRecognition Ocr = new();
 
+        public Ocv(DatamatrixReader reader, DatamatrixFinder finder)
+        {
+            _reader = reader;
+            _finder = finder;
+        }
         /// <summary>
         /// Görseli analiz eder ve <see cref="OcvResultEntity.OcvResult"/> döndürür.
         /// </summary>
         /// <param name="filePath">İşlenecek resim dosyasının tam yolu.</param>
-        public static OcvResultEntity.OcvResult AnalyzeImage(string filePath)
+        public OcvResultEntity.OcvResult AnalyzeImage(string filePath)
         {
             try
             {
@@ -36,7 +45,7 @@ namespace OCR.Features.OCVFeatures
                 }
                 Stopwatch sw = Stopwatch.StartNew();
                 
-                var dmRect = DatamatrixFinder.FindDataMatrix(src);
+                var dmRect = _finder.FindDataMatrix(src);
                 bool dmRectIsValid = dmRect != default;
                 
                 // Mat image = src[dmRect];
@@ -46,7 +55,7 @@ namespace OCR.Features.OCVFeatures
                 bool hasDataMatrix = false;
                 if (dmRectIsValid)
                 {
-                    var dmResult = DatamatrixReader.ReadDataMatrix(src, dmRect);
+                    var dmResult = _reader.ReadDataMatrix(src, dmRect);
                     sw.Stop();
                     Console.WriteLine($"[OCV] Analyze image time: {sw.ElapsedMilliseconds} ms");
                     hasDataMatrix = !string.IsNullOrWhiteSpace(dmResult);

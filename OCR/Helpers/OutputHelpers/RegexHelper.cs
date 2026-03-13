@@ -6,7 +6,7 @@ namespace OCR.Helpers.OutputHelpers;
 /// OCR çıktısını parse etmek için kullanılan compiled Regex pattern'leri.
 /// Static readonly olarak tanımlanır, her çağrıda yeniden derlenmez.
 /// </summary>
-public static class RegexHelper
+public class RegexHelper
 {
     // DataMatrix etiket pattern'leri (label ile)
     public static readonly Regex Gtin = new(@"GTIN:?\s*(\d{14})", RegexOptions.Compiled | RegexOptions.IgnoreCase);

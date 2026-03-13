@@ -14,7 +14,7 @@ public class DatamatrixFinder
     /// </summary>
     /// <param name="rawSrc">Orijinal BGR formatında kaynak görsel.</param>
     /// <returns>DataMatrix'in bounding rectangle'ı. Bulunamazsa default (0,0,0,0) döner.</returns>
-    public static Rect FindDataMatrix(Mat rawSrc)
+    public Rect FindDataMatrix(Mat rawSrc)
     {
         // recolor and use threshold for contour finding
         using Mat grayFull = new Mat();
